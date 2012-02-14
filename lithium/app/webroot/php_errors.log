@@ -612,3 +612,75 @@ Stack trace:
 [13-Feb-2012 02:29:35 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
 [13-Feb-2012 02:29:35 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
 [13-Feb-2012 02:29:35 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:41:28 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:21 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:44:41 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[13-Feb-2012 06:53:12 UTC] PHP Fatal error:  Uncaught exception 'lithium\core\ClassNotFoundException' with message 'Class `Pan` of type `controllers` not found.' in D:\code\bravo\lithium\libraries\lithium\core\Libraries.php:620
+Stack trace:
+#0 D:\code\bravo\lithium\libraries\lithium\core\Libraries.php(631): lithium\core\{closure}('lithium\core\Li...', Array)
+#1 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(198): lithium\core\Libraries::instance('controllers', 'Pan', Array)
+#2 D:\code\bravo\lithium\libraries\lithium\core\StaticObject.php(119): lithium\action\{closure}('lithium\action\...', Array, NULL)
+#3 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(202): lithium\core\StaticObject::_filter('_callable', Array, Object(Closure))
+#4 D:\code\bravo\lithium\libraries\lithium\core\StaticObject.php(75): lithium\action\Dispatcher::_callable(Object(lithium\action\Request), Array, Array)
+#5 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(122): lithium\core\StaticObject::invokeMethod('_callable', Array)
+#6 D:\code\bravo\ in D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php on line 200
+[13-Feb-2012 06:53:12 UTC] PHP Fatal error:  Uncaught exception 'lithium\core\ClassNotFoundException' with message 'Class `Pan` of type `controllers` not found.' in D:\code\bravo\lithium\libraries\lithium\core\Libraries.php:620
+Stack trace:
+#0 D:\code\bravo\lithium\libraries\lithium\core\Libraries.php(631): lithium\core\{closure}('lithium\core\Li...', Array)
+#1 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(198): lithium\core\Libraries::instance('controllers', 'Pan', Array)
+#2 D:\code\bravo\lithium\libraries\lithium\core\StaticObject.php(119): lithium\action\{closure}('lithium\action\...', Array, NULL)
+#3 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(202): lithium\core\StaticObject::_filter('_callable', Array, Object(Closure))
+#4 D:\code\bravo\lithium\libraries\lithium\core\StaticObject.php(75): lithium\action\Dispatcher::_callable(Object(lithium\action\Request), Array, Array)
+#5 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(122): lithium\core\StaticObject::invokeMethod('_callable', Array)
+#6 D:\code\bravo\ in D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php on line 200

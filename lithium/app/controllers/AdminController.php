@@ -4,24 +4,33 @@ namespace app\controllers;
 
 use app\models\Story;
 use app\models\Image;
-use lithium\security\Auth;
 //use app\controllers\HomeController;
 
-class StoryController extends \lithium\action\Controller 
+/* 
+
+Should show a list of the pending stories
+ 
+*/
+
+class AdminController extends \lithium\action\Controller 
 {
 	
 	
 	public function index() 
 	{
-        return array('title' => 'Story');
+		if(Session::read('default.role') == 'admin')
+		{
+			$conditions = array('status' => 'pending' );
+			$stories = Story::all(compact('conditions'));
+			$title='Admin Center';
+			
+			return compact('stories',$title);
+		}
+		return $this->redirect('/');
     }
     
     public function edit() 
     {
-    	 if (!Auth::check('default')) {
-            return $this->redirect('Sessions::add');
-        }
-        
 		//$post = Story::find(1);
 		//return compact('post');
     	//return array('title' => 'Submit Story');
@@ -44,10 +53,14 @@ class StoryController extends \lithium\action\Controller
     	return compact('story','image');
     }
     
-    public function publish() 
+    public function approve() 
     {
-    	
-    	return $this->redirect('/');
+    	$storyID=$this->request->params['id'];
+    	if($storyID)
+    	{
+    		
+    	}
+    	return $this->redirect('/admin/');
     }
     
     public function delete() 

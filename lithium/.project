@@ -14,4 +14,16 @@
 	<natures>
 		<nature>net.sourceforge.phpeclipse.phpnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>db layout.txt</name>
+			<type>1</type>
+			<locationURI>PARENT-1-ECLIPSE_HOME/bravo/db%20layout.txt</locationURI>
+		</link>
+		<link>
+			<name>notes.txt</name>
+			<type>1</type>
+			<locationURI>PARENT-1-ECLIPSE_HOME/bravo/notes.txt</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

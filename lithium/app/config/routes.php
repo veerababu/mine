@@ -39,11 +39,9 @@ Router::connect('/image/view/{:id:[0-9a-f]{24}}.png', array(), function($request
 		'body' => Image::first($request->id)->file->getBytes()
 	));
 });
-
-
-
-
 */
+Router::connect('/login', 'Sessions::add');
+Router::connect('/logout', 'Sessions::delete');
 Router::connect('/', 'Home::index');
 /**
  * Here, we are connecting `'/'` (the base path) to controller called `'Pages'`,
