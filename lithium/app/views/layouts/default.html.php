@@ -7,6 +7,7 @@
 	<?php echo $this->html->charset();?>
 	<title>Bravo Your City > <?php echo $this->title(); ?></title>
 	 <link href="/css/bootstrap.css" rel="stylesheet">
+	  <link href="/css/bravo.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -14,12 +15,33 @@
     </style>
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
     
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/bravo.js"></script>
+    
 	
 	
 	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
 </head>
 <body data-offset="50" data-target=".subnav" data-spy="scroll" data-rendering="true">
-         
+    
+<?php
+$session_flash_message = $this->session->message();
+ 
+if($session_flash_message) 
+{
+  ?>
+<script type="text/javascript" language="javascript">
+$(document).ready(function()
+{
+	var statusMsg='<?= $session_flash_message ?>';
+	$('#status').html(statusMsg);
+});
+
+</script>
+  <?php
+}
+?>     
           
 <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -36,11 +58,11 @@
             <ul class="nav">
               <li class="active"><a href="/stories">Cities</a></li>
               <li><a href="/story/edit">Submit!</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/contact">Contact</a></li>
+              <li><a href="/pages/about">About</a></li>
+              <li><a href="/pages/contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
-          <a class="brand" style="float: right;" href="/login">Login</a>
+          <?php  echo $this->_render('element', 'login'); ?>
         </div>
       </div>
     </div>
@@ -53,8 +75,6 @@
     </div> 
    	
 		
-	<script src="/js/jquery.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    <script src="/js/bravo.js"></script>
+	
 </body>
 </html>

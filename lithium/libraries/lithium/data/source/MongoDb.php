@@ -406,22 +406,26 @@ class MongoDb extends \lithium\data\Source {
 
 		switch (true) {
 			case  (is_array($data['file']) && array_keys($data['file']) == $uploadKeys):
-				if (!$data['file']['error'] && is_uploaded_file($data['file']['tmp_name'])) {
+				
+				if (!$data['file']['error'] /* JED && is_uploaded_file($data['file']['tmp_name']) */) {
 					$method = 'storeFile';
 					$file = $data['file']['tmp_name'];
 					$data['filename'] = $data['file']['name'];
 				}
 			break;
 			case (is_string($data['file']) && file_exists($data['file'])):
+			
 				$method = 'storeFile';
 				$file = $data['file'];
 			break;
 			case $data['file']:
+			
 				$method = 'storeBytes';
 				$file = $data['file'];
 			break;
 		}
 
+		
 		if (!$method || !$file) {
 			return;
 		}
@@ -431,6 +435,7 @@ class MongoDb extends \lithium\data\Source {
 			$grid->delete($data['_id']);
 		}
 		unset($data['file']);
+		
 		return $grid->{$method}($file, $data);
 	}
 

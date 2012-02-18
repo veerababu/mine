@@ -24,9 +24,13 @@ class ImageController extends \lithium\action\Controller
 	}
 	
 	public function add() {
+		//print_r($this->request->data);
+		
+		
 		$photo = Image::create();
 
-		if (($this->request->data) && $photo->save($this->request->data)) {
+		if (($this->request->data) && $photo->save($this->request->data)) 
+		{
 			$this->redirect(array('Image::view', 'id' => $photo->_id));
 		}
 		$this->_render['template'] = 'edit';

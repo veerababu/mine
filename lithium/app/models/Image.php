@@ -17,6 +17,19 @@ class Image extends \lithium\data\Model
 
 	public function save($entity, $data = null, array $options = array()) 
 	{
+		//print_r($entity);
+		
+		if($data) {
+			$entity->set($data);
+		}
+
+		
+		return parent::save($entity, null, $options);
+	}
+	
+	
+	public function save2($entity, $data = null, array $options = array()) 
+	{
 		if ($data) {
 			$entity->set($data);
 		}
@@ -30,6 +43,8 @@ class Image extends \lithium\data\Model
 		}
 		return parent::save($entity, null, $options);
 	}
+	
+	
 }
 
 ?>

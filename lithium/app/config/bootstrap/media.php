@@ -38,10 +38,12 @@ use lithium\action\Dispatcher;
 use lithium\action\Response;
 use lithium\net\http\Media;
 
-Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
+Dispatcher::applyFilter('_callable', function($self, $params, $chain) 
+{
 	list($library, $asset) = explode('/', $params['request']->url, 2) + array("", "");
 
-	if ($asset && ($path = Media::webroot($library)) && file_exists($file = "{$path}/{$asset}")) {
+	if($asset && ($path = Media::webroot($library)) && file_exists($file = "{$path}/{$asset}")) 
+	{
 		return function() use ($file) {
 			$info = pathinfo($file);
 			$media = Media::type($info['extension']);

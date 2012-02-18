@@ -1,16 +1,5 @@
 <?php
 
-
-namespace app\controllers;
-
-use app\models\Story;
-use app\models\Image;
-use lithium\security\Auth;
-use lithium\storage\Session;
-//use app\controllers\HomeController;
-
-
-
 /**
  * Handle file uploads via XMLHttpRequest
  */
@@ -19,17 +8,17 @@ class qqUploadedFileXhr {
      * Save the file to the specified path
      * @return boolean TRUE on success
      */
-     function save($author,$name) 
+    function save($author,$name) 
     {    
     	$tmp_name = tempnam("/tmp", "FOO");
 
 		$temp = fopen($tmp_name, "w");
 
         $input = fopen("php://input", "r");
+        $temp = tmpfile();
         $size = stream_copy_to_stream($input, $temp);
         fclose($input);
         fclose($temp);
-       
         
         if ($size != $this->getSize()){            
             return false;
@@ -41,11 +30,9 @@ class qqUploadedFileXhr {
         
         
         $photo = Image::create();
-        $data=compact('author','file');
-        //print_r($data);
-        $photo->save($data);
+        $photo->save( compact('author','file'));
         
-        return $photo->_id;
+        return true;
     }
     function getName() {
         return $_GET['qqfile'];
@@ -68,7 +55,6 @@ class qqUploadedFileForm {
      * @return boolean TRUE on success
      */
     function save($path) {
-    	// TODO:
         if(!move_uploaded_file($_FILES['qqfile']['tmp_name'], $path)){
             return false;
         }
@@ -93,7 +79,7 @@ class qqFileUploader {
         $this->allowedExtensions = $allowedExtensions;        
         $this->sizeLimit = $sizeLimit;
         
-        //JED $this->checkServerSettings();       
+        $this->checkServerSettings();       
 
         if (isset($_GET['qqfile'])) {
             $this->file = new qqUploadedFileXhr();
@@ -155,9 +141,9 @@ class qqFileUploader {
         }
         
         
-        $photoID=$this->file->save($username, $filename . '.' . $ext);
-        if($photoID){
-            return $photoID;
+        
+        if ($this->file->save($username, $filename . '.' . $ext)){
+            return array('success'=>true);
         } else {
             return array('error'=> 'Could not save uploaded file.' .
                 'The upload was cancelled, or server error encountered');
@@ -177,150 +163,3 @@ $result = $uploader->handleUpload('uploads/');
 // to pass data through iframe you will need to encode all html tags
 echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
 */
-
-class StoryController extends \lithium\action\Controller 
-{
-	
-	
-	public function index() 
-	{
-        return array('title' => 'Story');
-    }
-    
-    public function edit() 
-    {
-    	 if(!Auth::check('user')) 
-    	 {
-    	 	Session::write('message', 'Please Login to Contribute.');
-            return $this->redirect('Users::login');
-         }
-    	
-
-    	$story = Story::create();
-    	$story->_id=0;
-    	$story->title = 'Story Title';
-		$story->desc = 'Enter description here';
-		$story->address = 'Story Address';
-    	
-    	
-    	return compact('story','image');
-    }
-    
-    ////////////////////////////////////////
-    // AJAX functions
-    public function get()
-    {
-    	$story = Story::find($this->request->id);
-    	if($story)
-    	{
-    		$this->render(array('json' => compact('story')));
-    	}else
-    	{
-    		$error="Story not found?";
-    		
-    		$this->render(array('json' => compact('error')));
-    	}
-    }
-    
-    public function save() 
-    {
-    	$this->updateStory("working");
-    }
-    
-    public function publish() 
-    {
-    	$this->updateStory("pending");
-    }
-    
-    function updateStory($status)
-    {
-    	if(Auth::check('user')) 
-    	{
-    		if($this->request->data) 
-    		{
-    			//print_r($this->request->data);
-    			
-    			$username=Session::read('user.username');
-    			$this->request->data['status']=$status;
-    			
-    			if(isset($this->request->data['_id']))
-    			{
-	    	 		//Story::update($this->request->data, array('author' => $username));
-	    	 		Story::update($this->request->data);
-	    	 		$story=$this->request->data;
-    			}else
-    			{
-    				$this->request->data['author']=$username;
-    				$story = Story::create($this->request->data);
-        			$success = $story->save();
-    			}
-    			
-    			$status="Saved.";
-				$stories = Story::all( array( 'username' => $username ) );
-	    	 	// update the stories list
-	    	 	$this->render(array('json' => compact('status','story','stories')));
-    		}else
-    		{
-    			$error="No data found?";
-    			$this->render(array('json' => compact('error')));
-    		}
-        }else
-    	{
-    		$error="You are no longer logged in. Please <a href='/login'>Login</a> to continue.";
-    		
-    		$this->render(array('json' => compact('error')));
-    	}
-	
-    }
-    
-    public function delete() 
-    {
-    	$storyID=$this->request->params['id'];
-    	if($storyID)
-    	{
-    		Story::remove(array('_id' => $storyID ));
-    		//return array('title' => 'Story Deleted');
-    	}
-    	return $this->redirect('/');
-    }
-    
-    // This image may or may not eventually be included in the story
-    // stick it in the DB. return the imageID so we can add it to the form to be saved or published
-    public function addImage()
-    {
-    	$success=false;
-    	
-    	if(Auth::check('user')) 
-    	{
-    		//print_r($this->request->data);
-    		$allowedExtensions = array();
-			// max file size in bytes
-			$sizeLimit = 10 * 1024 * 1024;
-			
-			$username=Session::read('user.username');
-			
-			$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
-			$photoID = $uploader->handleUpload($username);
-			//echo($photoID);
-			
-			// TODO: check result
-			if($photoID)
-			{
-				$success=true;
-				//$this->render(array('json' => compact('photoID','success')));
-				$this->render(array('json' => array('photoID' => "$photoID" ,'success' => true )));
-			} 
-				
-        }else
-    	{
-    		$error="You are no longer logged in. Please <a href='/login'>Login</a> to continue.";
-    		
-    		$this->render(array('json' => compact('error','success')));
-    	}
-    	
-    	
-    	//$this->render(array('json' => compact('success')));
-    }
-}
-
-?>

@@ -40,8 +40,12 @@ Router::connect('/image/view/{:id:[0-9a-f]{24}}.png', array(), function($request
 	));
 });
 */
-Router::connect('/login', 'Sessions::add');
-Router::connect('/logout', 'Sessions::delete');
+//Router::connect('/about', array('controller' => 'pages', 'action' => 'about'));
+//Router::connect('/contact', array('controller' => 'pages', 'action' => 'view'));
+Router::connect('/login', 'Users::login');
+Router::connect('/logout', 'Users::logout');
+Router::connect('/register', 'Users::register');
+Router::connect('/forgot', 'Users::forgot');
 Router::connect('/', 'Home::index');
 /**
  * Here, we are connecting `'/'` (the base path) to controller called `'Pages'`,
@@ -82,6 +86,8 @@ if (!Environment::is('production')) {
  * If you're using a document-oriented database, such as CouchDB or MongoDB, or another type of
  * database which uses 24-character hexidecimal values as primary keys, uncomment the routes below.
  */
+
+ 
  Router::connect('/{:controller}/{:action}/{:id:[0-9a-f]{24}}.{:type}', array('id' => null));
  Router::connect('/{:controller}/{:action}/{:id:[0-9a-f]{24}}');
 

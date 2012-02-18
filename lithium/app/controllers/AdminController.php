@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Story;
 use app\models\Image;
+use lithium\storage\Session;
 //use app\controllers\HomeController;
 
 /* 
@@ -18,19 +19,23 @@ class AdminController extends \lithium\action\Controller
 	
 	public function index() 
 	{
-		if(Session::read('default.role') == 'admin')
-		{
-			$conditions = array('status' => 'pending' );
-			$stories = Story::all(compact('conditions'));
-			$title='Admin Center';
-			
-			return compact('stories',$title);
-		}
-		return $this->redirect('/');
+		if(Session::read('user.role') != 'admin') return $this->redirect('/');
+		
+		$conditions = array('status' => 'pending' );
+		$stories = Story::all(compact('conditions'));
+		//$stories = Story::all();
+		$title='Admin Center';
+		
+		//print_r($stories);
+		
+		return compact('stories',$title);
+		
+		
     }
     
     public function edit() 
     {
+    	if(Session::read('user.role') != 'admin') return $this->redirect('/');
 		//$post = Story::find(1);
 		//return compact('post');
     	//return array('title' => 'Submit Story');
@@ -53,25 +58,62 @@ class AdminController extends \lithium\action\Controller
     	return compact('story','image');
     }
     
-    public function approve() 
+  ////////////////////////////////////////
+  // AJAX functions
+    
+    public function approve($storyID) 
     {
-    	$storyID=$this->request->params['id'];
-    	if($storyID)
-    	{
-    		
-    	}
-    	return $this->redirect('/admin/');
+    	if(Session::read('user.role') != 'admin') return $this->redirect('/');
+    	
+    	if($this->request->data) 
+		{
+			$this->request->data['status']="accepted";	
+			Story::update($this->request->data);
+ 
+			$status="Approved";
+			$remove=$storyID;
+    	 	// update the stories list
+    	 	$this->render(array('json' => compact('status','remove')));
+		}else
+		{
+			$error="No data found?";
+			$this->render(array('json' => compact('error')));
+		}
+    	
     }
     
-    public function delete() 
+     public function reject($storyID) 
     {
-    	$storyID=$this->request->params['id'];
+    	if(Session::read('user.role') != 'admin') return $this->redirect('/');
+    	if($this->request->data) 
+		{
+			$this->request->data['status']="working";	
+			Story::update($this->request->data);
+ 
+			$status="Rejected";
+			$remove=$storyID;
+    	 	// update the stories list
+    	 	$this->render(array('json' => compact('status','remove')));
+		}else
+		{
+			$error="No data found?";
+			$this->render(array('json' => compact('error')));
+		}
+    }
+    
+    public function delete($storyID) 
+    {
+    	if(Session::read('user.role') != 'admin') return $this->redirect('/');
+    	
     	if($storyID)
     	{
     		Story::remove(array('_id' => $storyID ));
-    		//return array('title' => 'Story Deleted');
+    		$status="Deleted";
+			$remove=$storyID;
+    	 	// update the stories list
+    	 	$this->render(array('json' => compact('status','remove')));
     	}
-    	return $this->redirect('/');
+    	
     }
 }
 

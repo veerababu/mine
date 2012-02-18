@@ -17,7 +17,9 @@
 type specific:
 */
 
-
+function addStatus()
+{
+}
 
 function onServer(data)
 {
@@ -26,6 +28,26 @@ function onServer(data)
 	if(data.status) $('#status').html(data.status);
 	else $('#status').text('');
 }
+
+function i4_tmpl(tmpl, vals) 
+{
+	var rgxp, repr;
+	
+	// default to doing no harm
+	tmpl = tmpl   || '';
+	vals = vals || {};
+	
+	// regular expression for matching our placeholders; e.g., #{my-cLaSs_name77}
+	rgxp = /#\{([^{}]*)}/g;
+	
+	// function to making replacements
+	repr = function (str, match) {
+		return typeof vals[match] === 'string' || typeof vals[match] === 'number' ? vals[match] : str;
+	};
+	
+	return tmpl.replace(rgxp, repr);
+}
+
 
 function makeNodeStr(node)
 {

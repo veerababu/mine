@@ -196,10 +196,13 @@ class Form extends \lithium\core\Object {
 	 * @return array Returns an array containing user information on success, or `false` on failure.
 	 */
 	public function check($credentials, array $options = array()) {
+		
 		$model = $this->_model;
 		$query = $this->_query;
 		$conditions = $this->_scope + $this->_filters(array_map('strval', $credentials->data));
 		$user = $model::$query(compact('conditions'));
+		//print_r($conditions);
+		//echo("$model $query");
 		return $user ? $user->data() : false;
 	}
 
@@ -212,7 +215,10 @@ class Form extends \lithium\core\Object {
 	 * @param array $options Adapter-specific options. Not implemented in the `Form` adapter.
 	 * @return array Returns the value of `$data`.
 	 */
-	public function set($data, array $options = array()) {
+	public function set($data, array $options = array()) 
+	{
+		// TODO: find the proper place to do this
+		unset($data['password']);
 		return $data;
 	}
 

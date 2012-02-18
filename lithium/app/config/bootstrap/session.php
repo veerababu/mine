@@ -11,6 +11,7 @@
  * it intercepts any writes where the `'expires'` key is set in the options array.
  */
 use lithium\storage\Session;
+use lithium\action\Dispatcher;
 
 Session::config(array(
 	// 'cookie' => array('adapter' => 'Cookie'),
@@ -34,15 +35,34 @@ Session::config(array(
  * @see lithium\security\auth\adapter\Form
  * @see lithium\action\Request::$data
  * @see lithium\security\Auth
+ * 
+ ,
+ 		'filters' => array(function ($data) {
+ 			echo("filter<br>");
+            unset($data['password']);
+            print_r($data);
+            echo("after<br>");
+            return $data;
+        })
  */
 use lithium\security\Auth;
 
 Auth::config(array(
- 	'default' => array(
+ 	'user' => array(
  		'adapter' => 'Form',
  		'model' => 'Users',
  		'fields' => array('username', 'password')
  	)
  ));
+ 
+ 
+Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
+    $ctrl    = $chain->next($self, $params, $chain);
+    
+    $username=Session::read('user.username');
+    if($username) $ctrl->set(compact('username') );
+    return $ctrl;
+    
+});
 
 ?>
