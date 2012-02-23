@@ -1,3 +1,50 @@
 a {
 	cursor: pointer; 
 }
+
+.byline {
+float: right;
+}
+
+.address {
+float: right;
+}
+
+div.photo {
+  float: left;
+  border: thin silver solid;
+  margin: 0.5em;
+  padding: 0.5em;
+}
+
+div.photo p {
+  text-align: center;
+  font-style: italic;
+  font-size: smaller;
+  text-indent: 0;
+}
+
+#filterList{
+margin-top: 15px;
+margin-bottom: 15px;
+}
+
+#tagList{
+margin-top: 15px;
+margin-bottom: 15px;
+}
+
+.cityCombo{
+margin-bottom: 9px;
+    padding: 4px;
+    }
+    
+    
+.story {
+margin-bottom: 15px;
+border-bottom: thin red solid;
+}
+
+.tag {
+	cursor: pointer; 
+}

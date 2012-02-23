@@ -203,7 +203,14 @@ class StoryController extends \lithium\action\Controller
 		$story->address = 'Story Address';
     	
     	
-    	return compact('story','image');
+    	return compact('story');
+    }
+    
+    public function view()
+    {
+    	//print_r($this->request->params->args);
+    	$storyTitle=$this->request->params['args'][0];
+    	return compact('storyTitle');
     }
     
     ////////////////////////////////////////
@@ -211,6 +218,22 @@ class StoryController extends \lithium\action\Controller
     public function get()
     {
     	$story = Story::find($this->request->id);
+    	if($story)
+    	{
+    		$this->render(array('json' => compact('story')));
+    	}else
+    	{
+    		$error="Story not found?";
+    		
+    		$this->render(array('json' => compact('error')));
+    	}
+    }
+    
+    public function getByTitle()
+    {
+    	$storyTitle=$this->request->params['args'][0];
+    	
+    	$story = Story::first(array('conditions' => array('title' => $storyTitle)));
     	if($story)
     	{
     		$this->render(array('json' => compact('story')));
@@ -241,21 +264,52 @@ class StoryController extends \lithium\action\Controller
     			//print_r($this->request->data);
     			
     			$username=Session::read('user.username');
-    			$this->request->data['status']=$status;
+    			$story=$this->request->data;
+    			$story['status']=$status;
     			
-    			if(isset($this->request->data['_id']))
+    			$story['tags']=explode(',',$story['tags']);
+    			
+    			foreach($story['tags'] as $key => &$tag)
     			{
-	    	 		//Story::update($this->request->data, array('author' => $username));
-	    	 		Story::update($this->request->data);
-	    	 		$story=$this->request->data;
+    				$tag=trim($tag);
+    				if( empty($tag) ) unset( $story['tags'][$key] );
+    			}
+    			
+    			/* TODO: not sure the best way to handle this
+    			$story['tags'][]=$story['hood'];
+    			$story['tags'][]=$story['city'];
+    			unset($story['hood']);
+    			unset($story['city']);
+    			*/
+    			
+    			if(isset($story['_id']) && $story['_id']==0)
+    			{ 
+    				unset($story['_id']);
+    			}
+    			
+    			if(isset($story['_id']) )
+    			{	    	 		
+	    	 		$id=$story['_id'];
+	    	 		unset($story['_id']);
+	    	 		
+	    	 		//print_r($story);
+	    	 		
+	    	 		Story::update($story, array('_id' => $id ));
+	    	 		
+	    	 		//print_r($ret);
+	    	 			 		
+	    	 		$story['author']=$username;
+	    	 		$story['_id']=$id;
+	    	 		
     			}else
     			{
-    				$this->request->data['author']=$username;
-    				$story = Story::create($this->request->data);
+    				$story['author']=$username;
+    				$story = Story::create($story);
         			$success = $story->save();
     			}
     			
     			$status="Saved.";
+    			// TODO: we only need some of this data
 				$stories = Story::all( array( 'username' => $username ) );
 	    	 	// update the stories list
 	    	 	$this->render(array('json' => compact('status','story','stories')));

@@ -17,8 +17,9 @@
 type specific:
 */
 
-function addStatus()
+function addStatus(status)
 {
+	$('#status').html(status);
 }
 
 function onServer(data)
@@ -27,6 +28,18 @@ function onServer(data)
 	else $('#error').text('');
 	if(data.status) $('#status').html(data.status);
 	else $('#status').text('');
+}
+
+
+function removeByElement(arrayName,arrayElement)
+{
+	for(var i=0; i<arrayName.length; i++)
+   	{ 
+  		if(arrayName[i]==arrayElement)
+  		arrayName.splice(i,1); 
+  		return(true);
+  	} 
+  	return(false);
 }
 
 function i4_tmpl(tmpl, vals) 
@@ -47,150 +60,78 @@ function i4_tmpl(tmpl, vals)
 	
 	return tmpl.replace(rgxp, repr);
 }
-
-
-function makeNodeStr(node)
-{
-	var expandButton='<img src="/img/expand.png" onClick="toggleExpand(this,#{nid})" />';
-	var header='<div class="#{class}" >';
-	var postButtons='<div class="buttons"><div onClick="showForm(\'new_topic\',#{nid})">New Topic</div><div onClick="showForm(\'new_post\',#{nid})">Reply</div></div>';
-	
-	var tempStr;
-	
-	if(node['type']==1) 
-	{
-		node['class']='group';
-		tempStr=header+'<a onClick="showPage(\'group\',#{nid})"><table><tr><td>#{name}</td><td>#{num} members.</td><td>Spending $#{cash}</td> <td>on #{date}</td></tr></table></a></div>';
-
-	}else if(node['type']==2) 
-	{
-		node['class']='prop';
-		if(node['in']==1)
-		{
-			tempStr=header+expandButton+'#{name} #{rating} Budget: $#{cash}  #{date}'+postButtons+'</div>';
-		}else tempStr=header+expandButton+'#{name} #{rating} Budget: $#{cash}  #{date}</div>';
-
-	}else if(node['type']==3) 
-	{
-		node['class']='topic';
+/*
+story.title=$('#StoryTitle').val();
+		story.author=<?=$username ?>
+		story.text=$('#StoryText').val();
+		story.address=$('#StoryAddress').val();
+		story.updated="today"
 		
-		if(node['in']==1)
+		for(n=0; n<5; n++) 
 		{
-			tempStr=header+expandButton+'#{name} : #{text}'+postButtons+'</div>';
-		}else tempStr=header+expandButton+'#{name} : #{text}</div>';
-	}else 
-	{
-		node['class']='post';
-		if(node['in']==1)
-		{
-			tempStr=header+expandButton+'#{text}'+postButtons+'</div>';
-		}else tempStr=header+expandButton+'#{text}</div>';
-	}
-	
-	var template=new Template(tempStr);
-	return(template.evaluate(node));
-}
-
-function addNode(node)
-{
-	
-	gNodeHash[node['nid']]=node;
-	
-	//alert("addNode"+node['type']+" "+node['pid']);
-	
-	
-	var nodeStr=makeNodeStr(node);
-	var nodeName='a'+node['nid'];
-	if($(nodeName))
-	{
-		$(nodeName).firstChild.replace(nodeStr);
-	}else
-	{ // node hasn't been added yet
-		
-		var parentID=node['pid'];
-		var parent=$('a'+parentID);
-		if(parentID>0 && parent) 
-		{	// if we should start it off hidden or not
-			//alert('add child '+parent);
-			if(parent.expanded==1)
+			if(photos[n])
 			{
-				nodeStr='<div id="'+nodeName+'" class="node" >'+nodeStr+'</div>';				
-			}else
-			{
-				nodeStr='<div id="'+nodeName+'" class="node" style="display:none;" >'+nodeStr+'</div>';
+				var pStr='photo'+n;
+				story[pStr]=$('['+pStr+']').val();
+				story['caption'+n]=$('[caption'+n+']').val();
+				//story['pos'+n]=
 			}
-			parent.insert( {'bottom' : nodeStr });
-		}else 
-		{
-			//alert("no parent");
-			nodeStr='<div id="'+nodeName+'" class="node" >'+nodeStr+'</div>';
-			$('nodes'+node['type']).insert( nodeStr ,$('nodes'+node['type']));
 		}
-	}
+*/
+
+function parseBBCode(text)
+{
+	text = text.replace(/\[b\]([^]*?)\[\/b\]/gim,	'<strong>$1</strong>');
+	text = text.replace(/\[i\]([^]*?)\[\/i\]/gim,'<em>$1</em>');
+	text = text.replace(/\[u\]([^]*?)\[\/u\]/gim,'<u>$1</u>');
+	//text = text.replace(/\[img\]([^]*?)\[\/img\]/gim,'<img src="$1" alt="$1" />');
+	text = text.replace(/\[email\](.*?)\[\/email\]/gim,'<a href="mailto:$1">$1</a>');
+	text = text.replace(/\[url\="?(.*?)"?\]([^]*?)\[\/url\]/gim,'<a href="$1">$2</a>');
+	text = text.replace(/\[size\="?(.*?)"?\]([^]*?)\[\/size\]/gim,'<span style="font-size:$1%">$2</span>');
+	text = text.replace(/\[color\="?(.*?)"?\]([^]*?)\[\/color\]/gim,'<span style="color:$1">$2</span>');
+	text = text.replace(/\[quote\]([^]*?)\[\/quote\]/gim,'<blockquote>$1</blockquote>');
+	text = text.replace(/\[list\=(.*?)\]([^]*?)\[\/list\]/gim,'<ol start="$1">$2</ol>');
+	text = text.replace(/\[list\]([^]*?)\[\/list\]/gim,'<ul>$1</ul>');
+	text = text.replace(/\[\*\]\s?([^]*?)\n/gim, '<li>$1</li>');
+	text = text.replace(/\\n/gi, '<br>');
+	text = text.replace(/\n/gi, '<br>');
+		
+	return(text)
 }
 
-
-function toggleExpand(element,nodeID)
+function createStoryStr(story)
 {
-	var node=$('a'+nodeID);
+	var str='<div class="story"> <h2><a href="/story/view/'+story.title+'">'+story.title+'</a></h2>';
+	str += 	'<div class="row byline">by <a href="/users/profile/'+story.author+'">'+story.author+'</a></div>';
 	
-	if(node.expanded==1)
+	str += '<div class="row photorow">';
+	for(n=0; n<5; n++) 
 	{
-		node.expanded=0;
-		element.src="/img/expand.png";
-		
-		var sibs=node.children;
-		//alert(sibs);
-		for(var index = 1, len = sibs.length; index < len; ++index) {
-			  sibs[index].hide();
-			}
-	}else
-	{
-		node.expanded=1;
-		element.src="/img/collapse.png";
-		
-		var sibs=node.children;
-		for(var index = 1, len = sibs.length; index < len; ++index) {
-			  sibs[index].show();
-			}
-		
-		fetchPosts(nodeID);
-	}
-}
-
-
-function handleResult(JSON)
-{
-	//alert(JSON);
-	
-	var nodes=JSON['nodes'];
-	if(nodes)
-	{
-		//alert(nodes+" "+nodes.length);
-		for(var index = 0, len = nodes.length; index < len; ++index) 
+		var pStr='photo'+n;
+		if(story[pStr])
 		{
-			//alert("adding");
-			addNode(nodes[index]);
+			str = str + '<div class="photo"><p><img src="/image/view/'+story[pStr]+'.jpg" /><p>' +
+					story['caption'+n]+'</div>';
 		}
-		if(JSON['pages']>1)
+	}
+	str += '</div>';
+	
+	str += 	parseBBCode(story.text);
+	
+	var tagStr='';
+	if(story.tags)
+	{
+		for(n=0; n<story.tags.length; n++)
 		{
-			alert("more pages");
+			tagStr += '<span class="label tag" onclick="clickTag(this)">'+story.tags[n]+'</span> ';
 		}
 	}
 	
-	if(JSON['status']) 
-	{
-		$('status').innerHTML=JSON['status'];
-	}
-}
-
-
-function showForm(formName,parentID)
-{
-	//alert("showing "+formName+" id: "+parentID);
-	$(formName).show();
-	$(formName+"_pid").value=parentID;
-	//$(formName).down('pid').value=parentID;
+	str += '<div class="row"><div class="span2">'+tagStr+'</div><div class="address">'+story.address+'</div></div>';
 	
-	//addForm(parentID,form);
+	
+		
+	str += '</div>';
+	
+	return(str);	
 }

@@ -1383,3 +1383,82 @@ Stack trace:
 [18-Feb-2012 16:49:36 UTC] PHP Catchable fatal error:  Argument 2 passed to lithium\data\Model::find() must be an array, null given, called in D:\code\bravo\lithium\libraries\lithium\data\Model.php on line 384 and defined in D:\code\bravo\lithium\libraries\lithium\data\Model.php on line 428
 [18-Feb-2012 17:48:44 UTC] PHP Warning:  Missing argument 1 for app\controllers\StoryController::index(), called in D:\code\bravo\lithium\libraries\lithium\core\Object.php on line 167 and defined in D:\code\bravo\lithium\app\controllers\StoryController.php on line 185
 [18-Feb-2012 17:48:44 UTC] PHP Notice:  Undefined variable: foo in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_story_index.html_0_1328996262_38.php on line 2
+[18-Feb-2012 18:34:25 UTC] PHP Catchable fatal error:  Object of class lithium\data\model\Query could not be converted to string in D:\code\bravo\lithium\libraries\lithium\data\source\MongoDb.php on line 506
+[18-Feb-2012 18:56:38 UTC] PHP Parse error:  syntax error, unexpected T_UNSET in D:\code\bravo\lithium\app\controllers\StoryController.php on line 250
+[18-Feb-2012 18:57:11 UTC] PHP Fatal error:  __clone method called on non-object in D:\code\bravo\lithium\app\controllers\StoryController.php on line 249
+[18-Feb-2012 21:49:12 UTC] PHP Parse error:  syntax error, unexpected T_DOUBLE_ARROW in D:\code\bravo\lithium\app\controllers\AdminController.php on line 116
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 6
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 6
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 84
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 85
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 85
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 113
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 113
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 114
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 114
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 115
+[18-Feb-2012 21:50:53 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329598014_3891.php on line 115
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 6
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 6
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 84
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 85
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 85
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 113
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 113
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 114
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 114
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 115
+[18-Feb-2012 21:51:44 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 115
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 6
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 6
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 84
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 85
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 85
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 113
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 113
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 114
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 114
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 115
+[18-Feb-2012 21:53:03 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329601894_3855.php on line 115
+[18-Feb-2012 21:55:12 UTC] PHP Fatal error:  Uncaught exception 'lithium\action\DispatchException' with message 'Action `pending` not found.' in D:\code\bravo\lithium\libraries\lithium\action\Controller.php:177
+Stack trace:
+#0 D:\code\bravo\lithium\libraries\lithium\core\Object.php(240): lithium\action\{closure}(Object(app\controllers\AdminController), Array, NULL)
+#1 D:\code\bravo\lithium\libraries\lithium\action\Controller.php(195): lithium\core\Object->_filter('lithium\action\...', Array, Object(Closure))
+#2 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(223): lithium\action\Controller->__invoke(Object(lithium\action\Request), Array)
+#3 D:\code\bravo\lithium\libraries\lithium\core\StaticObject.php(119): lithium\action\{closure}('lithium\action\...', Array, NULL)
+#4 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(226): lithium\core\StaticObject::_filter('_call', Array, Object(Closure))
+#5 D:\code\bravo\lithium\libraries\lithium\core\StaticObject.php(75): lithium\action\Dispatcher::_call(Object(app\controllers\AdminControll in D:\code\bravo\lithium\libraries\lithium\action\Controller.php on line 177
+[18-Feb-2012 21:57:17 UTC] PHP Warning:  Missing argument 1 for app\controllers\AdminController::reject(), called in D:\code\bravo\lithium\libraries\lithium\core\Object.php on line 167 and defined in D:\code\bravo\lithium\app\controllers\AdminController.php on line 98
+[18-Feb-2012 21:59:29 UTC] PHP Fatal error:  Call to undefined function app\controllers\updateStory() in D:\code\bravo\lithium\app\controllers\AdminController.php on line 103
+[18-Feb-2012 21:59:57 UTC] PHP Notice:  Undefined variable: self in D:\code\bravo\lithium\app\controllers\AdminController.php on line 103
+[18-Feb-2012 21:59:57 UTC] PHP Fatal error:  Call to a member function updateStory() on a non-object in D:\code\bravo\lithium\app\controllers\AdminController.php on line 103
+[18-Feb-2012 22:18:53 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329603214_3798.php on line 83
+[18-Feb-2012 22:18:53 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329603214_3798.php on line 84
+[18-Feb-2012 22:18:53 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329603214_3798.php on line 84
+[18-Feb-2012 22:19:20 UTC] PHP Notice:  Undefined variable: story in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_admin_stories.html_0_1329603557_3781.php on line 83
+[19-Feb-2012 04:14:29 UTC] PHP Fatal error:  Uncaught exception 'lithium\core\ClassNotFoundException' with message 'Class `Js` of type `controllers` not found.' in D:\code\bravo\lithium\libraries\lithium\core\Libraries.php:620
+Stack trace:
+#0 D:\code\bravo\lithium\libraries\lithium\core\Libraries.php(631): lithium\core\{closure}('lithium\core\Li...', Array)
+#1 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(198): lithium\core\Libraries::instance('controllers', 'Js', Array)
+#2 D:\code\bravo\lithium\libraries\lithium\util\collection\Filters.php(202): lithium\action\{closure}('lithium\action\...', Array, Object(lithium\util\collection\Filters))
+#3 D:\code\bravo\lithium\app\config\bootstrap\session.php(60): lithium\util\collection\Filters->next('lithium\action\...', Array, Object(lithium\util\collection\Filters))
+#4 D:\code\bravo\lithium\libraries\lithium\util\collection\Filters.php(183): {closure}('lithium\action\...', Array, Object(lithium\util\collection\Filters))
+#5 D:\code\bravo\lithium\libraries\lithium\core\StaticObject.php(126): lithiu in D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php on line 200
+[19-Feb-2012 05:06:18 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[19-Feb-2012 05:06:18 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[19-Feb-2012 05:06:18 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[19-Feb-2012 05:06:18 UTC] PHP Fatal error:  Call to a member function getBytes() on a non-object in D:\code\bravo\lithium\app\config\routes.php on line 31
+[22-Feb-2012 04:06:59 UTC] PHP Warning:  Missing argument 1 for app\controllers\StoryController::view(), called in D:\code\bravo\lithium\libraries\lithium\core\Object.php on line 167 and defined in D:\code\bravo\lithium\app\controllers\StoryController.php on line 209
+[22-Feb-2012 04:06:59 UTC] PHP Notice:  Undefined variable: storyID in D:\code\bravo\lithium\app\resources\tmp\cache\templates\template_views_story_view.html_0_1329883587_458.php on line 4
+[22-Feb-2012 04:13:29 UTC] PHP Warning:  Illegal offset type in isset or empty in D:\code\bravo\lithium\libraries\lithium\data\Model.php on line 441
+[22-Feb-2012 04:18:38 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\code\bravo\lithium\app\controllers\StoryController.php:211) in D:\code\bravo\lithium\libraries\lithium\action\Response.php on line 162
+[22-Feb-2012 04:18:38 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\code\bravo\lithium\app\controllers\StoryController.php:211) in D:\code\bravo\lithium\libraries\lithium\action\Response.php on line 162
+[22-Feb-2012 04:19:40 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\controllers\StoryController.php on line 211
+[22-Feb-2012 04:19:40 UTC] PHP Notice:  Trying to get property of non-object in D:\code\bravo\lithium\app\controllers\StoryController.php on line 212
+[22-Feb-2012 04:23:50 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\code\bravo\lithium\app\controllers\StoryController.php:234) in D:\code\bravo\lithium\libraries\lithium\action\Response.php on line 162
+[22-Feb-2012 04:23:50 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at D:\code\bravo\lithium\app\controllers\StoryController.php:234) in D:\code\bravo\lithium\libraries\lithium\action\Response.php on line 162
+[23-Feb-2012 00:19:29 UTC] PHP Parse error:  syntax error, unexpected '{' in D:\code\bravo\lithium\app\controllers\StoryController.php on line 281
+[23-Feb-2012 00:24:33 UTC] PHP Notice:  Undefined variable: update in D:\code\bravo\lithium\app\controllers\StoryController.php on line 272
+[23-Feb-2012 00:24:33 UTC] PHP Notice:  Undefined index: city in D:\code\bravo\lithium\app\controllers\StoryController.php on line 273
+[23-Feb-2012 00:24:41 UTC] PHP Notice:  Undefined variable: update in D:\code\bravo\lithium\app\controllers\StoryController.php on line 272
+[23-Feb-2012 00:24:41 UTC] PHP Notice:  Undefined index: city in D:\code\bravo\lithium\app\controllers\StoryController.php on line 273

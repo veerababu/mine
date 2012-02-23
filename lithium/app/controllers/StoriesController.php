@@ -7,16 +7,17 @@ use lithium\storage\Session;
 
 class StoriesController extends \lithium\action\Controller 
 {
-	public function index($tags = null) 
+	public function index() 
 	{
-		$conditions = $tags ? compact('tags') : array('status' => 'accepted' );
-		$status="accepted";
-		//$stories = Story::all(compact('conditions','status'));
-		$stories = Story::all(compact('conditions'));
 		$title='Find a Story';
 		
-		return compact('stories',$title);
+		return compact($title);
     }
+    
+    
+    
+    ////////////////////////////////////////
+    //// AJAX functions
     
     // if null username it will return the current user's stories 
     public function user($username = null)
@@ -31,6 +32,18 @@ class StoriesController extends \lithium\action\Controller
         }
     	
     	$this->render(array('json' => compact('stories')));
+    }
+    
+   
+    
+    public function fetch()
+    {
+    	$conditions = array('status' => 'accepted' );
+    	
+		$stories = Story::all(compact('conditions'));
+		
+		
+		$this->render(array('json' => compact('stories')));
     }
     
 }

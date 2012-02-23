@@ -14,8 +14,10 @@
       }
     </style>
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+     <link href="/css/blitzer/jquery-ui.css" rel="stylesheet">
     
     <script src="/js/jquery.js"></script>
+    <script src="/js/jquery-ui.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/bravo.js"></script>
     
@@ -57,8 +59,11 @@ $(document).ready(function()
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="/stories">Cities</a></li>
+              <li><a href="/users/feed">Your Feed</a></li>
               <li><a href="/story/edit">Submit!</a></li>
               <li><a href="/pages/about">About</a></li>
+              <li><a href="/pages/50">50%</a></li>
+              <li><a href="/pages/faq">FAQ</a></li>
               <li><a href="/pages/contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->

@@ -20,60 +20,51 @@ class AdminController extends \lithium\action\Controller
 	public function index() 
 	{
 		if(Session::read('user.role') != 'admin') return $this->redirect('/');
-		
-		$conditions = array('status' => 'pending' );
-		$stories = Story::all(compact('conditions'));
-		//$stories = Story::all();
+			
+    }
+    
+    public function stories()
+    {
+    	if(Session::read('user.role') != 'admin') return $this->redirect('/');
+    		
 		$title='Admin Center';
 		
-		//print_r($stories);
-		
-		return compact('stories',$title);
-		
-		
+		return compact($title);
     }
     
     public function edit() 
     {
     	if(Session::read('user.role') != 'admin') return $this->redirect('/');
-		//$post = Story::find(1);
-		//return compact('post');
-    	//return array('title' => 'Submit Story');
-    	$image = Image::create();
-    	
-
-    	if($this->request->data) 
-    	{
-    		//print_r($this->request);
-        	$story = Story::create($this->request->data);
-        	$success = $story->save();
-    	}else
-    	{
-    		$story = Story::create();
-    		$story->title = 'Story Title';
-			$story->desc = 'Enter description here';
-			$story->address = 'Story Address';
-    	}
+		
     	
     	return compact('story','image');
     }
     
   ////////////////////////////////////////
   // AJAX functions
+  
+  	public function getPending()
+  	{
+  		if(Session::read('user.role') != 'admin') return $this->redirect('/');
+  		
+  		$conditions = array('status' => 'pending' );
+		$stories = Story::all(compact('conditions'));
+		
+		$this->render(array('json' => compact('status','stories')));
+  	}
     
-    public function approve($storyID) 
+    public function approve() 
     {
     	if(Session::read('user.role') != 'admin') return $this->redirect('/');
     	
     	if($this->request->data) 
 		{
-			$this->request->data['status']="accepted";	
-			Story::update($this->request->data);
- 
+			$stories=$this->updateStory($this->request->data,"accepted");
+	 		
 			$status="Approved";
-			$remove=$storyID;
+			
     	 	// update the stories list
-    	 	$this->render(array('json' => compact('status','remove')));
+    	 	$this->render(array('json' => compact('status','stories')));
 		}else
 		{
 			$error="No data found?";
@@ -82,18 +73,16 @@ class AdminController extends \lithium\action\Controller
     	
     }
     
-     public function reject($storyID) 
+     public function reject() 
     {
     	if(Session::read('user.role') != 'admin') return $this->redirect('/');
     	if($this->request->data) 
 		{
-			$this->request->data['status']="working";	
-			Story::update($this->request->data);
+			$stories=$this->updateStory($this->request->data,"working");
  
-			$status="Rejected";
-			$remove=$storyID;
+			$status="Rejected. Showing Next story...";
     	 	// update the stories list
-    	 	$this->render(array('json' => compact('status','remove')));
+    	 	$this->render(array('json' => compact('status','stories')));
 		}else
 		{
 			$error="No data found?";
@@ -101,19 +90,40 @@ class AdminController extends \lithium\action\Controller
 		}
     }
     
-    public function delete($storyID) 
+    public function delete() 
     {
     	if(Session::read('user.role') != 'admin') return $this->redirect('/');
-    	
+    	$storyID=$this->request->data['_id'];
     	if($storyID)
     	{
+    		echo($storyID);
     		Story::remove(array('_id' => $storyID ));
     		$status="Deleted";
-			$remove=$storyID;
+    		
+			$conditions = array('status' => 'pending' );
+			$stories = Story::all(compact('conditions'));
+			$story=Story::find('first', compact('conditions') );
+			
     	 	// update the stories list
-    	 	$this->render(array('json' => compact('status','remove')));
+    	 	$this->render(array('json' => compact('status','stories','story')));
     	}
-    	
+    }
+    
+   
+    
+    function updateStory($story,$status)
+    {
+    	$id=$story['_id'];
+    	$story['status']=$status;	
+		
+		unset($story['_id']);
+		
+	 	Story::update($story, array('_id' => $id ));
+	 		
+	 	$conditions = array('status' => 'pending' );
+		$stories = Story::all(compact('conditions'));
+		$story=Story::find('first', compact('conditions') );
+		return(compact('stories','story'));
     }
 }
 

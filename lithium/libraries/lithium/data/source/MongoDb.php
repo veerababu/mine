@@ -503,6 +503,8 @@ class MongoDb extends \lithium\data\Source {
 	 * @filter
 	 */
 	public function update($query, array $options = array()) {
+		
+		
 		$defaults = array('upsert' => false, 'multiple' => true, 'safe' => false, 'fsync' => false);
 		$options += $defaults;
 		$this->_checkConnection();
