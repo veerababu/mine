@@ -1462,3 +1462,11 @@ Stack trace:
 [23-Feb-2012 00:24:33 UTC] PHP Notice:  Undefined index: city in D:\code\bravo\lithium\app\controllers\StoryController.php on line 273
 [23-Feb-2012 00:24:41 UTC] PHP Notice:  Undefined variable: update in D:\code\bravo\lithium\app\controllers\StoryController.php on line 272
 [23-Feb-2012 00:24:41 UTC] PHP Notice:  Undefined index: city in D:\code\bravo\lithium\app\controllers\StoryController.php on line 273
+[25-Feb-2012 19:35:47 UTC] PHP Fatal error:  Uncaught exception 'lithium\action\DispatchException' with message 'Action `feed` not found.' in D:\code\bravo\lithium\libraries\lithium\action\Controller.php:177
+Stack trace:
+#0 D:\code\bravo\lithium\libraries\lithium\core\Object.php(240): lithium\action\{closure}(Object(app\controllers\UsersController), Array, NULL)
+#1 D:\code\bravo\lithium\libraries\lithium\action\Controller.php(195): lithium\core\Object->_filter('lithium\action\...', Array, Object(Closure))
+#2 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(223): lithium\action\Controller->__invoke(Object(lithium\action\Request), Array)
+#3 D:\code\bravo\lithium\libraries\lithium\core\StaticObject.php(119): lithium\action\{closure}('lithium\action\...', Array, NULL)
+#4 D:\code\bravo\lithium\libraries\lithium\action\Dispatcher.php(226): lithium\core\StaticObject::_filter('_call', Array, Object(Closure))
+#5 D:\code\bravo\lithium\libraries\lithium\core\StaticObject.php(75): lithium\action\Dispatcher::_call(Object(app\controllers\UsersController) in D:\code\bravo\lithium\libraries\lithium\action\Controller.php on line 177
