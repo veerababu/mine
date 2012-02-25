@@ -50,9 +50,9 @@ Connections::add('default', array(
 
 Connections::add('default', array(
 'type' => 'MongoDb',
- 	'host' => 'ds031107.mongolab.com',
+ 	'host' => 'ds031107.mongolab.com:31107',
  	'database' => 'orchestra_1a57cc30_571a0',
- 	'user' => '1a57cc30',
+ 	'login' => '1a57cc30',
  	'password' => 'qg29lt9nj79voemncnopi52olm'
  ));
  
