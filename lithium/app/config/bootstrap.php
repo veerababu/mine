@@ -30,6 +30,7 @@
  * file also statically loads common classes to improve bootstrap performance.
  */
 require __DIR__ . '/bootstrap/libraries.php';
+require __DIR__ . '/bootstrap/orchestra.php';
 
 /**
  * The error configuration allows you to use the filter system along with the advanced matching
