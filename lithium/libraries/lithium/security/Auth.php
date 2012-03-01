@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -12,7 +12,7 @@ use lithium\core\ConfigException;
 
 /**
  * The `Auth` class provides a common interface to authenticate user credentials from different
- * sources against different storage backends in a common way. As with most other adapter-driven
+ * sources against different storage backends in a uniform way. As with most other adapter-driven
  * classes in the framework, `Auth` allows you to specify one or more named configurations,
  * including an adapter, which can be referenced by name in your application.
  *
@@ -105,7 +105,6 @@ class Auth extends \lithium\core\Adaptable {
 	 * @filter
 	 */
 	public static function check($name, $credentials = null, array $options = array()) {
-		//echo("1");
 		$defaults = array('checkSession' => true, 'writeSession' => true);
 		$options += $defaults;
 		$params = compact('name', 'credentials', 'options');
@@ -117,24 +116,16 @@ class Auth extends \lithium\core\Adaptable {
 			if ($config === null) {
 				throw new ConfigException("Configuration `{$name}` has not been defined.");
 			}
-			//echo("2");
 			$session = $config['session'];
 
 			if ($options['checkSession']) {
-				//echo("3");
 				if ($data = $session['class']::read($session['key'], $session['options'])) {
 					return $data;
 				}
 			}
 
-			if($credentials)
-			{ 
-				//echo("$name $credentials");
-				if($data = $self::adapter($name)->check($credentials, $options)) 
-				{
-					//echo("5");
-					return ($options['writeSession']) ? $self::set($name, $data) : $data;
-				}
+			if (($credentials) && $data = $self::adapter($name)->check($credentials, $options)) {
+				return ($options['writeSession']) ? $self::set($name, $data) : $data;
 			}
 			return false;
 		});
@@ -157,18 +148,15 @@ class Auth extends \lithium\core\Adaptable {
 	 *         rejects the data.
 	 * @filter
 	 */
-	public static function set($name, $data, array $options = array()) 
-	{
+	public static function set($name, $data, array $options = array()) {
 		$params = compact('name', 'data', 'options');
-	
 
 		return static::_filter(__FUNCTION__, $params, function($self, $params) {
 			extract($params);
 			$config = $self::invokeMethod('_config', array($name));
 			$session = $config['session'];
 
-			if($data = $self::adapter($name)->set($data, $options)) 
-			{
+			if ($data = $self::adapter($name)->set($data, $options)) {
 				$session['class']::write($session['key'], $data, $options + $session['options']);
 				return $data;
 			}

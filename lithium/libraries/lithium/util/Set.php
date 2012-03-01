@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -51,7 +51,10 @@ class Set {
 	}
 
 	/**
-	 * Checks if a particular path is set in an array.
+	 * Checks if a particular path is set in an array. Tests by key name, or dot-delimited key
+	 * name, i.e.:
+	 *
+	 * {{{ embed:lithium\tests\cases\util\SetTest::testCheck(1-4) }}}
 	 *
 	 * @param mixed $data Data to check on.
 	 * @param mixed $path A dot-delimited string.
@@ -542,7 +545,8 @@ class Set {
 	 * Checks to see if all the values in the array are numeric.
 	 *
 	 * @param array $array The array to check.  If null, the value of the current Set object.
-	 * @return boolean `true` if values are numeric, `false` otherwise.
+	 * @return mixed `true` if values are numeric, `false` if not and `null` if the array to
+	 * check is empty.
 	 */
 	public static function isNumeric($array = null) {
 		if (empty($array)) {

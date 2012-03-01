@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -107,6 +107,7 @@ class Memory extends \lithium\core\Object {
 		return function($self, $params) use (&$session) {
 			extract($params);
 			unset($session[$key]);
+			return !isset($session[$key]);
 		};
 	}
 

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -29,8 +29,10 @@ use Exception;
  * (i.e. arrays) including other `Document` objects.
  *
  * After installing MongoDB, you can connect to it as follows:
- * {{{//app/config/bootstrap/connections.php:
- * Connections::add('default', array('type' => 'MongoDb', 'database' => 'myDb'));}}}
+ * {{{
+ * // config/bootstrap/connections.php:
+ * Connections::add('default', array('type' => 'MongoDb', 'database' => 'myDb'));
+ * }}}
  *
  * By default, it will attempt to connect to a Mongo instance running on `localhost` on port
  * 27017. See `__construct()` for details on the accepted configuration settings.
@@ -268,15 +270,16 @@ class MongoDb extends \lithium\data\Source {
 	/**
 	 * Disconnect from the Mongo server.
 	 *
-	 * @return boolean True on successful disconnect, false otherwise.
+	 * Don't call the Mongo->close() method. The driver documentation states this should not
+	 * be necessary since it auto disconnects when out of scope.
+	 * With version 1.2.7, when using replica sets, close() can cause a segmentation fault.
+	 *
+	 * @return boolean True
 	 */
 	public function disconnect() {
 		if ($this->server && $this->server->connected) {
-			try {
-				$this->_isConnected = !$this->server->close();
-			} catch (Exception $e) {}
+			$this->_isConnected = false;
 			unset($this->connection, $this->server);
-			return !$this->_isConnected;
 		}
 		return true;
 	}
@@ -390,7 +393,7 @@ class MongoDb extends \lithium\data\Source {
 
 			if ($result === true || isset($result['ok']) && (boolean) $result['ok'] === true) {
 				if ($query->entity()) {
-					$query->entity()->update($data['create']['_id']);
+					$query->entity()->sync($data['create']['_id']);
 				}
 				return true;
 			}
@@ -406,7 +409,6 @@ class MongoDb extends \lithium\data\Source {
 
 		switch (true) {
 			case  (is_array($data['file']) && array_keys($data['file']) == $uploadKeys):
-				
 				if (!$data['file']['error'] /* JED && is_uploaded_file($data['file']['tmp_name']) */) {
 					$method = 'storeFile';
 					$file = $data['file']['tmp_name'];
@@ -414,18 +416,15 @@ class MongoDb extends \lithium\data\Source {
 				}
 			break;
 			case (is_string($data['file']) && file_exists($data['file'])):
-			
 				$method = 'storeFile';
 				$file = $data['file'];
 			break;
 			case $data['file']:
-			
 				$method = 'storeBytes';
 				$file = $data['file'];
 			break;
 		}
 
-		
 		if (!$method || !$file) {
 			return;
 		}
@@ -435,7 +434,6 @@ class MongoDb extends \lithium\data\Source {
 			$grid->delete($data['_id']);
 		}
 		unset($data['file']);
-		
 		return $grid->{$method}($file, $data);
 	}
 
@@ -503,8 +501,6 @@ class MongoDb extends \lithium\data\Source {
 	 * @filter
 	 */
 	public function update($query, array $options = array()) {
-		
-		
 		$defaults = array('upsert' => false, 'multiple' => true, 'safe' => false, 'fsync' => false);
 		$options += $defaults;
 		$this->_checkConnection();
@@ -533,7 +529,7 @@ class MongoDb extends \lithium\data\Source {
 				$update = array('$set' => $update);
 			}
 			if ($self->connection->{$source}->update($args['conditions'], $update, $options)) {
-				$query->entity() ? $query->entity()->update() : null;
+				$query->entity() ? $query->entity()->sync() : null;
 				return true;
 			}
 			return false;
@@ -552,13 +548,30 @@ class MongoDb extends \lithium\data\Source {
 		$this->_checkConnection();
 		$defaults = array('justOne' => false, 'safe' => false, 'fsync' => false);
 		$options = array_intersect_key($options + $defaults, $defaults);
+		$_config = $this->_config;
+		$params = compact('query', 'options');
 
-		return $this->_filter(__METHOD__, compact('query', 'options'), function($self, $params) {
+		return $this->_filter(__METHOD__, $params, function($self, $params) use ($_config) {
 			$query = $params['query'];
 			$options = $params['options'];
 			$args = $query->export($self, array('keys' => array('source', 'conditions')));
+			$source = $args['source'];
+
+			if ($source == "{$_config['gridPrefix']}.files") {
+				return $self->invokeMethod('_deleteFile', array($args['conditions']));
+			}
+
 			return $self->connection->{$args['source']}->remove($args['conditions'], $options);
 		});
+	}
+
+	protected function _deleteFile($conditions, $options = array()) {
+		$defaults = array('safe' => true);
+		$options += $defaults;
+
+		$grid = $this->connection->getGridFS();
+
+		return $grid->remove($conditions, $options);
 	}
 
 	/**
@@ -589,9 +602,9 @@ class MongoDb extends \lithium\data\Source {
 	 * @return array
 	 */
 	public function relationship($class, $type, $name, array $config = array()) {
-		$keys = Inflector::camelize($type == 'belongsTo' ? $class::meta('name') : $name, false);
+		$key = Inflector::camelize($type == 'belongsTo' ? $class::meta('name') : $name, false);
 
-		$config += compact('name', 'type', 'keys');
+		$config += compact('name', 'type', 'key');
 		$config['from'] = $class;
 		$relationship = $this->_classes['relationship'];
 
@@ -781,9 +794,10 @@ class MongoDb extends \lithium\data\Source {
 	}
 
 	public function cast($entity, array $data, array $options = array()) {
-		$defaults = array('schema' => null, 'first' => false, 'pathKey' => null);
+		$defaults = array('schema' => null, 'first' => false);
 		$options += $defaults;
 		$model = null;
+		$exists = false;
 
 		if (!$data) {
 			return $data;
@@ -793,18 +807,19 @@ class MongoDb extends \lithium\data\Source {
 			$model = $entity;
 			$entity = null;
 			$options['schema'] = $options['schema'] ?: $model::schema();
-		}
-		if ($entity && !$options['schema']) {
-			$options['schema'] = $entity->schema();
-		}
-		if ($entity) {
+		} elseif ($entity) {
+			$options['schema'] = $options['schema'] ?: $entity->schema();
 			$model = $entity->model();
+
+			if ($entity instanceof $this->_classes['entity']) {
+				$exists = $entity->exists();
+			}
 		}
 		$schema = $options['schema'] ?: array('_id' => array('type' => 'id'));
 		unset($options['schema']);
-		$exporter = $this->_classes['exporter'];
-		$options += compact('model') + array('handlers' => $this->_handlers);
 
+		$exporter = $this->_classes['exporter'];
+		$options += compact('model', 'exists') + array('handlers' => $this->_handlers);
 		return parent::cast($entity, $exporter::cast($data, $schema, $this, $options), $options);
 	}
 

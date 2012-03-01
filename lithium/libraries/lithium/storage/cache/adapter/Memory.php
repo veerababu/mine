@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -51,7 +51,6 @@ class Memory extends \lithium\core\Object {
 	 *
 	 * @param string $key The key to uniquely identify the cached item.
 	 * @return closure Function returning cached value if successful, `false` otherwise.
-	 * @todo Refactor to use RES_NOTFOUND for return value checks.
 	 */
 	public function read($key) {
 		$cache =& $this->_cache;
@@ -125,7 +124,8 @@ class Memory extends \lithium\core\Object {
 	 *
 	 * @param string $key Key of numeric cache item to decrement.
 	 * @param integer $offset Offset to decrement - defaults to 1.
-	 * @return closure Function returning item's new value on successful decrement, `false` otherwise.
+	 * @return closure Function returning item's new value on successful decrement,
+	 *         `false` otherwise.
 	 */
 	public function decrement($key, $offset = 1) {
 		$cache =& $this->_cache;
@@ -141,7 +141,8 @@ class Memory extends \lithium\core\Object {
 	 *
 	 * @param string $key Key of numeric cache item to increment.
 	 * @param integer $offset Offset to increment - defaults to 1.
-	 * @return closure Function returning item's new value on successful increment, `false` otherwise.
+	 * @return closure Function returning item's new value on successful increment,
+	 *         `false` otherwise.
 	 */
 	public function increment($key, $offset = 1) {
 		$cache =& $this->_cache;

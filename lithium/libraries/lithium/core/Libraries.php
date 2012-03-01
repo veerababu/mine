@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -10,15 +10,16 @@ namespace lithium\core;
 
 use RuntimeException;
 use lithium\util\String;
+use lithium\util\collection\Filters;
 use lithium\core\ConfigException;
 use lithium\core\ClassNotFoundException;
 
 /**
  * Manages all aspects of class and file location, naming and mapping. Implements auto-loading for
  * the Lithium core, as well as all applications, plugins and vendor libraries registered.
- * Typically, libraries and plugins are registered in `app/config/bootstrap/libraries.php`.
+ * Typically, libraries and plugins are registered in `config/bootstrap/libraries.php`.
  *
- * By convention, plugins and vendor libraries are typically located in `app/libraries` or
+ * By convention, plugins and vendor libraries are typically located in `app-path/libraries` or
  * `/libraries` (the former may override the latter). By default, `Libraries` will use its own
  * autoloader for all plugins and vendor libraries, but can be configured to use others on a
  * per-library basis.
@@ -971,7 +972,9 @@ class Libraries {
 	 * @return array type, namespace, class, name
 	 */
 	protected static function _params($type, $name = "*") {
-		$name = $name ?: "*";
+		if (!$name) {
+			$name = '*';
+		}
 		$library = $namespace = $class = '*';
 
 		if (strpos($type, '.') !== false) {
@@ -999,14 +1002,6 @@ class Libraries {
 		}
 		return compact('library', 'namespace', 'type', 'class', 'name');
 	}
-}
-
-if (!defined('LITHIUM_LIBRARY_PATH')) {
-	define('LITHIUM_LIBRARY_PATH', dirname(dirname(__DIR__)));
-}
-
-if (!defined('LITHIUM_APP_PATH')) {
-	define('LITHIUM_APP_PATH', dirname(LITHIUM_LIBRARY_PATH) . '/app');
 }
 
 ?>

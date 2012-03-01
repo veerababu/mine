@@ -2,7 +2,7 @@
 /**
 * Lithium: the most rad php framework
 *
-* @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+* @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
 * @license       http://opensource.org/licenses/bsd-license.php The BSD License
 */
 
@@ -40,6 +40,11 @@ class TestTest extends \lithium\test\Unit {
 		$_SERVER = $this->_backup['_SERVER'];
 		chdir($this->_backup['cwd']);
 	}
+	
+	public function skip() {
+		$isWin = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+		$this->skipIf($isWin, 'The test command needs to be refactored to work on windows.');
+	}
 
 	public function testRunWithoutPath() {
 		$command = new Test(array(
@@ -47,6 +52,44 @@ class TestTest extends \lithium\test\Unit {
 		));
 		$result = $command->run();
 		$this->assertFalse($result);
+	}
+
+	public function testRunWithInvalidPath() {
+		$command = new Test(array(
+			'request' => $this->request, 'classes' => $this->classes
+		));
+		$path = 'Foobar/lithium/tests/mocks/test/cases/MockTest.php';
+		$command->run($path);
+		$expected = "Library `Foobar` does not exist.\n";
+		$result = $command->response->error;
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testRunWithInvalidLibrary() {
+		$command = new Test(array(
+			'request' => $this->request,
+			'classes' => $this->classes
+		));
+		$command->format = 'foobar';
+		$path = LITHIUM_LIBRARY_PATH . '/bob/tests/mocks/test/cases/MockTest.php';
+		$command->run($path);
+		$expected = "No library found in `";
+		$expected .= LITHIUM_LIBRARY_PATH . "/bob/tests/mocks/test/cases/MockTest.php`.\n";
+		$result = $command->response->error;
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testRunWithInvalidHandler() {
+		$command = new Test(array(
+			'request' => $this->request,
+			'classes' => $this->classes
+		));
+		$command->format = 'foobar';
+		$path = LITHIUM_LIBRARY_PATH . '/lithium/tests/mocks/test/cases/MockTest.php';
+		$command->run($path);
+		$expected = "No handler for format `foobar`... \n";
+		$result = $command->response->error;
+		$this->assertEqual($expected, $result);
 	}
 
 	public function testRunSingleTestWithAbsolutePath() {
@@ -81,6 +124,15 @@ class TestTest extends \lithium\test\Unit {
 
 		$current = basename(getcwd());
 		$path = "../{$current}/tests/mocks/test/cases/MockTest.php";
+		$command->run($path);
+
+		$expected = "1 passes\n0 fails and 0 exceptions\n";
+		$expected = preg_quote($expected);
+		$result = $command->response->output;
+		$this->assertPattern("/{$expected}/", $result);
+
+		$current = basename(getcwd());
+		$path = "{$current}/tests/mocks/test/cases/MockTest.php";
 		$command->run($path);
 
 		$expected = "1 passes\n0 fails and 0 exceptions\n";

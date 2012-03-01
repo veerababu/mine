@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -17,7 +17,7 @@ class GrowlTest extends \lithium\test\Unit {
 
 		$growl = new Growl(compact('connection') + array(
 			'name' => 'Lithium',
-			'title' => 'Lithium log',
+			'title' => 'Lithium log'
 		));
 		$writer = $growl->write('info', 'info: Test message.', array());
 		$params = array('message' => 'info: Test message.', 'options' => array());
@@ -74,7 +74,7 @@ class GrowlTest extends \lithium\test\Unit {
 
 		$growl = new Growl(compact('connection') + array(
 			'name' => 'Lithium',
-			'title' => 'Lithium log',
+			'title' => 'Lithium log'
 		));
 		$writer = $growl->write('info', 'info: Test message.', array());
 		$params = array('message' => 'info: Test message.', 'options' => array('sticky' => true));
@@ -100,7 +100,7 @@ class GrowlTest extends \lithium\test\Unit {
 
 		$growl = new Growl(compact('connection') + array(
 			'name' => 'Lithium',
-			'title' => 'Lithium log',
+			'title' => 'Lithium log'
 		));
 		$writer = $growl->write('info', 'info: Test message.', array());
 		$params = array('message' => 'info: Test message.', 'options' => array(

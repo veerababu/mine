@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -13,15 +13,15 @@ use lithium\console\Request;
 
 class DispatcherTest extends \lithium\test\Unit {
 
-	protected $_backups = array();
+	protected $_backup = array();
 
 	public function setUp() {
-		$this->_backups['_SERVER'] = $_SERVER;
+		$this->_backup['_SERVER'] = $_SERVER;
 		$_SERVER['argv'] = array();
 	}
 
 	public function tearDown() {
-		$_SERVER = $this->_backups['_SERVER'];
+		$_SERVER = $this->_backup['_SERVER'];
 	}
 
 	public function testEmptyConfigReturnRules() {
@@ -122,6 +122,18 @@ class DispatcherTest extends \lithium\test\Unit {
 			)
 		)));
 		$this->assertTrue($result);
+	}
+
+	public function testEnvironmentIsSet() {
+		$expected = 'production';
+		$response = Dispatcher::run(new Request(array(
+			'args' => array(
+				'lithium\tests\mocks\console\MockDispatcherCommand',
+				'testEnv', '--env=production'
+			)
+		)));
+		$result = $response->environment;
+		$this->assertEqual($expected, $result);
 	}
 }
 

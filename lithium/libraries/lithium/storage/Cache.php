@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -10,7 +10,7 @@ namespace lithium\storage;
 
 /**
  * The `Cache` static class provides a consistent interface to configure and utilize the different
- * cache adatpers included with Lithium, as well as your own adapters.
+ * cache adapters included with Lithium, as well as your own adapters.
  *
  * The Cache layer of Lithium inherits from the common `Adaptable` class, which provides the generic
  * configuration setting & retrieval logic, as well as the logic required to locate & instantiate
@@ -41,7 +41,8 @@ namespace lithium\storage;
  *
  * Some cache adapters (e.g. `File`) do _not_ provide the functionality for increment/decrement.
  * Additionally, some cache adapters support multi-key operations for `write`, `read` and `delete`
- * &mdash; please see the individual documentation for cache adapters and the operations that they support.
+ * &mdash; please see the individual documentation for cache adapters and the operations that
+ * they support.
  *
  * @see lithium\core\Adaptable
  * @see lithium\storage\cache\adapter
@@ -105,7 +106,7 @@ class Cache extends \lithium\core\Adaptable {
 		if (is_callable($conditions) && !$conditions()) {
 			return false;
 		}
-		$key = static::key($key);
+		$key = static::key($key, $data);
 
 		if (is_array($key)) {
 			$expiry = $data;
@@ -275,7 +276,7 @@ class Cache extends \lithium\core\Adaptable {
 	}
 
 	/**
-	 * Remove all cache keys from specified confiuration.
+	 * Remove all cache keys from specified configuration.
 	 *
 	 * This method is non-filterable.
 	 *

@@ -2,11 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\mocks\console;
+
+use lithium\core\Environment;
 
 class MockDispatcherCommand extends \lithium\console\Command {
 
@@ -25,6 +27,10 @@ class MockDispatcherCommand extends \lithium\console\Command {
 
 	public function testAction() {
 		$this->response->testAction = __FUNCTION__;
+	}
+
+	public function testEnv() {
+		$this->response->environment = Environment::get();
 	}
 }
 

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -29,11 +29,8 @@ class CreateTest extends \lithium\test\Unit {
 	public function setUp() {
 		$this->_backup['cwd'] = getcwd();
 		$this->_backup['_SERVER'] = $_SERVER;
-		$this->_backup['app'] = Libraries::get('app');
-
 		$_SERVER['argv'] = array();
 
-		Libraries::add('app', array('path' => $this->_testPath . '/new', 'bootstrap' => false));
 		Libraries::add('create_test', array('path' => $this->_testPath . '/create_test'));
 		$this->request = new Request(array('input' => fopen('php://temp', 'w+')));
 		$this->request->params = array('library' => 'create_test', 'action' => null);
@@ -47,7 +44,6 @@ class CreateTest extends \lithium\test\Unit {
 	public function tearDown() {
 		$_SERVER = $this->_backup['_SERVER'];
 		chdir($this->_backup['cwd']);
-		Libraries::add('app', $this->_backup['app']);
 		$this->_cleanUp();
 	}
 

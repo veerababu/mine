@@ -1,6 +1,7 @@
 namespace {:namespace};
 
 use {:use};
+use lithium\action\DispatchException;
 
 class {:class} extends \lithium\action\Controller {
 
@@ -18,7 +19,7 @@ class {:class} extends \lithium\action\Controller {
 		${:singular} = {:model}::create();
 
 		if (($this->request->data) && ${:singular}->save($this->request->data)) {
-			$this->redirect(array('{:name}::view', 'args' => array(${:singular}->id)));
+			return $this->redirect(array('{:name}::view', 'args' => array(${:singular}->id)));
 		}
 		return compact('{:singular}');
 	}
@@ -27,10 +28,10 @@ class {:class} extends \lithium\action\Controller {
 		${:singular} = {:model}::find($this->request->id);
 
 		if (!${:singular}) {
-			$this->redirect('{:name}::index');
+			return $this->redirect('{:name}::index');
 		}
 		if (($this->request->data) && ${:singular}->save($this->request->data)) {
-			$this->redirect(array('{:name}::view', 'args' => array(${:singular}->id)));
+			return $this->redirect(array('{:name}::view', 'args' => array(${:singular}->id)));
 		}
 		return compact('{:singular}');
 	}
@@ -41,6 +42,6 @@ class {:class} extends \lithium\action\Controller {
 			throw new DispatchException($msg);
 		}
 		{:model}::find($this->request->id)->delete();
-		$this->redirect('{:name}::index');
+		return $this->redirect('{:name}::index');
 	}
 }

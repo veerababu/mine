@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -137,22 +137,22 @@ class MockSource extends \lithium\data\Source {
 
 	public function relationship($class, $type, $name, array $config = array()) {
 		$field = Inflector::underscore(Inflector::singularize($name));//($type == 'hasMany') ?  : ;
-		$keys = "{$field}_id";
+		$key = "{$field}_id";
 		$primary = $class::meta('key');
 
 		if (is_array($primary)) {
-			$keys = array_combine($primary, $primary);
+			$key = array_combine($primary, $primary);
 		} elseif ($type == 'hasMany' || $type == 'hasOne') {
 			if ($type == 'hasMany') {
 				$field = Inflector::pluralize($field);
 			}
 			$secondary = Inflector::underscore(Inflector::singularize($class::meta('name')));
-			$keys = array($primary => "{$secondary}_id");
+			$key = array($primary => "{$secondary}_id");
 		}
 
 		$from = $class;
 		$fieldName = $field;
-		$config += compact('type', 'name', 'keys', 'from', 'fieldName');
+		$config += compact('type', 'name', 'key', 'from', 'fieldName');
 		return $this->_instance('relationship', $config);
 	}
 

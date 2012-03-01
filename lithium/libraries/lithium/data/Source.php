@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -163,6 +163,7 @@ abstract class Source extends \lithium\core\Object {
 
 	/**
 	 * Defines or modifies the default settings of a relationship between two models.
+	 *
 	 * @param $class the primary model of the relationship
 	 * @param $type the type of the relationship (hasMany, hasOne, belongsTo)
 	 * @param $name the name of the relationship

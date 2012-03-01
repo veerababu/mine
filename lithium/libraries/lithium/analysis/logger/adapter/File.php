@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -13,7 +13,7 @@ use lithium\core\Libraries;
 
 /**
  * A simple log adapter that writes messages to files. By default, messages are written to
- * `app/resources/tmp/logs/<type>.log`, where `<type>` is the log message priority level.
+ * `resources/tmp/logs/<type>.log`, where `<type>` is the log message priority level.
  *
  * {{{
  * use lithium\analysis\Logger;
@@ -25,7 +25,7 @@ use lithium\core\Libraries;
  * }}}
  *
  * This will cause the message and the timestamp of the log event to be written to
- * `app/resources/tmp/logs/debug.log`. For available configuration options for this adapter, see
+ * `resources/tmp/logs/debug.log`. For available configuration options for this adapter, see
  * the `__construct()` method.
  *
  * @see lithium\analysis\logger\adapter\File::__construct()

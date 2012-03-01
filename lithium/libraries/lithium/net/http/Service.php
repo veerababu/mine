@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -79,6 +79,33 @@ class Service extends \lithium\core\Object {
 	}
 
 	/**
+	 * Initialize connection
+	 *
+	 */
+	protected function _init() {
+		$config = array('classes' => $this->_classes) + $this->_config;
+
+		try {
+			$this->connection = Libraries::instance('socket', $config['socket'], $config);
+		} catch(ClassNotFoundException $e) {
+			$this->connection = null;
+		}
+	}
+
+	/**
+	 * Magic method to handle other HTTP methods.
+	 *
+	 * @param string $method
+	 * @param string $params
+	 * @return void
+	 * @author gwoo
+	 */
+	public function __call($method, $params = array()) {
+		array_unshift($params, $method);
+		return $this->invokeMethod('send', $params);
+	}
+
+	/**
 	 * Send HEAD request.
 	 *
 	 * @param array $options
@@ -137,23 +164,6 @@ class Service extends \lithium\core\Object {
 	}
 
 	/**
-	 * Retrieve instance of configured socket
-	 *
-	 * @param array $config options to be passed on to the socket
-	 * @return object
-	 */
-	public function &connection($config = array()) {
-		$config += $this->_config;
-
-		try {
-			$this->connection = Libraries::instance('socket', $config['socket'], $config);
-		} catch (ClassNotFoundException $e) {
-			$this->connection = null;
-		}
-		return $this->connection;
-	}
-
-	/**
 	 * Send request and return response data.
 	 *
 	 * @param string $method
@@ -164,17 +174,23 @@ class Service extends \lithium\core\Object {
 	 * @return string
 	 */
 	public function send($method, $path = null, $data = array(), array $options = array()) {
-		$defaults = array('return' => 'body', 'classes' => $this->_classes);
-		$options += $defaults + $this->_config;
+		$defaults = array('return' => 'body');
+		$options += $defaults;
 		$request = $this->_request($method, $path, $data, $options);
 		$options += array('message' => $request);
 
-		if (!($conn =& $this->connection($options)) || !$conn->open()) {
+		if (!$this->connection || !$this->connection->open($options)) {
 			return;
 		}
+		$response = $this->connection->send($request, $options);
+		$this->connection->close();
 
-		$response = $conn->send($request, $options);
-		$conn->close();
+		if ($response->status['code'] == 401 && $auth = $response->digest()) {
+			$request->auth = $auth;
+			$this->connection->open(array('message' => $request) + $options);
+			$response = $this->connection->send($request, $options);
+			$this->connection->close();
+		}
 		$this->last = (object) compact('request', 'response');
 		return ($options['return'] == 'body' && $response) ? $response->body() : $response;
 	}
@@ -199,17 +215,9 @@ class Service extends \lithium\core\Object {
 		$request->path = str_replace('//', '/', "{$request->path}{$path}");
 		$request->method = $method = strtoupper($method);
 
-		$media = $this->_classes['media'];
-		$type = null;
-
-		if (in_array($options['type'], $media::types()) && $data && !is_string($data)) {
-			$type = $media::type($options['type']);
-			$contentType = (array) $type['content'];
-			$request->headers(array('Content-Type' => current($contentType)));
-			$data = Media::encode($options['type'], $data, $options);
-		}
-		in_array($method, array('POST', 'PUT'))
-			? $request->body($data) : $request->params = $data;
+		$hasBody = in_array($method, array('POST', 'PUT'));
+		$hasBody ? $request->body($data) : $request->query = $data;
+		$hasBody ? $request->type($options['type']) : null;
 		return $request;
 	}
 }

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -280,6 +280,10 @@ class HtmlTest extends \lithium\test\Unit {
 		$expected = '<script type="text/javascript" src="http://example.com/jquery.js"></script>';
 		$this->assertEqual($result, $expected);
 
+        $result = $this->html->script('//example.com/jquery.js');
+		$expected = '<script type="text/javascript" src="//example.com/jquery.js"></script>';
+		$this->assertEqual($result, $expected);
+
 		$result = $this->html->script(array('prototype', 'scriptaculous'));
 		$this->assertPattern(
 			'/^\s*<script\s+type="text\/javascript"\s+src=".*js\/prototype\.js"[^<>]*><\/script>/',
@@ -314,9 +318,9 @@ class HtmlTest extends \lithium\test\Unit {
 		$result = $this->html->image('test.gif');
 		$this->assertTags($result, array('img' => array('src' => '/img/test.gif', 'alt' => '')));
 
-		$result = $this->html->image('http://google.com/logo.gif');
+		$result = $this->html->image('http://example.com/logo.gif');
 		$this->assertTags($result, array('img' => array(
-			'src' => 'http://google.com/logo.gif', 'alt' => ''
+			'src' => 'http://example.com/logo.gif', 'alt' => ''
 		)));
 
 		$result = $this->html->image(array(

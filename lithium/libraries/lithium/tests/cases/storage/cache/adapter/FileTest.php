@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -15,7 +15,7 @@ use lithium\storage\cache\adapter\File;
 class FileTest extends \lithium\test\Unit {
 
 	/**
-	 * Checks whether the 'empty' file exists in `app/resources/tmp/cache` and, if so, ensures
+	 * Checks whether the 'empty' file exists in `resources/tmp/cache` and, if so, ensures
 	 * that it is restored at the end of the testing cycle.
 	 *
 	 * @var string
@@ -41,9 +41,16 @@ class FileTest extends \lithium\test\Unit {
 	}
 
 	public function tearDown() {
+		$resources = realpath(Libraries::get(true, 'resources'));
+		$paths = array("{$resources}/tmp/cache", "{$resources}/tmp/cache/templates");
+
 		if ($this->_hasEmpty) {
-			touch(Libraries::get(true, 'resources') . "/tmp/cache/empty");
-			touch(Libraries::get(true, 'resources') . "/tmp/cache/templates/empty");
+			foreach ($paths as $path) {
+				$path = realpath($path);
+				if (is_dir($path) && is_writable($path)) {
+					touch("{$resources}/empty");
+				}
+			}
 		}
 		unset($this->File);
 	}

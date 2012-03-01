@@ -2,12 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\net\http;
 
+use lithium\util\Set;
 use lithium\util\String;
 use lithium\core\Libraries;
 use lithium\net\http\MediaException;
@@ -114,7 +115,7 @@ class Media extends \lithium\core\StaticObject {
 	 *
 	 * {{{ embed:lithium\tests\cases\net\http\MediaTest::testMediaTypes(19-20) }}}
 	 *
-	 * {{{ embed:lithium\tests\cases\net\http\MediaTest::testMediaTypes(35-36) }}}
+	 * {{{ embed:lithium\tests\cases\net\http\MediaTest::testMediaTypes(40-41) }}}
 	 *
 	 * Alternatively, can be used to detect the type name of a registered content type:
 	 * {{{
@@ -166,7 +167,7 @@ class Media extends \lithium\core\StaticObject {
 	 *
 	 * - `'<prefix>:<key>'` _string_: This type of assertion can be used to match against arbitrary
 	 *   information in the request, including headers (i.e. `'http:user_agent'`), environment
-	 *   varialbes (i.e. `'env:home'`), GET and POST data (i.e. `'query:foo'` or `'data:foo'`,
+	 *   variables (i.e. `'env:home'`), GET and POST data (i.e. `'query:foo'` or `'data:foo'`,
 	 *   respectively), and the HTTP method (`'http:method'`) of the request. For more information
 	 *   on possible keys, see `lithium\action\Request::get()`.
 	 *
@@ -192,17 +193,24 @@ class Media extends \lithium\core\StaticObject {
 	 *        should be the "primary" type, and will be used as the `Content-type` header of any
 	 *        `Response` objects served through this type.
 	 * @param array $options Optional.  The handling options for this media type. Possible keys are:
+	 *        - `'view'` _string_: Specifies the view class to use when rendering this content.
+	 *          Note that no `'view'` class is specified by default.  If you want to
+	 *          render templates using Lithium's default view class, use
+	 *          `'lithium\template\View'`
 	 *        - `'decode'` _mixed_: A (string) function name or (object) closure that handles
 	 *          decoding or unserializing content from this format.
 	 *        - `'encode'` _mixed_: A (string) function name or (object) closure that handles
 	 *          encoding or serializing content into this format.
 	 *        - `'cast'` _boolean_: Used with `'encode'`. If `true`, all data passed into the
 	 *          specified encode function is first cast to array structures.
-	 *        - `'layout'` _mixed_: Specifies one or more `String::insert()`-style paths to use when
-	 *          searching for layout files (either a string or array of strings).
-	 *        - `'template'` _mixed_: Specifies one or more `String::insert()`-style paths to use
-	 *          when searching for template files (either a string or array of strings).
-	 *        - `'view'` _string_: Specifies the view class to use when rendering this content.
+	 *        - `'paths'` _array_: Optional key/value pairs mapping paths for
+	 *          `'template'`, `'layout'`, and `'element'` template files.  Any keys ommitted
+	 *          will use the default path.  The values should be `String::insert()`-style
+	 *          paths or an array of `String::insert()`-style paths.  If it is an array,
+	 *          each path will be tried in the order specified until a template is found.
+	 *          This is useful for allowing custom templates while falling back on
+	 *          default templates if no custom template was found.  If you want to
+	 *          render templates without a layout, use a `false` value for `'layout'`.
 	 *        - `'conditions'` _array_: Optional key/value pairs used as assertions in content
 	 *          negotiation. See the above section on **Content Negotiation**.
 	 * @return mixed If `$content` and `$options` are empty, returns an array with `'content'` and
@@ -214,8 +222,11 @@ class Media extends \lithium\core\StaticObject {
 	public static function type($type, $content = null, array $options = array()) {
 		$defaults = array(
 			'view' => false,
-			'template' => false,
-			'layout' => false,
+			'paths' => array(
+				'template' => '{:library}/views/{:controller}/{:template}.{:type}.php',
+				'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
+				'element'  => '{:library}/views/elements/{:template}.{:type}.php'
+			),
 			'encode' => false,
 			'decode' => false,
 			'cast'   => true,
@@ -238,9 +249,9 @@ class Media extends \lithium\core\StaticObject {
 			return compact('content') + array('options' => static::_handlers($type));
 		}
 		if ($content) {
-			static::$_types[$type] = $content;
+			static::$_types[$type] = (array) $content;
 		}
-		static::$_handlers[$type] = $options ? ($options + $defaults) : array();
+		static::$_handlers[$type] = $options ? Set::merge($defaults, $options) : array();
 	}
 
 	/**
@@ -425,7 +436,7 @@ class Media extends \lithium\core\StaticObject {
 			$options = $params['options'];
 			$library = $options['library'];
 
-			if (preg_match('/^[a-z0-9-]+:\/\//i', $path)) {
+			if (preg_match('/^(?:[a-z0-9-]+:)?\/\//i', $path)) {
 				return $path;
 			}
 			$config = Libraries::get($library);
@@ -570,7 +581,7 @@ class Media extends \lithium\core\StaticObject {
 			if (isset($types[$type])) {
 				$header = current((array) $types[$type]);
 				$header .= $response->encoding ? "; charset={$response->encoding}" : '';
-				$response->headers('Content-type', $header);
+				$response->headers('Content-Type', $header);
 			}
 			$response->body($self::invokeMethod('_handle', array($handler, $data, $response)));
 		});
@@ -674,7 +685,7 @@ class Media extends \lithium\core\StaticObject {
 	 * @return mixed
 	 */
 	public static function decode($type, $data, array $options = array()) {
-		if ((!$handler = static::_handlers($type)) || !isset($handler['decode'])) {
+		if ((!$handler = static::_handlers($type)) || empty($handler['decode'])) {
 			return null;
 		}
 		$method = $handler['decode'];
@@ -744,13 +755,13 @@ class Media extends \lithium\core\StaticObject {
 		$types = static::$_types + array(
 			'html'         => array('text/html', 'application/xhtml+xml', '*/*'),
 			'htm'          => array('alias' => 'html'),
-			'form'         => 'application/x-www-form-urlencoded',
-			'json'         => 'application/json',
-			'rss'          => 'application/rss+xml',
-			'atom'         => 'application/atom+xml',
-			'css'          => 'text/css',
+			'form'         => array('application/x-www-form-urlencoded', 'multipart/form-data'),
+			'json'         => array('application/json'),
+			'rss'          => array('application/rss+xml'),
+			'atom'         => array('application/atom+xml'),
+			'css'          => array('text/css'),
 			'js'           => array('application/javascript', 'text/javascript'),
-			'text'         => 'text/plain',
+			'text'         => array('text/plain'),
 			'txt'          => array('alias' => 'text'),
 			'xml'          => array('application/xml', 'text/xml')
 		);
@@ -762,7 +773,7 @@ class Media extends \lithium\core\StaticObject {
 			return isset($types[$type]) ? $types[$type] : null;
 		}
 		if (strpos($type, ';')) {
-			list($type) = explode(';', $type);
+			list($type) = explode(';', $type, 2);
 		}
 		$result = array();
 
@@ -798,11 +809,23 @@ class Media extends \lithium\core\StaticObject {
 				)
 			),
 			'html' => array(),
-			'json' => array('cast' => true, 'encode' => 'json_encode', 'decode' => function($data) {
-				return json_decode($data, true);
-			}),
+			'json' => array(
+				'cast' => true,
+				'encode' => 'json_encode',
+				'decode' => function($data) {
+					return json_decode($data, true);
+				}
+			),
 			'text' => array('cast' => false, 'encode' => function($s) { return $s; }),
-			'form' => array('cast' => true, 'encode' => 'http_build_query')
+			'form' => array(
+				'cast' => true,
+				'encode' => 'http_build_query',
+				'decode' => function($data) {
+					$decoded = array();
+					parse_str($data, $decoded);
+					return $decoded;
+				}
+			)
 		);
 
 		if ($type) {

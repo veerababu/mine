@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -185,7 +185,9 @@ class RecordSet extends \lithium\data\Collection {
 		$return = null;
 
 		if ($this->_valid) {
-			$this->_pointer++;
+			if (count($this->_data) > 1) {
+				$this->_pointer++;
+			}
 			$return = $this->current();
 		}
 		return $return;
@@ -251,6 +253,23 @@ class RecordSet extends \lithium\data\Collection {
 	public function each($filter) {
 		$this->offsetGet(null);
 		return parent::each($filter);
+	}
+
+	/**
+	 * Filters a copy of the items in the collection.
+	 *
+	 * Overridden to load any data that has not yet been loaded.
+	 *
+	 * @param callback $filter Callback to use for filtering.
+	 * @param array $options The available options are:
+	 *              - `'collect'`: If `true`, the results will be returned wrapped
+	 *              in a new `Collection` object or subclass.
+	 * @return mixed The filtered items. Will be an array unless `'collect'` is defined in the
+	 * `$options` argument, then an instance of this class will be returned.
+	 */
+	public function find($filter, array $options = array()) {
+		$this->offsetGet(null);
+		return parent::find($filter, $options);
 	}
 
 	/**

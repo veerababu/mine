@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -24,8 +24,8 @@ class StreamTest extends \lithium\test\Unit {
 	);
 
 	public function skip() {
-		$host = $this->_testConfig['host'];
-		$this->skipIf(dns_check_record($host) === false, "No internet connection.");
+		$message = "No internet connection established.";
+		$this->skipIf(!$this->_hasNetwork($this->_testConfig), $message);
 	}
 
 	public function testAllMethodsNoConnection() {

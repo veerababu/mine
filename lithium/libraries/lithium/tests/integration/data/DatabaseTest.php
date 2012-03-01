@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -15,7 +15,7 @@ use lithium\tests\mocks\data\source\Images;
 use lithium\tests\mocks\data\source\Galleries;
 use lithium\util\String;
 
-class DatabaseTest extends \lithium\test\Unit {
+class DatabaseTest extends \lithium\test\Integration {
 
 	public $db = null;
 	protected $_dbConfig;
@@ -38,25 +38,12 @@ class DatabaseTest extends \lithium\test\Unit {
 				'gallery_id' => null,
 				'image' => 'me.bmp',
 				'title' => 'Me.'
-			),
+			)
 		);
 
-	public $gallery = array(
-			'name' => 'Foo Gallery'
-		);
+	public $gallery = array('name' => 'Foo Gallery');
 
-	public function skip() {
-		$this->_dbConfig = Connections::get('test', array('config' => true));
-		$isAvailable = (
-			$this->_dbConfig && Connections::get('test')->isConnected(array('autoConnect' => true))
-		);
-		$this->skipIf(!$isAvailable, "No test connection available.");
-
-		$isDatabase = Connections::get('test') instanceof Database;
-		$this->skipIf(!$isDatabase, "The 'test' connection is not a relational database.");
-
-		$this->db = Connections::get('test');
-
+	public function setUp() {
 		$mockBase = LITHIUM_LIBRARY_PATH . '/lithium/tests/mocks/data/source/database/adapter/';
 		$files = array('galleries' => '_galleries.sql', 'images' => '_images.sql');
 		$files = array_diff_key($files, array_flip($this->db->sources()));
@@ -67,6 +54,31 @@ class DatabaseTest extends \lithium\test\Unit {
 			$sql = file_get_contents($sqlFile);
 			$this->db->read($sql, array('return' => 'resource'));
 		}
+	}
+
+	public function tearDown() {
+		$this->db->read('DROP TABLE IF EXISTS `images`;');
+		$this->db->read('DROP TABLE IF EXISTS `galleries`;');
+	}
+
+	public function skip() {
+		$connection = 'lithium_mysql_test';
+		$this->_dbConfig = Connections::get($connection, array(
+			'config' => true
+		));
+		$isAvailable = (
+			$this->_dbConfig &&
+			Connections::get($connection)->isConnected(array(
+				'autoConnect' => true
+			))
+		);
+		$this->skipIf(!$isAvailable, "No {$connection} connection available.");
+
+		$this->db = Connections::get($connection);
+		$this->skipIf(
+			!($this->db instanceof Database),
+			"The {$connection} connection is not a relational database."
+		);
 	}
 
 	public function testCreateData() {
@@ -84,6 +96,7 @@ class DatabaseTest extends \lithium\test\Unit {
 	}
 
 	public function testManyToOne() {
+		$this->_createGalleryWithImages();
 		$opts = array('conditions' => array('gallery_id' => $this->gallery['id']));
 
 		$query = new Query($opts + array(
@@ -118,6 +131,7 @@ class DatabaseTest extends \lithium\test\Unit {
 	}
 
 	public function testOneToMany() {
+		$this->_createGalleryWithImages();
 		$opts = array('conditions' => array('Galleries.id' => $this->gallery['id']));
 
 		$query = new Query($opts + array(
@@ -129,7 +143,7 @@ class DatabaseTest extends \lithium\test\Unit {
 		));
 		$galleries = $this->db->read($query)->data();
 
-		foreach($galleries as $key => $gallery) {
+		foreach ($galleries as $key => $gallery) {
 			$expect = $this->gallery + array('images' => $this->images);
 			$this->assertEqual($expect, $gallery);
 		}
@@ -140,6 +154,7 @@ class DatabaseTest extends \lithium\test\Unit {
 	}
 
 	public function testUpdate() {
+		$this->_createGalleryWithImages();
 		$options = array('conditions' => array('gallery_id' => $this->gallery['id']));
 		$uuid = String::uuid();
 		$image = Images::find('first', $options);
@@ -155,6 +170,7 @@ class DatabaseTest extends \lithium\test\Unit {
 	}
 
 	public function testFields() {
+		$this->_createGalleryWithImages();
 		$fields = array('id', 'image');
 		$image = Images::find('first', array(
 			'fields' => $fields,
@@ -166,6 +182,7 @@ class DatabaseTest extends \lithium\test\Unit {
 	}
 
 	public function testOrder() {
+		$this->_createGalleryWithImages();
 		$images = Images::find('all', array(
 			'order' => 'id DESC',
 			'conditions' => array(
@@ -174,7 +191,8 @@ class DatabaseTest extends \lithium\test\Unit {
 		))->data();
 		krsort($this->images);
 		reset($this->images);
-		foreach($images as $image) {
+
+		foreach ($images as $image) {
 			$this->assertEqual(current($this->images), $image);
 			next($this->images);
 		}
@@ -183,6 +201,23 @@ class DatabaseTest extends \lithium\test\Unit {
 	public function testRemove() {
 		$this->assertTrue(Galleries::remove());
 		$this->assertTrue(Images::remove());
+	}
+
+	protected function _createGallery() {
+		$gallery = Galleries::create($this->gallery);
+		$gallery->save();
+		return $gallery;
+	}
+	protected function _createGalleryWithImages() {
+		$gallery = $this->_createGallery();
+
+		foreach ($this->images as $key => $image) {
+			unset($image['id'], $image['gallery_id']);
+			$img = Images::create($image + array('gallery_id' => $gallery->id));
+			$this->assertEqual(true, $img->save());
+			$this->images[$key]['id'] = $img->id;
+			$this->images[$key]['gallery_id'] = $gallery->id;
+		}
 	}
 }
 

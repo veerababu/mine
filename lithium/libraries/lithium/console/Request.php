@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -46,6 +46,13 @@ class Request extends \lithium\core\Object {
 	 * @var array
 	 */
 	protected $_env = array();
+
+	/**
+	 * Holds the value of the current locale, set through the `locale()` method.
+	 *
+	 * @var string
+	 */
+	protected $_locale = null;
 
 	/**
 	 * Auto configuration
@@ -98,7 +105,7 @@ class Request extends \lithium\core\Object {
 		}
 	}
 
-	public function __isSet($name) {
+	public function __isset($name) {
 		return isset($this->params[$name]);
 	}
 
@@ -157,6 +164,21 @@ class Request extends \lithium\core\Object {
 	 */
 	public function input() {
 		return fgets($this->input);
+	}
+
+	/**
+	 * Sets or returns the current locale string. For more information, see
+	 * "[Globalization](http://lithify.me/docs/manual/07_globalization)" in the manual.
+	 *
+	 * @param string $locale An optional locale string like `'en'`, `'en_US'` or `'de_DE'`. If
+	 *               specified, will overwrite the existing locale.
+	 * @return Returns the currently set locale string.
+	 */
+	public function locale($locale = null) {
+		if ($locale) {
+			$this->_locale = $locale;
+		}
+		return $this->_locale;
 	}
 
 	/**

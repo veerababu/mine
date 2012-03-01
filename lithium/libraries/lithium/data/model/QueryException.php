@@ -2,17 +2,17 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\data\model;
 
 /**
- * The `MediaException` is thrown when a request is made to render content in a format not
- * supported.
+ * The `QueryException` is thrown when a CRUD operation on the database returns an
+ * error.
  *
- * @see lithium\net\http\Media
+ * @see lithium\data\model\Query
  */
 class QueryException extends \RuntimeException {
 

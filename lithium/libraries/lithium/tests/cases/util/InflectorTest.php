@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -59,6 +59,7 @@ class InflectorTest extends \lithium\test\Unit {
 		$this->assertEqual(Inflector::singularize('gloves'), 'glove');
 		$this->assertEqual(Inflector::singularize('doves'), 'dove');
 		$this->assertEqual(Inflector::singularize('lives'), 'life');
+		$this->assertEqual(Inflector::singularize('leaves'), 'leaf');
 		$this->assertEqual(Inflector::singularize('knives'), 'knife');
 		$this->assertEqual(Inflector::singularize('wolves'), 'wolf');
 		$this->assertEqual(Inflector::singularize('shelves'), 'shelf');
@@ -104,6 +105,8 @@ class InflectorTest extends \lithium\test\Unit {
 		$this->assertEqual(Inflector::pluralize('person'), 'people');
 		$this->assertEqual(Inflector::pluralize('people'), 'people');
 		$this->assertEqual(Inflector::pluralize('glove'), 'gloves');
+		$this->assertEqual(Inflector::pluralize('leaf'), 'leaves');
+		$this->assertEqual(Inflector::pluralize('ContactPeople'), 'ContactPeople');
 		$this->assertEqual(Inflector::pluralize(''), '');
 
 		$result = Inflector::pluralize('errata');

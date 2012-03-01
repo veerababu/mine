@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -299,6 +299,27 @@ class RouteTest extends \lithium\test\Unit {
 			'handler' => null
 		);
 		$this->assertEqual($expected, $result);
+
+		$result = new Route(array(
+			'template' => '/images/image_{:width}x{:height}.{:format}',
+			'params' => array('format' => 'png')
+		));
+
+		$ptrn = '@^/images/image_(?P<width>[^\\/]+)x(?P<height>[^\\/]+)\\.(?P<format>[^\\/]+)?$@';
+		$expected = array(
+			'template' => '/images/image_{:width}x{:height}.{:format}',
+			'pattern' => $ptrn,
+			'params' => array('format' => 'png', 'action' => 'index'),
+			'match' => array('action' => 'index'),
+			'meta' => array(),
+			'keys' => array('width' => 'width', 'height' => 'height', 'format' => 'format'),
+			'defaults' => array('format' => 'png'),
+			'subPatterns' => array(),
+			'persist' => array(),
+			'handler' => null
+		);
+		$result = $result->export();
+		$this->assertEqual($expected, $result);
 	}
 
 	/**
@@ -402,6 +423,31 @@ class RouteTest extends \lithium\test\Unit {
 
 		$this->assertEqual(array('id' => 'id', 'type' => 'type'), $data['keys']);
 		$this->assertEqual(array('id' => '[0-9a-f]{24}'), $data['subPatterns']);
+
+		$route = new Route(array('template' => '/{:key:[a-z]{5}[0-9]{2,3}}'));
+		$data = $route->export();
+		$this->assertEqual('@^(?:/(?P<key>[a-z]{5}[0-9]{2,3}))$@', $data['pattern']);
+		$this->assertEqual(array('key' => '[a-z]{5}[0-9]{2,3}'), $data['subPatterns']);
+
+		$this->assertEqual('/abcde13', $route->match(array('key' => 'abcde13')));
+		$this->assertFalse($route->match(array('key' => 'abcdef13')));
+
+		$route = new Route(array('template' => '/{:key:z[a-z]{5}[0-9]{2,3}0}/{:val:[0-9]{2}}'));
+		$data = $route->export();
+
+		$expected = '@^(?:/(?P<key>z[a-z]{5}[0-9]{2,3}0))(?:/(?P<val>[0-9]{2}))$@';
+		$this->assertEqual($expected, $data['pattern']);
+
+		$expected = array('key' => 'z[a-z]{5}[0-9]{2,3}0', 'val' => '[0-9]{2}');
+		$this->assertEqual($expected, $data['subPatterns']);
+
+		$result = $route->match(array('key' => 'zgheug910', 'val' => '13'));
+		$this->assertEqual('/zgheug910/13', $result);
+		$this->assertFalse($route->match(array('key' => 'zgheu910', 'val' => '13')));
+
+		$result = $route->match(array('key' => 'zgheug9410', 'val' => '13'));
+		$this->assertEqual('/zgheug9410/13', $result);
+		$this->assertFalse($route->match(array('key' => 'zgheug941', 'val' => '13')));
 	}
 
 	/**
@@ -487,6 +533,95 @@ class RouteTest extends \lithium\test\Unit {
 
 		$url = $route->match(array('controller' => 'posts'));
 		$this->assertEqual("/posts", $url);
+	}
+
+	public function testUrlEncodedArgs() {
+		$route = new Route(array('template' => '/{:controller}/{:action}/{:args}'));
+		$request = new Request();
+		$request->url = '/posts/index/Food%20%26%20Dining';
+		$result = $route->parse($request);
+		$expected = array(
+			'controller' => 'posts', 'action' => 'index', 'args' => array('Food%20%26%20Dining')
+		);
+		$this->assertEqual($expected, $result->params);
+	}
+
+	public function testContinuationRoute() {
+		$route = new Route();
+		$this->assertFalse($route->canContinue());
+
+		$route = new Route(array('continue' => true));
+		$this->assertTrue($route->canContinue());
+
+		$route = new Route(array(
+			'template' => '/admin/{:args}',
+			'continue' => true,
+			'params' => array('admin' => true)
+		));
+
+		$result = $route->match(array('admin' => true, 'args' => ''));
+		$this->assertEqual('/admin/{:args}', $result);
+	}
+
+	public function testContinuationRouteWithParameters() {
+		$route = new Route(array(
+			'template' => '/admin/{:args}',
+			'continue' => true,
+			'params' => array('admin' => true)
+		));
+
+		$result = $route->match(array(
+			'admin' => true, 'controller' => 'users', 'action' => 'login'
+		));
+		$this->assertEqual('/admin/{:args}', $result);
+
+		$result = $route->match(array('controller' => 'users', 'action' => 'login'));
+		$this->assertFalse($result);
+	}
+
+	/**
+	 * Tests that continuation routes don't append query strings.
+	 */
+	public function testContinuationRouteWithQueryString() {
+		$route = new Route(array(
+			'template' => '/admin/{:args}',
+			'continue' => true,
+			'params' => array('admin' => true)
+		));
+
+		$result = $route->match(array('Posts::index', 'admin' => true, '?' => array('page' => 2)));
+		$this->assertEqual('/admin/{:args}', $result);
+	}
+
+	/**
+	 * Tests correct regex backtracking.
+	 */
+	public function testValidPatternGeneration() {
+		$route = new Route(array(
+			'template' => '/posts/list/{:foobar:[0-9a-f]{5}}/todday/fooo',
+			'params' => array('controller' => 'posts', 'action' => 'archive')
+		));
+
+		$expected = '@^/posts/list(?:/(?P<foobar>[0-9a-f]{5}))/todday/fooo$@';
+		$result = $route->export();
+		$this->assertEqual($expected, $result['pattern']);
+	}
+
+	/**
+	 * Tests fix for route parameter matching.
+	 */
+	public function testTwoParameterRoutes() {
+		$route = new Route(array(
+			'template' => '/personnel/{:personnel_id}/position/{:position_id}/actions/create',
+			'params' => array('controller' => 'actions', 'action' => 'create')
+		));
+
+		$route->compile();
+		$data = $route->export(); $actual = $data['pattern'];
+		$expected = '@^/personnel(?:/(?P<personnel_id>[^\\/]+))/position(?:/';
+		$expected .= '(?P<position_id>[^\\/]+))/actions/create$@';
+
+		$this->assertEqual($expected, $actual);
 	}
 }
 

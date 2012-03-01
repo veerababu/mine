@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -35,7 +35,7 @@ class Response extends \lithium\core\Object {
 	 * Status code, most often used for setting an exit status.
 	 *
 	 * It should be expected that only status codes in the range of 0-255
-	 * can be properly evalutated.
+	 * can be properly evaluated.
 	 *
 	 * @var integer
 	 * @see lithium\console\Command
@@ -57,13 +57,13 @@ class Response extends \lithium\core\Object {
 		$this->output = $config['output'];
 
 		if (!is_resource($this->output)) {
-			$this->output = fopen('php://stdout', 'r');;
+			$this->output = fopen('php://stdout', 'r');
 		}
 
 		$this->error = $config['error'];
 
 		if (!is_resource($this->error)) {
-			$this->error = fopen('php://stderr', 'r');;
+			$this->error = fopen('php://stderr', 'r');
 		}
 		parent::__construct($config);
 	}

@@ -2,13 +2,11 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
- *                Copyright 2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/mit-license.php The MIT License
  */
 
 namespace lithium\util;
-
 
 /**
  * Utility for modifying format of words. Change singular to plural and vice versa.
@@ -164,7 +162,7 @@ class Inflector {
 			'child' => 'children', 'corpus' => 'corpuses', 'cow' => 'cows',
 			'ganglion' => 'ganglions', 'genie' => 'genies', 'genus' => 'genera',
 			'graffito' => 'graffiti', 'hoof' => 'hoofs', 'loaf' => 'loaves', 'man' => 'men',
-			'money' => 'monies', 'mongoose' => 'mongooses', 'move' => 'moves',
+			'leaf' => 'leaves', 'money' => 'monies', 'mongoose' => 'mongooses', 'move' => 'moves',
 			'mythos' => 'mythoi', 'numen' => 'numina', 'occiput' => 'occiputs',
 			'octopus' => 'octopuses', 'opus' => 'opuses', 'ox' => 'oxen', 'penis' => 'penises',
 			'person' => 'people', 'sex' => 'sexes', 'soliloquy' => 'soliloquies',
@@ -280,7 +278,7 @@ class Inflector {
 			$regexIrregular = static::_enclose(join( '|', array_keys($irregular)));
 			static::$_plural += compact('regexUninflected', 'regexIrregular');
 		}
-		if (preg_match('/^(' . $regexUninflected . ')$/i', $word, $regs)) {
+		if (preg_match('/(' . $regexUninflected . ')$/i', $word, $regs)) {
 			return static::$_pluralized[$word] = $word;
 		}
 		if (preg_match('/(.*)\\b(' . $regexIrregular . ')$/i', $word, $regs)) {

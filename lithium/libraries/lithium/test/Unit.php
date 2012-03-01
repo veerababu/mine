@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -235,6 +235,15 @@ class Unit extends \lithium\core\Object {
 	}
 
 	/**
+	 * Generates a failed test with the passed message.
+	 *
+	 * @param string $message
+	 */
+	public function fail($message = false) {
+		$this->assert(false, $message);
+	}
+
+	/**
 	 * Checks that the actual result is equal, but not neccessarily identical, to the expected
 	 * result.
 	 *
@@ -271,7 +280,7 @@ class Unit extends \lithium\core\Object {
 	}
 
 	/**
-	 * Checks that the result evalutes to true.
+	 * Checks that the result evaluates to true.
 	 *
 	 * For example:
 	 * {{{
@@ -294,7 +303,7 @@ class Unit extends \lithium\core\Object {
 	}
 
 	/**
-	 * Checks that the result evalutes to false.
+	 * Checks that the result evaluates to false.
 	 *
 	 * For example:
 	 * {{{
@@ -388,7 +397,6 @@ class Unit extends \lithium\core\Object {
 	 * @param string $string An HTML/XHTML/XML string
 	 * @param array $expected An array, see above
 	 * @return boolean
-	 * @access public
 	 */
 	function assertTags($string, $expected) {
 		$regex = array();
@@ -512,6 +520,48 @@ class Unit extends \lithium\core\Object {
 	}
 
 	/**
+	 * Assert that the code passed in a closure throws an exception matching the passed expected
+	 * exception.
+	 *
+	 * The value passed to `exepected` is either an exception class name or the expected message.
+	 *
+	 * @param mixed $expected A string indicating what the error text is expected to be.  This can
+	 *              be an exact string, a /-delimited regular expression, or true, indicating that
+	 *              any error text is acceptable.
+	 * @param closure $closure A closure containing the code that should throw the exception.
+	 * @param string $message
+	 * @return boolean
+	 */
+	public function assertException($expected, $closure, $message = '{:message}') {
+		try {
+			$closure();
+			$message = sprintf('An exception "%s" was expected but not thrown.', $expected);
+			return $this->assert(false, $message, compact('expected', 'result'));
+		} catch (Exception $e) {
+			$class = get_class($e);
+			$eMessage = $e->getMessage();
+
+			if (get_class($e) == $expected) {
+				$result = $class;
+				return $this->assert(true, $message, compact('expected', 'result'));
+			}
+			if ($eMessage == $expected) {
+				$result = $eMessage;
+				return $this->assert(true, $message, compact('expected', 'result'));
+			}
+			if (Validator::isRegex($expected) && preg_match($expected, $eMessage)) {
+				$result = $eMessage;
+				return $this->assert(true, $message, compact('expected', 'result'));
+			}
+
+			$message = sprintf(
+				'Exception "%s" was expected. Exception "%s" with message "%s" was thrown instead.',
+				$expected, get_class($e), $eMessage);
+			return $this->assert(false, $message);
+		}
+	}
+
+	/**
 	 * Assert Cookie data is properly set in headers.
 	 *
 	 * The value passed to `exepected` is an array of the cookie data, with at least the key and
@@ -554,7 +604,7 @@ class Unit extends \lithium\core\Object {
 	public function assertNoCookie($expected, $headers = null) {
 		$matched = $this->_cookieMatch($expected, $headers);
 		if ($matched['match']) {
-			$message = sprintf('%s - Cookie not found in headers.', $matched['pattern']);
+			$message = sprintf('%s - Cookie found in headers.', $matched['pattern']);
 			$this->assert(false, $message, compact('expected', 'result'));
 			return false;
 		}
@@ -657,11 +707,23 @@ class Unit extends \lithium\core\Object {
 			try {
 				$method = $params['method'];
 				$lineFlag = __LINE__ + 1;
-				$self->$method();
+				$self->{$method}();
 			} catch (Exception $e) {
 				$self->invokeMethod('_handleException', array($e));
 			}
 		});
+
+		foreach ($this->_expected as $expected) {
+			$this->_result('fail', compact('method') + array(
+				'class' => get_class($this),
+				'message' => "Expected exception matching `{$expected}` uncaught.",
+				'data' => array(),
+				'file' => null,
+				'line' => null,
+				'assertion' => 'expectException'
+			));
+		}
+		$this->_expected = array();
 		$this->tearDown();
 
 		return $passed;
@@ -960,6 +1022,36 @@ class Unit extends \lithium\core\Object {
 	 */
 	public function results() {
 		return $this->_results;
+	}
+
+	/**
+	 * Checks for a working internet connection.
+	 *
+	 * This method is used to check for a working connection to google.com, both
+	 * testing for proper dns resolution and reading the actual URL.
+	 *
+	 * @param array $config Override the default URI to check.
+	 * @return boolean True if a network connection is established, false otherwise.
+	 */
+	protected function _hasNetwork($config = array()) {
+		$defaults = array(
+			'scheme' => 'http',
+			'host' => 'google.com'
+		);
+		$config += $defaults;
+
+		$url = "{$config['scheme']}://{$config['host']}";
+		$failed = false;
+
+		set_error_handler(function($errno, $errstr) use (&$failed) {
+			$failed = true;
+		});
+
+		$dnsCheck = dns_check_record($config['host'], "ANY");
+		$fileCheck = fopen($url, "r");
+
+		restore_error_handler();
+		return !$failed;
 	}
 }
 

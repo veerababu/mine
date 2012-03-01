@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -129,6 +129,13 @@ class Request extends \lithium\net\http\Request {
 	protected $_acceptContent = array();
 
 	/**
+	 * Holds the value of the current locale, set through the `locale()` method.
+	 *
+	 * @var string
+	 */
+	protected $_locale = null;
+
+	/**
 	 * Pulls request data from superglobals.
 	 *
 	 * @return void
@@ -145,18 +152,12 @@ class Request extends \lithium\net\http\Request {
 			$mobile = array_merge($mobile, (array) $this->_config['detectors']['mobile'][1]);
 		}
 		$this->_detectors['mobile'][1] = $mobile;
-		$this->_env += (array) $_SERVER + (array) $_ENV + array('REQUEST_METHOD' => 'GET');
+		$defaults = array('REQUEST_METHOD' => 'GET', 'CONTENT_TYPE' => 'text/html');
+		$this->_env += (array) $_SERVER + (array) $_ENV + $defaults;
 		$envs = array('isapi' => 'IIS', 'cgi' => 'CGI', 'cgi-fcgi' => 'CGI');
 		$this->_env['PLATFORM'] = isset($envs[PHP_SAPI]) ? $envs[PHP_SAPI] : null;
-		$this->_base = isset($this->_base) ? $this->_base : $this->_base();
-		$this->url = '/';
-
-		if (isset($this->_config['url'])) {
-			$this->url = rtrim($this->_config['url'], '/');
-		} elseif (!empty($_GET['url']) ) {
-			$this->url = rtrim($_GET['url'], '/');
-			unset($_GET['url']);
-		}
+		$this->_base = $this->_base();
+		$this->url = $this->_url();
 
 		if (!empty($this->_config['query'])) {
 			$this->query = $this->_config['query'];
@@ -164,67 +165,31 @@ class Request extends \lithium\net\http\Request {
 		if (isset($_GET)) {
 			$this->query += $_GET;
 		}
-
 		if (!empty($this->_config['data'])) {
 			$this->data = $this->_config['data'];
-		} elseif (isset($_POST)) {
+		}
+		if (isset($_POST)) {
 			$this->data += $_POST;
 		}
-
 		if (isset($this->data['_method'])) {
 			$this->_env['HTTP_X_HTTP_METHOD_OVERRIDE'] = strtoupper($this->data['_method']);
 			unset($this->data['_method']);
 		}
-
 		if (!empty($this->_env['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
 			$this->_env['REQUEST_METHOD'] = $this->_env['HTTP_X_HTTP_METHOD_OVERRIDE'];
 		}
+		$type = $this->type($this->_env['CONTENT_TYPE']);
+		$this->method = $method = strtoupper($this->_env['REQUEST_METHOD']);
 
-		$method = strtoupper($this->_env['REQUEST_METHOD']);
-
-		if (($method == 'POST' || $method == 'PUT') && !$this->data) {
-			if (($type = $this->type()) && $type !== 'html') {
+		if (!$this->data && ($method == 'POST' || $method == 'PUT')) {
+			if ($type !== 'html') {
 				$this->_stream = $this->_stream ?: fopen('php://input', 'r');
 				$media = $this->_classes['media'];
 				$this->data = (array) $media::decode($type, stream_get_contents($this->_stream));
 				fclose($this->_stream);
 			}
 		}
-
-		if (isset($_FILES) && $_FILES) {
-			$result = array();
-
-			$normalize = function($key, $value) use ($result, &$normalize){
-				foreach ($value as $param => $content) {
-					foreach ($content as $num => $val) {
-						if (is_numeric($num)) {
-							$result[$key][$num][$param] = $val;
-							continue;
-						}
-						if (is_array($val)) {
-							foreach ($val as $next => $one) {
-								$result[$key][$num][$next][$param] = $one;
-							}
-							continue;
-						}
-						$result[$key][$num][$param] = $val;
-					}
-				}
-				return $result;
-			};
-			foreach ($_FILES as $key => $value) {
-				if (isset($value['name'])) {
-					if (is_string($value['name'])) {
-						$result[$key] = $value;
-						continue;
-					}
-					if (is_array($value['name'])) {
-						$result += $normalize($key, $value);
-					}
-				}
-			}
-			$this->data = Set::merge((array) $this->data, $result);
-		}
+		$this->data = Set::merge((array) $this->data, $this->_parseFiles());
 	}
 
 	/**
@@ -276,7 +241,7 @@ class Request extends \lithium\net\http\Request {
 		$val = array_key_exists($key, $this->_env) ? $this->_env[$key] : getenv($key);
 		$this->_env[$key] = $val;
 
-		if ($key == 'REMOTE_ADDR' && $val == $this->env('SERVER_ADDR')) {
+		if ($key == 'REMOTE_ADDR') {
 			$val = ($addr = $this->env('HTTP_PC_REMOTE_ADDR')) ? $addr : $val;
 		}
 
@@ -389,7 +354,7 @@ class Request extends \lithium\net\http\Request {
 	 * @see lithium\action\Request::env()
 	 * @see lithium\net\http\Media::type()
 	 * @see lithium\net\http\Router
-	 * @param string $key A prefixed key indiciating what part of the request data the requested
+	 * @param string $key A prefixed key indicating what part of the request data the requested
 	 *               value should come from, and the name of the value to retrieve, in lower case.
 	 * @return string Returns the value of a GET, POST, routing or environment variable, or an
 	 *         HTTP header or method name.
@@ -555,20 +520,104 @@ class Request extends \lithium\net\http\Request {
 		$defaults = array(
 			'scheme' => $this->env('HTTPS') ? 'https' : 'http',
 			'host' => $this->env('HTTP_HOST'),
-			'path' => $this->_base . $this->url,
-			'query' => $this->query
+			'path' => $this->_base . '/' . $this->url
 		);
-		$options += $defaults;
-		return parent::to($format, $options);
+		return parent::to($format, $options + $defaults);
 	}
 
 	/**
+	 * Sets or returns the current locale string. For more information, see
+	 * "[Globalization](http://lithify.me/docs/manual/07_globalization)" in the manual.
+	 *
+	 * @param string $locale An optional locale string like `'en'`, `'en_US'` or `'de_DE'`. If
+	 *               specified, will overwrite the existing locale.
+	 * @return Returns the currently set locale string.
+	 */
+	public function locale($locale = null) {
+		if ($locale) {
+			$this->_locale = $locale;
+		}
+		if ($this->_locale) {
+			return $this->_locale;
+		}
+		if (isset($this->params['locale'])) {
+			return $this->params['locale'];
+		}
+	}
+
+	/**
+	 * Find the base path of the current request.
+	 *
 	 * @todo Replace string directory names with configuration.
-	 * @return void
+	 * @return string
 	 */
 	protected function _base() {
+		if (isset($this->_base)) {
+			return $this->_base;
+		}
 		$base = str_replace('\\', '/', dirname($this->env('PHP_SELF')));
 		return rtrim(str_replace(array("/app/webroot", '/webroot'), '', $base), '/');
+	}
+
+	/**
+	 * Return the full url of the current request.
+	 *
+	 * @return string
+	 */
+	protected function _url() {
+		if (isset($this->_config['url'])) {
+			return rtrim($this->_config['url'], '/');
+		}
+		if (!empty($_GET['url']) ) {
+			return rtrim($_GET['url'], '/');
+		}
+		if ($uri = $this->env('REQUEST_URI')) {
+			return str_replace($this->env('base'), '/', parse_url($uri, PHP_URL_PATH));
+		}
+		return '/';
+	}
+
+	/**
+	 * Normalize the data in $_FILES
+	 *
+	 * @return array
+	 */
+	protected function _parseFiles() {
+		if (isset($_FILES) && $_FILES) {
+			$result = array();
+
+			$normalize = function($key, $value) use ($result, &$normalize){
+				foreach ($value as $param => $content) {
+					foreach ($content as $num => $val) {
+						if (is_numeric($num)) {
+							$result[$key][$num][$param] = $val;
+							continue;
+						}
+						if (is_array($val)) {
+							foreach ($val as $next => $one) {
+								$result[$key][$num][$next][$param] = $one;
+							}
+							continue;
+						}
+						$result[$key][$num][$param] = $val;
+					}
+				}
+				return $result;
+			};
+			foreach ($_FILES as $key => $value) {
+				if (isset($value['name'])) {
+					if (is_string($value['name'])) {
+						$result[$key] = $value;
+						continue;
+					}
+					if (is_array($value['name'])) {
+						$result += $normalize($key, $value);
+					}
+				}
+			}
+			return $result;
+		}
+		return array();
 	}
 }
 

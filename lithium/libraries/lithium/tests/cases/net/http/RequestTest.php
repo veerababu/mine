@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -82,7 +82,7 @@ class RequestTest extends \lithium\test\Unit {
 			'params' => array('param' => 'value')
 		));
 
-		$expected = '/base/path/';
+		$expected = '/base/path';
 		$result = $request->path;
 		$this->assertEqual($expected, $result);
 	}
@@ -106,10 +106,12 @@ class RequestTest extends \lithium\test\Unit {
 		$result = $this->request->queryString(array('param' => 'value'));
 		$this->assertEqual($expected, $result);
 
+		$expected = "?param=value";
+		$this->request->query = array('param' => 'value');
 		$result = $this->request->queryString();
 		$this->assertEqual($expected, $result);
 
-		$expected = "?param2=value2";
+		$expected = "?param=value&param2=value2";
 		$result = $this->request->queryString(array('param2' => 'value2'));
 		$this->assertEqual($expected, $result);
 	}
@@ -163,7 +165,8 @@ class RequestTest extends \lithium\test\Unit {
 			),
 			'content' => '',
 			'protocol_version' => '1.1',
-			'ignore_errors' => true
+			'ignore_errors' => true,
+			'follow_location' => true
 		));
 		$this->assertEqual($expected, $request->to('context'));
 	}
@@ -185,7 +188,7 @@ class RequestTest extends \lithium\test\Unit {
 	public function testToArray() {
 		$expected = array(
 			'method' => 'GET',
-			'params' => array(),
+			'query' => array(),
 			'headers' => array(
 				'Host' => 'localhost',
 				'Connection' => 'Close',
@@ -199,6 +202,7 @@ class RequestTest extends \lithium\test\Unit {
 			'host' => 'localhost',
 			'port' => null,
 			'path' => '/',
+			'auth' => null,
 			'username' => null,
 			'password' => null
 		);
@@ -227,9 +231,76 @@ class RequestTest extends \lithium\test\Unit {
 				'User-Agent: Mozilla/5.0'
 			),
 			'protocol_version' => '1.1',
-			'ignore_errors' => true
+			'ignore_errors' => true,
+			'follow_location' => true
 		));
 		$result = $this->request->to('context');
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testQueryStringWithArrayValues() {
+		$expected = "?param%5B0%5D=value1&param%5B1%5D=value2";
+		$result = $this->request->queryString(array('param' => array('value1', 'value2')));
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testQueryStringWithArrayValuesCustomFormat() {
+		$expected = "?param%5B%5D:value1/param%5B%5D:value2";
+		$result = $this->request->queryString(
+			array('param' => array('value1', 'value2')),
+			"{:key}:{:value}/"
+		);
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testDigest() {
+		$request = new Request(array(
+			'path' => 'http_auth',
+			'auth' => array(
+				'realm' => 'app',
+				'qop' => 'auth',
+				'nonce' => '4bca0fbca7bd0',
+				'opaque' => 'd3fb67a7aa4d887ec4bf83040a820a46'
+			),
+			'username' => 'gwoo',
+			'password' => 'li3'
+		));
+		$cnonce = md5(time());
+		$user = md5("gwoo:app:li3");
+		$nonce = "4bca0fbca7bd0:00000001:{$cnonce}:auth";
+		$req = md5("GET:/http_auth");
+		$hash = md5("{$user}:{$nonce}:{$req}");
+
+		$request->to('url');
+		preg_match('/response="(.*?)"/', $request->headers('Authorization'), $matches);
+		list($match, $response) = $matches;
+
+		$expected = $hash;
+		$result = $response;
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testParseUrlToConfig() {
+		$url = "http://localhost/path/one.php?param=1&param=2";
+		$config = parse_url($url);
+		$request = new Request($config);
+
+		$expected = $url;
+		$result = $request->to('url');
+		$this->assertEqual($expected, $result);
+	}
+
+	public function testQueryParamsConstructed() {
+		$url = "http://localhost/path/one.php?param=1&param=2";
+		$config = parse_url($url);
+		$request = new Request($config);
+
+		$expected = "?param=1&param=2";
+		$result = $request->queryString();
+		$this->assertEqual($expected, $result);
+
+		$expected = "?param=1&param=2&param3=3";
+		$result = $request->queryString(array('param3' => 3));
 		$this->assertEqual($expected, $result);
 	}
 }

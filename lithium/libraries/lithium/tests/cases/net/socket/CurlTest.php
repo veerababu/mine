@@ -2,12 +2,13 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\net\socket;
 
+use lithium\net\http\Response;
 use lithium\net\http\Request;
 use lithium\net\socket\Curl;
 
@@ -21,8 +22,6 @@ class CurlTest extends \lithium\test\Unit {
 		'timeout' => 2,
 		'classes' => array('request' => 'lithium\net\http\Request')
 	);
-
-	protected $_testUrl = 'http://google.com';
 
 	/**
 	 * Skip the test if curl is not available in your PHP installation.
@@ -38,7 +37,8 @@ class CurlTest extends \lithium\test\Unit {
 		$message = "Could not open {$url} - skipping " . __CLASS__;
 		$this->skipIf(!curl_init($url), $message);
 
-		$this->skipIf(dns_check_record("google.com") === false, "No internet connection.");
+		$message = "No internet connection established.";
+		$this->skipIf(!$this->_hasNetwork($this->_testConfig), $message);
 	}
 
 	public function testAllMethodsNoConnection() {
@@ -108,7 +108,7 @@ class CurlTest extends \lithium\test\Unit {
 			new Request($this->_testConfig),
 			array('response' => 'lithium\net\http\Response')
 		);
-		$this->assertTrue($result instanceof \lithium\net\http\Response);
+		$this->assertTrue($result instanceof Response);
 		$this->assertPattern("/^HTTP/", (string) $result);
 	}
 
@@ -118,7 +118,7 @@ class CurlTest extends \lithium\test\Unit {
 		$result = $stream->send($this->_testConfig,
 			array('response' => 'lithium\net\http\Response')
 		);
-		$this->assertTrue($result instanceof \lithium\net\http\Response);
+		$this->assertTrue($result instanceof Response);
 		$this->assertPattern("/^HTTP/", (string) $result);
 	}
 
@@ -129,8 +129,29 @@ class CurlTest extends \lithium\test\Unit {
 			new Request($this->_testConfig),
 			array('response' => 'lithium\net\http\Response')
 		);
-		$this->assertTrue($result instanceof \lithium\net\http\Response);
+		$this->assertTrue($result instanceof Response);
 		$this->assertPattern("/^HTTP/", (string) $result);
+	}
+
+	public function testSettingOfOptions() {
+		$stream = new Curl($this->_testConfig);
+		$stream->set('DummyFlag', 'Dummy Value');
+		$stream->set('DummyFlag', 'Changed Dummy Value');
+		$this->assertEqual('Changed Dummy Value', $stream->options['DummyFlag']);
+	}
+
+	public function testSendPostThenGet() {
+		$postConfig = array('method' => 'POST', 'body' => '{"body"}');
+		$stream = new Curl($this->_testConfig);
+		$this->assertTrue(is_resource($stream->open()));
+		$this->assertTrue($stream->write(new Request($postConfig + $this->_testConfig)));
+		$this->assertTrue(isset($stream->options[CURLOPT_POST]));
+		$this->assertTrue($stream->close());
+
+		$this->assertTrue(is_resource($stream->open()));
+		$this->assertTrue($stream->write(new Request($this->_testConfig)));
+		$this->assertFalse(isset($stream->options[CURLOPT_POST]));
+		$this->assertTrue($stream->close());
 	}
 }
 

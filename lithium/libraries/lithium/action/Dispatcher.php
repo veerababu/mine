@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -100,7 +100,6 @@ class Dispatcher extends \lithium\core\StaticObject {
 	 * @return mixed Returns the value returned from the callable object retrieved from
 	 *         `Dispatcher::_callable()`, which is either a string or an instance of
 	 *         `lithium\action\Response`.
-	 * @todo Add exception-handling/error page rendering
 	 * @filter
 	 */
 	public static function run($request, array $options = array()) {

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -22,7 +22,7 @@ use Redis as RedisCore;
  * Redis API, but rather only a subset of its features that are useful in the context of a
  * semi-persistent cache.
  *
- * A simple configuration of this adapter can be accomplished in `app/config/bootstrap.php`
+ * A simple configuration of this adapter can be accomplished in `config/bootstrap/cache.php`
  * as follows:
  *
  * {{{

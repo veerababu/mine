@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -17,33 +17,26 @@ use lithium\util\String;
 class Request extends \lithium\net\http\Message {
 
 	/**
+	 * Key=value pairs after the ?.
+	 *
+	 * @var array
+	 */
+	public $query = array();
+
+	/**
+	 * The Authorization type: Basic or Digest
+	 *
+	 * @var string
+	 */
+	public $auth = null;
+
+	/**
 	 * The method of the request, typically one of the following: `GET`, `POST`, `PUT`, `DELETE`,
 	 * `OPTIONS`, `HEAD`, `TRACE` or `CONNECT`.
 	 *
 	 * @var string
 	 */
 	public $method = 'GET';
-
-	/**
-	 * Used to build query string.
-	 *
-	 * @var array
-	 */
-	public $params = array();
-
-	/**
-	 * Headers.
-	 *
-	 * For example:
-	 * {{{
-	 * 	array(
-	 * 		'Host' => $this->host . ":" . $this->port,
-	 * 		'Connection' => 'Close', 'User-Agent' => 'Mozilla/5.0'
-	 * 	)
-	 * }}}
-	 * @var array
-	 */
-	public $headers = array();
 
 	/**
 	 * Cookies.
@@ -53,69 +46,129 @@ class Request extends \lithium\net\http\Message {
 	public $cookies = array();
 
 	/**
-	 * Constructor
+	 * Adds config values to the public properties when a new object is created.
 	 *
-	 * @param array $config
-	 *        - auth: the Authorization method (Basic|Digest)
-	 *        - username: the username for auth
-	 *        - password: the password for auth
+	 * @param array $config Configuration options : default value
+	 * - `scheme`: http
+	 * - `host`: localhost
+	 * - `port`: null
+	 * - `username`: null
+	 * - `password`: null
+	 * - `path`: null
+	 * - `query`: array - after the question mark ?
+	 * - `fragment`: null - after the hashmark #
+	 * - `auth` - the Authorization method (Basic|Digest)
+	 * - `method` - GET
+	 * - `version`: 1.1
+	 * - `headers`: array
+	 * - `body`: null
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array(
 			'scheme' => 'http',
 			'host' => 'localhost',
 			'port' => null,
-			'method' => 'GET',
-			'path' => '/',
-			'auth' => null,
+			'username' => null,
+			'password' => null,
+			'path' => null,
+			'query' => array(),
+			'fragment' => null,
 			'headers' => array(),
-			'body' => array(),
-			'params' => array()
+			'body' => null,
+			'auth' => null,
+			'method' => 'GET'
 		);
 		$config += $defaults;
 		parent::__construct($config);
 
-		$this->protocol = "HTTP/{$this->version}";
 		$this->headers = array(
 			'Host' => $this->port ? "{$this->host}:{$this->port}" : $this->host,
 			'Connection' => 'Close',
 			'User-Agent' => 'Mozilla/5.0'
 		);
 		$this->headers($config['headers']);
-
-		if (strpos($this->host, '/') !== false) {
-			$parts = explode('/', $this->host, 2);
-			$this->host = $parts[0];
-			$this->path = str_replace('//', '/', "/{$parts[1]}/");
-		}
 	}
 
 	/**
-	 * Set queryString.
+	 * Encodes the body based on the type
+	 *
+	 * @see lithium\net\http\Message::type()
+	 * @param mixed $body
+	 * @return string
+	 */
+	protected function _encode($body) {
+		$media = $this->_classes['media'];
+		if ($type = $media::type($this->_type)) {
+			$body = $media::encode($this->_type, $body) ?: $body;
+		}
+		if (is_array($body)) {
+			$body = join("\r\n", $body);
+		}
+		return $body;
+	}
+
+	/**
+	 * Add body parts and encodes it into formated string
+	 *
+	 * @see lithium\net\Message::body()
+	 * @param mixed $data
+	 * @param array $options
+	 *        - `'buffer'`: split the body string
+	 * @return array
+	 */
+	public function body($data = null, $options = array()) {
+		$default = array('buffer' => null);
+		$options += $default;
+		$this->body = array_merge((array) $this->body, (array) $data);
+
+		$body = $this->_encode($this->body);
+		return ($options['buffer']) ? str_split($body, $options['buffer']) : $body;
+	}
+
+	/**
+	 * Get the full query string queryString.
 	 *
 	 * @param array $params
 	 * @param string $format
-	 * @return array
+	 * @return string
 	 */
-	public function queryString($params = array(), $format = "{:key}={:value}&") {
-		if (!$params) {
-			if (is_string($this->params)) {
-				return "?" . $this->params;
-			}
-			$params = $this->params;
-		} elseif (is_array($this->params)) {
-			$params = array_merge($this->params, $params);
-		}
-		$query = null;
+	public function queryString($params = array(), $format = null) {
+		$result = array();
 
-		foreach ($params as $key => $value) {
-			$values = array('key' => urlencode($key), 'value' => urlencode($value));
-			$query .= String::insert($format, $values);
+		foreach (array_filter(array($this->query, $params)) as $query) {
+			if (is_string($query)) {
+				$result[] = $query;
+				continue;
+			}
+			$query = array_filter($query);
+
+			if (!$format) {
+				$result[] = http_build_query($query);
+			}
+			if ($format) {
+				$q = null;
+
+				foreach ($params as $key => $value) {
+					if (is_array($value)) {
+						foreach ($value as $val) {
+							$q .= String::insert($format, array(
+								'key' => urlencode("{$key}[]"),
+								'value' => urlencode($val)
+							));
+						}
+						continue;
+					}
+					$q .= String::insert($format, array(
+						'key' => urlencode($key),
+						'value' => urlencode($value)
+					));
+				}
+				$result[] = substr($q, 0, -1);
+			}
+
 		}
-		if (!$query) {
-			return null;
-		}
-		return "?" . $this->params = substr($query, 0, -1);
+		$result = array_filter($result);
+		return (!empty($result)) ? "?" . join("&", $result) : null;
 	}
 
 	/**
@@ -153,34 +206,69 @@ class Request extends \lithium\net\http\Message {
 			'host' => $this->host,
 			'port' => $this->port ? ":{$this->port}" : '',
 			'path' => $this->path,
-			'query' => $this->queryString(),
-			'auth' => $this->_config['auth'],
-			'content' => $this->body(),
+			'query' => null,
+			'auth' => $this->auth,
+			'username' => $this->username,
+			'password' => $this->password,
+			'headers' => array(),
+			'body' => null,
 			'version' => $this->version,
+			'ignore_errors' => isset($this->_config['ignore_errors'])
+				? $this->_config['ignore_errors'] : true,
+			'follow_location' => isset($this->_config['follow_location'])
+				? $this->_config['follow_location'] : true
 		);
 		$options += $defaults;
 
-		if ($options['query'] && is_array($options['query'])) {
-			$options['query'] = $this->queryString($options['query']);
+		if (!empty($options['auth'])) {
+			$auth = null;
+			if (is_array($options['auth']) && isset($options['auth']['nonce'])) {
+				$data = $options['auth'];
+				$nc = '00000001';
+				$cnonce = md5(time());
+				$a1 = md5("{$options['username']}:{$data['realm']}:{$options['password']}");
+				$a2 = md5($options['method'] . ':' . $options['path']);
+				$nonce = "{$data['nonce']}:{$nc}:{$cnonce}:{$data['qop']}";
+				$response = md5("{$a1}:{$nonce}:{$a2}");
+				$auth = "username=\"{$options['username']}\", response=\"{$response}\", ";
+				$auth .= "uri=\"{$options['path']}\", realm=\"{$data['realm']}\", ";
+				$auth .= "qop=\"{$data['qop']}\", nc={$nc}, cnonce=\"{$cnonce}\", ";
+				$auth .= "nonce=\"{$data['nonce']}\", opaque=\"{$data['opaque']}\"";
+				$this->headers('Authorization', "Digest {$auth}");
+			} else if (is_string($options['auth']) && $options['auth'] == 'Basic') {
+				$auth = base64_encode("{$options['username']}:{$options['password']}");
+				$this->headers('Authorization', "Basic {$auth}");
+			}
 		}
+		if (in_array($options['method'], array('POST', 'PUT'))) {
+			$media = $this->_classes['media'];
+			if ($type = $media::type($this->_type)) {
+				$this->headers('Content-Type', $type['content'][0]);
+			}
+		}
+
+		$body = $this->body($options['body']);
+		$this->headers('Content-Length', strlen($body));
 
 		switch ($format) {
 			case 'url':
+				$options['query'] = $this->queryString($options['query']);
+				$options['path'] = str_replace('//', '/', $options['path']);
 				return String::insert("{:scheme}://{:host}{:port}{:path}{:query}", $options);
 			case 'context':
-				if ($options['auth']) {
-					$auth = base64_encode("{$this->username}:{$this->password}");
-					$this->headers('Authorization', "{$options['auth']} {$auth}");
-				}
-				$this->headers('Content-Length', strlen($options['content']));
 				$base = array(
-					'content' => $options['content'],
+					'content' => $body,
 					'method' => $options['method'],
-					'header' => $this->headers(),
+					'header' => $this->headers($options['headers']),
 					'protocol_version' => $options['version'],
-					'ignore_errors' => true
+					'ignore_errors' => $options['ignore_errors'],
+					'follow_location' => $options['follow_location']
 				);
 				return array('http' => array_diff_key($options, $defaults) + $base);
+			case 'string':
+				$path = str_replace('//', '/', $this->path) . $this->queryString($options['query']);
+				$status = "{$this->method} {$path} {$this->protocol}";
+				return join("\r\n", array($status, join("\r\n", $this->headers()), "", $body));
 			default:
 				return parent::to($format, $options);
 		}
@@ -192,17 +280,7 @@ class Request extends \lithium\net\http\Message {
 	 * @return string
 	 */
 	public function __toString() {
-		if (!empty($this->_config['auth'])) {
-			$this->headers('Authorization', "{$this->_config['auth']} " . base64_encode(
-				"{$this->username}:{$this->password}"
-			));
-		}
-		$path = str_replace('//', '/', $this->path) . $this->queryString();
-		$body = $this->body();
-		$this->headers('Content-Length', strlen($body));
-
-		$status = "{$this->method} {$path} {$this->protocol}";
-		return join("\r\n", array($status, join("\r\n", $this->headers()), "", $body));
+		return $this->to('string');
 	}
 }
 

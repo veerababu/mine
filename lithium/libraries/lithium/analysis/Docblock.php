@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -93,7 +93,7 @@ class Docblock extends \lithium\core\StaticObject {
 	}
 
 	/**
-	 * Parses `param` docblock tags to separate out the parameter type from the description.
+	 * Parses `@param` docblock tags to separate out the parameter type from the description.
 	 *
 	 * @param array $params An array of `@param` tags, as parsed from the `tags()` method.
 	 * @return array Returns an array where each key is a parameter name, and each value is an

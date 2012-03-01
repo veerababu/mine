@@ -2,13 +2,14 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
 namespace lithium\tests\cases\action;
 
 use lithium\action\Request;
+use lithium\action\Response;
 use lithium\action\Controller;
 use lithium\tests\mocks\action\MockPostsController;
 use lithium\tests\mocks\action\MockControllerRequest;
@@ -38,9 +39,9 @@ class ControllerTest extends \lithium\test\Unit {
 		$postsController = new MockPostsController();
 		$result = $postsController->__invoke(null, array('action' => 'index', 'args' => array()));
 
-		$this->assertTrue(is_a($result, 'lithium\action\Response'));
+		$this->assertTrue($result instanceof Response);
 		$this->assertEqual('List of posts', $result->body());
-		$this->assertEqual(array('Content-type' => 'text/plain; charset=UTF-8'), $result->headers);
+		$this->assertEqual(array('Content-Type' => 'text/plain; charset=UTF-8'), $result->headers);
 
 		$result2 = $postsController(null, array('action' => 'index', 'args' => array()));
 		$this->assertEqual($result2, $result);
@@ -49,10 +50,10 @@ class ControllerTest extends \lithium\test\Unit {
 		$this->expectException('/Unhandled media type/');
 		$result = $postsController(null, array('action' => 'index', 'args' => array(true)));
 
-		$this->assertTrue(is_a($result, 'lithium\action\Response'));
+		$this->assertTrue($result instanceof Response);
 		$this->assertEqual($result->body, '');
 
-		$headers = array('Content-type' => 'text/html; charset=UTF-8');
+		$headers = array('Content-Type' => 'text/html; charset=UTF-8');
 		$this->assertEqual($result->headers, $headers);
 
 		$result = $postsController->access('_render');
@@ -61,10 +62,10 @@ class ControllerTest extends \lithium\test\Unit {
 		$postsController = new MockPostsController();
 		$result = $postsController(null, array('action' => 'view', 'args' => array('2')));
 
-		$this->assertTrue(is_a($result, 'lithium\action\Response'));
+		$this->assertTrue($result instanceof Response);
 		$this->assertEqual($result->body, "Array\n(\n    [0] => This is a post\n)\n");
 
-		$headers = array('status' => 200, 'Content-type' => 'text/plain; charset=UTF-8');
+		$headers = array('status' => 200, 'Content-Type' => 'text/plain; charset=UTF-8');
 		$this->assertEqual($result->headers(), $headers);
 
 		$result = $postsController->access('_render');
@@ -172,6 +173,26 @@ class ControllerTest extends \lithium\test\Unit {
 	}
 
 	/**
+	 * Verifies that the Controller does not modify data when passed an array (or RecordSet)
+	 * with a single element.
+	 *
+	 * @return void
+	 */
+	public function testRenderWithDataSingleIndexedArray() {
+		$request = new Request();
+		$request->params['controller'] = 'lithium\tests\mocks\action\MockPostsController';
+
+		$controller = new MockPostsController(compact('request') + array('classes' => array(
+			'media' => 'lithium\tests\mocks\action\MockMediaClass'
+		)));
+
+		$expected = array(array('id' => 1));
+		$controller->render(array('data' => $expected));
+
+		$this->assertEqual($expected, $controller->response->data);
+	}
+
+	/**
 	 * Verifies that protected methods (i.e. prefixed with '_'), and methods declared in the
 	 * Controller base class cannot be accessed.
 	 *
@@ -232,7 +253,7 @@ class ControllerTest extends \lithium\test\Unit {
 		$result = $postsController->access('_render');
 		$this->assertEqual($expected, $result);
 
-		$result = $postsController->response->headers('Content-type');
+		$result = $postsController->response->headers('Content-Type');
 		$this->assertEqual('application/json; charset=UTF-8', $result);
 
 		$result = json_decode($postsController->response->body(), true);
@@ -260,7 +281,7 @@ class ControllerTest extends \lithium\test\Unit {
 		$result = $postsController->access('_render');
 		$this->assertEqual($expected, $result);
 
-		$result = $postsController->response->headers('Content-type');
+		$result = $postsController->response->headers('Content-Type');
 		$this->assertEqual('application/json; charset=UTF-8', $result);
 
 		$expected = array('data' => 'test');
@@ -322,7 +343,7 @@ class ControllerTest extends \lithium\test\Unit {
 		$result = $postsController->access('_render');
 		$this->assertEqual($expected, $result);
 
-		$result = $postsController->response->headers('Content-type');
+		$result = $postsController->response->headers('Content-Type');
 		$this->assertEqual('application/json; charset=UTF-8', $result);
 
 		$result = json_decode($postsController->response->body(), true);

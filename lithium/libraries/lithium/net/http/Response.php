@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -21,13 +21,6 @@ class Response extends \lithium\net\http\Message {
 	public $status = array('code' => 200, 'message' => 'OK');
 
 	/**
-	 * Headers.
-	 *
-	 * @var array
-	 */
-	public $headers = array();
-
-	/**
 	 * Content Type.
 	 *
 	 * @var string
@@ -40,13 +33,6 @@ class Response extends \lithium\net\http\Message {
 	 * @var string
 	 */
 	public $encoding = 'UTF-8';
-
-	/**
-	 * The body.
-	 *
-	 * @var array
-	 */
-	public $body = array();
 
 	/**
 	 * Status codes.
@@ -95,56 +81,56 @@ class Response extends \lithium\net\http\Message {
 		504 => 'Gateway Time-out'
 	);
 
-	protected function _init() {
-		parent::_init();
-		$body = $this->_config['body'];
-
-		if ($this->_config['body'] && !$this->_config['message']) {
-			$this->body = $this->_config['body'];
-		} elseif (($body = $this->_config['message']) && !$this->_config['body']) {
-			$body = $this->_parseMessage($body);
-		}
-
-		if (isset($this->headers['Content-Type'])) {
-			preg_match('/^(.*?);\s*?charset=(.+)/i', $this->headers['Content-Type'], $match);
-
-			if ($match) {
-				$this->type = trim($match[1]);
-				$this->encoding = strtoupper(trim($match[2]));
-			}
-		}
-		if (isset($this->headers['Transfer-Encoding'])) {
-			$body = $this->_decode($body);
-		}
-		$this->body = $this->body ?: $body;
+	/**
+	 * Adds config values to the public properties when a new object is created.
+	 *
+	 * @param array $config
+	 */
+	public function __construct(array $config = array()) {
+		$defaults = array('message' => null);
+		$config += $defaults;
+		parent::__construct($config);
 	}
 
 	/**
-	 * Accepts an entire HTTP message including headers and body, and parses it into a message body
-	 * an array of headers, and the HTTP status.
+	 * Initialize the Response
 	 *
-	 * @param string $body The full body of the message.
-	 * @return After parsing out other message components, returns just the message body.
+	 * @return void
 	 */
-	protected function _parseMessage($body) {
-		if (!($parts = explode("\r\n\r\n", $body, 2)) || count($parts) == 1) {
-			return $body;
-		}
-		list($headers, $body) = $parts;
-		$headers = str_replace("\r", "", explode("\n", $headers));
+	protected function _init() {
+		parent::_init();
 
-		if (array_filter($headers) == array()) {
-			return $body;
+		if ($this->_config['message']) {
+			$this->body = $this->_parseMessage($this->_config['message']);
 		}
-		preg_match('/HTTP\/(\d+\.\d+)\s+(\d+)\s+(.*)/i', array_shift($headers), $match);
-		$this->headers($headers);
+		if (isset($this->headers['Transfer-Encoding'])) {
+			$this->body = $this->_httpChunkedDecode($this->body);
+		}
+		if (isset($this->headers['Content-Type'])) {
+			$pattern = '/([-\w\/+]+)(;\s*?charset=(.+))?/i';
+			preg_match($pattern, $this->headers['Content-Type'], $match);
 
-		if (!$match) {
-			return $body;
+			if (isset($match[1])) {
+				$this->type = trim($match[1]);
+				$this->body = $this->_decode($this->body);
+			}
+			if (isset($match[3])) {
+				$this->encoding = strtoupper(trim($match[3]));
+			}
 		}
-		list($line, $this->version, $code, $message) = $match;
-		$this->status = compact('code', 'message') + $this->status;
-		$this->protocol = "HTTP/{$this->version}";
+	}
+
+	/**
+	 * Decodes the body based on the type
+	 *
+	 * @param string $body
+	 * @return mixed
+	 */
+	protected function _decode($body) {
+		$media = $this->_classes['media'];
+		if ($type = $media::type($this->_type)) {
+			$body = $media::decode($this->_type, $body) ?: $body;
+		}
 		return $body;
 	}
 
@@ -182,17 +168,55 @@ class Response extends \lithium\net\http\Message {
 	}
 
 	/**
-	* Return the response as a string.
-	*
-	* @return string
-	*/
-	public function __toString() {
-		if ($this->type != 'text/html' && !isset($this->headers['Content-Type'])) {
-			$this->headers['Content-Type'] = $this->type;
+	 * Looks at the WWW-Authenticate. Will return array of key/values if digest.
+	 *
+	 * @param string $header value of WWW-Authenticate
+	 * @return array
+	 */
+	public function digest() {
+		if (empty($this->headers['WWW-Authenticate'])) {
+			return array();
 		}
-		$first = "{$this->protocol} {$this->status['code']} {$this->status['message']}";
-		$response = array($first, join("\r\n", $this->headers()), "", $this->body());
-		return join("\r\n", $response);
+		$header = $this->headers['WWW-Authenticate'];
+		$params = array('realm' => 1, 'qop' => 1, 'nonce' => 1, 'opaque' => 1);
+		$keys = implode('|', array_keys($params));
+		$regex = '@(' . $keys . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@';
+		preg_match_all($regex, $header, $matches, PREG_SET_ORDER);
+		$result = array();
+
+		foreach ($matches as $m) {
+			$results[$m[1]] = $m[3] ? $m[3] : $m[4];
+		}
+		return $results;
+	}
+
+	/**
+	 * Accepts an entire HTTP message including headers and body, and parses it into a message body
+	 * an array of headers, and the HTTP status.
+	 *
+	 * @param string $body The full body of the message.
+	 * @return After parsing out other message components, returns just the message body.
+	 */
+	protected function _parseMessage($body) {
+		if (!($parts = explode("\r\n\r\n", $body, 2)) || count($parts) == 1) {
+			return trim($body);
+		}
+		list($headers, $body) = $parts;
+		$headers = str_replace("\r", "", explode("\n", $headers));
+
+		if (array_filter($headers) == array()) {
+			return trim($body);
+		}
+		preg_match('/HTTP\/(\d+\.\d+)\s+(\d+)\s+(.*)/i', array_shift($headers), $match);
+		$this->headers($headers);
+
+		if (!$match) {
+			return trim($body);
+		}
+		list($line, $this->version, $code, $message) = $match;
+		$this->status = compact('code', 'message') + $this->status;
+		$this->protocol = "HTTP/{$this->version}";
+		return $body;
 	}
 
 	/**
@@ -204,13 +228,27 @@ class Response extends \lithium\net\http\Message {
 	*         `Transfer-Encoding` header is set to `'chunked'`. Otherwise, returns `$body`
 	*         unmodified.
 	*/
-	protected function _decode($body) {
+	protected function _httpChunkedDecode($body) {
 		if (stripos($this->headers['Transfer-Encoding'], 'chunked') === false) {
 			return $body;
 		}
 		$stream = fopen('data://text/plain,' . $body, 'r');
 		stream_filter_append($stream, 'dechunk');
-		return stream_get_contents($stream);
+		return trim(stream_get_contents($stream));
+	}
+
+	/**
+	* Return the response as a string.
+	*
+	* @return string
+	*/
+	public function __toString() {
+		if ($this->type != 'text/html' && !isset($this->headers['Content-Type'])) {
+			$this->headers['Content-Type'] = $this->type;
+		}
+		$first = "{$this->protocol} {$this->status['code']} {$this->status['message']}";
+		$response = array($first, join("\r\n", $this->headers()), "", $this->body());
+		return join("\r\n", $response);
 	}
 }
 

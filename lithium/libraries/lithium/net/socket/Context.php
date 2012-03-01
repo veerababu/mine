@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -41,10 +41,18 @@ class Context extends \lithium\net\Socket {
 	/**
 	 * Opens the socket and sets its timeout value.
 	 *
-	 * @return boolean Success.
+	 * @param array $options Update the config settings.
+	 * @return mixed Returns `false` if the socket configuration does not contain the
+	 *         `'scheme'` or `'host'` settings, or if configuration fails, otherwise returns a
+	 *         resource stream.
 	 */
-	public function open() {
+	public function open(array $options = array()) {
+		parent::open($options);
 		$config = $this->_config;
+
+		if (!$config['scheme'] || !$config['host']) {
+			return false;
+		}
 		$url = "{$config['scheme']}://{$config['host']}:{$config['port']}";
 		$context = array($config['scheme'] => array('timeout' => $this->_timeout));
 

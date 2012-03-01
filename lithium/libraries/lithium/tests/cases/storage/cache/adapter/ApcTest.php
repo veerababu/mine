@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -18,9 +18,7 @@ class ApcTest extends \lithium\test\Unit {
 	 * @return void
 	 */
 	public function skip() {
-		$extensionExists = extension_loaded('apc');
-		$message = 'The apc extension is not installed.';
-		$this->skipIf(!$extensionExists, $message);
+		$this->skipIf(!Apc::enabled(), 'APC is either not loaded or not enabled.');
 	}
 
 	public function setUp() {

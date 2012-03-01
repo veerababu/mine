@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -15,7 +15,7 @@ namespace lithium\storage\cache\adapter;
  * which abstracts away key generation, adapter instantiation and filter
  * implementation.
  *
- * A simple configuration of this adapter can be accomplished in `app/config/bootstrap.php`
+ * A simple configuration of this adapter can be accomplished in `config/bootstrap/cache.php`
  * as follows:
  *
  * {{{
@@ -40,7 +40,8 @@ namespace lithium\storage\cache\adapter;
 class Apc extends \lithium\core\Object {
 
 	/**
-	 * Class constructor
+	 * Class constructor.
+	 *
 	 * @param array $config
 	 */
 	public function __construct(array $config = array()) {

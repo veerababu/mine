@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/mit-license.php The MIT License
  */
 
@@ -186,6 +186,26 @@ class String {
 	}
 
 	/**
+	 * Compares two strings in constant time to prevent timing attacks.
+	 *
+	 * @link http://codahale.com/a-lesson-in-timing-attacks/ More about timing attacks.
+	 * @param string $left The left side of the comparison.
+	 * @param string $right The right side of the comparison.
+	 * @return boolean Returns a boolean indicating whether the two strings are equal.
+	 */
+	public static function compare($left, $right) {
+		$result = true;
+
+		if (($length = strlen($left)) != strlen($right)) {
+			return false;
+		}
+		for ($i = 0; $i < $length; $i++) {
+			$result = $result && ($left[$i] === $right[$i]);
+		}
+		return $result;
+	}
+
+	/**
 	 * Replaces variable placeholders inside a string with any given data. Each key
 	 * in the `$data` array corresponds to a variable placeholder name in `$str`.
 	 *
@@ -239,6 +259,15 @@ class String {
 			$replace = array();
 
 			foreach ($data as $key => $value) {
+				$value = (is_array($value) || $value instanceof Closure) ? '' : $value;
+
+				try {
+					if (is_object($value) && method_exists($value, '__toString')) {
+						$value = (string) $value;
+					}
+				} catch (Exception $e) {
+					$value = '';
+				}
 				$replace["{$options['before']}{$key}{$options['after']}"] = $value;
 			}
 			$str = strtr($str, $replace);
@@ -263,17 +292,7 @@ class String {
 				continue;
 			}
 			$str = preg_replace($key, $hashVal, $str);
-
-			if (is_object($value) && !$value instanceof Closure) {
-				try {
-					$value = $value->__toString();
-				} catch (Exception $e) {
-					$value = '';
-				}
-			}
-			if (!is_array($value)) {
-				$str = str_replace($hashVal, $value, $str);
-			}
+			$str = str_replace($hashVal, $value, $str);
 		}
 
 		if (!isset($options['format']) && isset($options['before'])) {

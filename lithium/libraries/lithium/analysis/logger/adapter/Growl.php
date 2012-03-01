@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -176,7 +176,7 @@ class Growl extends \lithium\core\Object {
 	/**
 	 * Growl server connection registration and initialization.
 	 *
-	 * @return void
+	 * @return boolean True
 	 */
 	protected function _register() {
 		if ($this->_registered) {
@@ -197,7 +197,7 @@ class Growl extends \lithium\core\Object {
 		$data .= $checksum;
 
 		$this->_send($data);
-		$this->_registered = true;
+		return $this->_registered = true;
 	}
 
 	/**
@@ -235,8 +235,6 @@ class Growl extends \lithium\core\Object {
 
 	/**
 	 * Destructor method. Closes and releases the socket connection to Growl.
-	 *
-	 * @return void
 	 */
 	public function __destruct() {
 		if (is_resource($this->_connection)) {

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -50,15 +50,22 @@ class EntityTest extends \lithium\test\Unit {
 
 		$this->assertFalse(isset($entity->bar));
 		$entity->bar = 'blah';
-		$entity->update();
+		$entity->sync();
 
 		$this->expectException("/^Field 'bar' cannot be incremented.$/");
 		$entity->increment('bar');
 	}
 
 	public function testMethodDispatch() {
-		$entity = new Entity(array('model' => $this->_model, 'data' => array('foo' => true)));
+		$model = $this->_model;
+		$entity = new Entity(array('model' => $model, 'data' => array('foo' => true)));
 		$this->assertTrue($entity->validates());
+
+		$model::instanceMethods(array(
+			'testInstanceMethod' => function($entity) { return 'testInstanceMethod'; }
+		));
+		$this->assertEqual('testInstanceMethod', $entity->testInstanceMethod($entity));
+
 		$this->expectException("/^No model bound or unhandled method call `foo`.$/");
 		$entity->foo();
 	}
@@ -80,6 +87,16 @@ class EntityTest extends \lithium\test\Unit {
 		$this->assertEqual($data, $entity->to('array'));
 		$this->assertEqual($data, $entity->data());
 		$this->assertEqual($entity, $entity->to('foo'));
+	}
+
+	public function testModified() {
+		$entity = new Entity();
+
+		$this->assertEqual(array(), $entity->modified());
+
+		$data = array('foo' => 'bar', 'baz' => 'dib');
+		$entity->set($data);
+		$this->assertEqual(array('foo' => true, 'baz' => true), $entity->modified());
 	}
 }
 

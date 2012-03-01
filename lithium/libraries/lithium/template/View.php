@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -50,7 +50,7 @@ use lithium\template\TemplateException;
  *
  *  _Note_: This is easily adapted for XML templating.
  *
- * Another example, this time of something that could be used in an appliation
+ * Another example, this time of something that could be used in an application
  * error handler:
  *
  * {{{
@@ -193,8 +193,9 @@ class View extends \lithium\core\Object {
 	 *            templates. Defaults to `File`.
 	 *          - `'renderer'` _mixed_: Populates the view/layout with the data set from the
 	 *            controller. Defaults to `'File'`.
-	 *          - `request`: The request object to be made available in the view. Defaults to `null`.
-	 *          - `vars`: Defaults to `array()`.
+	 *          - `'request'`: The request object to be made available in the view.
+	 *            Defaults to `null`.
+	 *          - `'vars'`: Defaults to `array()`.
 	 */
 	public function __construct(array $config = array()) {
 		$defaults = array(
@@ -287,12 +288,14 @@ class View extends \lithium\core\Object {
 	}
 
 	/**
-	 * @filter
+	 * Performs a rendering step.
+	 *
 	 * @param array $step
 	 * @param array $params
 	 * @param array $data associative array for template data.
 	 * @param array $options
-	 * @return _renderer.render
+	 * @return string
+	 * @filter
 	 */
 	protected function _step(array $step, array $params, array &$data, array &$options = array()) {
 		$step += array('path' => null, 'capture' => null);

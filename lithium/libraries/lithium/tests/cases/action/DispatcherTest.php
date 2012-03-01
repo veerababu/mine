@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -43,6 +43,27 @@ class DispatcherTest extends \lithium\test\Unit {
 	public function testRunWithNoRouting() {
 		$this->expectException('/Could not route request/');
 		MockDispatcher::run(new Request(array('url' => '/')));
+	}
+
+	/**
+	 * Tests that POST requests to the / URL work as expected.
+	 *
+	 * This test belongs to the issue that POST requests (like submitting forms) to the /
+	 * URL don't work as expected, because they immediately get redirected to the same URL but
+	 * as GET requests (with no data attached to it). It veryfies that the Lithium dispatcher
+	 * works as expected and returns the correct controller/action combination.
+	 *
+	 * @return void
+	 */
+	public function testRunWithPostRoot() {
+		Router::connect('/', array('controller' => 'test', 'action' => 'test'));
+		$request = new Request(array('url' => '/', 'env' => array(
+			'REQUEST_METHOD' => 'POST'
+		)));
+		MockDispatcher::run($request);
+		$expected = array('controller' => 'Test', 'action' => 'test');
+		$result = end(MockDispatcher::$dispatched);
+		$this->assertEqual($expected, $result->params);
 	}
 
 	public function testApplyRulesControllerCasing() {

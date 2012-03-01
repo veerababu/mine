@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -19,7 +19,7 @@ use lithium\util\Set;
  * which abstracts away key generation, adapter instantiation and filter
  * implementation.
  *
- * A simple configuration of this adapter can be accomplished in `app/config/bootstrap/cache.php`
+ * A simple configuration of this adapter can be accomplished in `config/bootstrap/cache.php`
  * as follows:
  *
  * {{{

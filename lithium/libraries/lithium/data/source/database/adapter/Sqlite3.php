@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  *
  */
@@ -178,16 +178,16 @@ class Sqlite3 extends \lithium\data\source\Database {
 	 */
 	public function describe($entity, array $meta = array()) {
 		$params = compact('entity', 'meta');
-		$columns = &$this->_regex;
-		return $this->_filter(__METHOD__, $params, function($self, $params) use ($columns) {
+		$regex = $this->_regex;
+		return $this->_filter(__METHOD__, $params, function($self, $params) use ($regex) {
 			extract($params);
 
-			$name = $self->invokeMethod('_entityName', array($entity));
+			$name = $self->invokeMethod('_entityName', array($entity, array('quoted' => true)));
 			$columns = $self->read("PRAGMA table_info({$name})", array('return' => 'array'));
 			$fields = array();
 
 			foreach ($columns as $column) {
-				preg_match("/{$columns['column']}/", $column['type'], $matches);
+				preg_match("/{$regex['column']}/", $column['type'], $matches);
 
 				$fields[$column['name']] = array(
 					'type' => isset($matches['type']) ? $matches['type'] : null,

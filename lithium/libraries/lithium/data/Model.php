@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -27,7 +27,7 @@ use BadMethodCallException;
  * static `find()` method, along with some additional utility methods provided for convenience.
  *
  * Classes extending this one should, conventionally, be named as Plural, CamelCase and be
- * placed in the `app/models` directory. i.e. a posts model would be `app/model/Posts.php`.
+ * placed in the `models` directory. i.e. a posts model would be `model/Posts.php`.
  *
  * Examples:
  * {{{
@@ -295,10 +295,17 @@ class Model extends \lithium\core\StaticObject {
 	protected static $_baseClasses = array(__CLASS__ => true);
 
 	/**
+	 * Stores all custom instance methods created by `Model::instanceMethods`.
+	 *
+	 * @var array
+	 */
+	protected static $_instanceMethods = array();
+
+	/**
 	 * Sets default connection options and connects default finders.
 	 *
 	 * @param array $options
-	 * @todo Merge in inherited config from AppModel and other parent classes.
+	 * @return void
 	 */
 	public static function __init() {
 		static::config();
@@ -491,15 +498,21 @@ class Model extends \lithium\core\StaticObject {
 		if (is_array($key)) {
 			$self->_meta = $key + $self->_meta;
 		}
+
 		if (!$self->_meta['initialized']) {
 			$self->_meta['initialized'] = true;
+
 			if ($self->_meta['source'] === null) {
 				$self->_meta['source'] = Inflector::tableize($self->_meta['name']);
 			}
-			$titleKeys = array('title', 'name', $self->_meta['key']);
+			$titleKeys = array('title', 'name');
+
+			if (isset($self->_meta['key'])) {
+				$titleKeys = array_merge($titleKeys, (array) $self->_meta['key']);
+			}
 			$self->_meta['title'] = $self->_meta['title'] ?: static::hasField($titleKeys);
 		}
-		if (is_array($key) || empty($key) || !empty($value)) {
+		if (is_array($key) || !$key || $value) {
 			return $self->_meta;
 		}
 		return isset($self->_meta[$key]) ? $self->_meta[$key] : null;
@@ -661,7 +674,6 @@ class Model extends \lithium\core\StaticObject {
 	 * @filter
 	 */
 	public static function create(array $data = array(), array $options = array()) {
-		$self = static::_object();
 		$params = compact('data', 'options');
 
 		return static::_filter(__FUNCTION__, $params, function($self, $params) {
@@ -677,6 +689,31 @@ class Model extends \lithium\core\StaticObject {
 			$data = Set::merge(Set::expand($defaults), $data);
 			return $self::connection()->item($self, $data, $options);
 		});
+	}
+
+	/**
+	 * Getter and setter for custom instance methods. This is used in `Entity::__call`.
+	 *
+	 * {{{
+	 * Model::instanceMethods(array(
+	 *     'method_name' => array('Class', 'method'),
+	 *     'another_method' => array($object, 'method'),
+	 *     'closure_callback' => function($entity) {}
+	 * ));
+	 * }}}
+	 *
+	 * @param array $methods
+	 * @return array
+	 */
+	public static function instanceMethods(array $methods = null) {
+		$class = get_called_class();
+		if (!isset(static::$_instanceMethods[$class])) {
+			static::$_instanceMethods[$class] = array();
+		}
+		if (!is_null($methods)) {
+			static::$_instanceMethods[$class] = $methods + static::$_instanceMethods[$class];
+		}
+		return static::$_instanceMethods[$class];
 	}
 
 	/**
@@ -731,6 +768,10 @@ class Model extends \lithium\core\StaticObject {
 	 *          be immediately saved. Defaults to `true`. May also be specified as an array, in
 	 *          which case it will replace the default validation rules specified in the
 	 *         `$validates` property of the model.
+	 *        - `'events'` _mixed_: A string or array defining one or more validation _events_.
+	 *          Events are different contexts in which data events can occur, and correspond to the
+	 *          optional `'on'` key in validation rules. They will be passed to the validates()
+	 *          method if `'validate'` is not `false`.
 	 *        - `'whitelist'` _array_: An array of fields that are allowed to be saved to this
 	 *          record.
 	 *
@@ -744,6 +785,7 @@ class Model extends \lithium\core\StaticObject {
 
 		$defaults = array(
 			'validate' => true,
+			'events' => $entity->exists() ? 'update' : 'create',
 			'whitelist' => null,
 			'callbacks' => true,
 			'locked' => $self->_meta['locked']
@@ -759,7 +801,9 @@ class Model extends \lithium\core\StaticObject {
 				$entity->set($params['data']);
 			}
 			if ($rules = $options['validate']) {
-				if (!$entity->validates(is_array($rules) ? compact('rules') : array())) {
+				$events = $options['events'];
+				$validateOpts = is_array($rules) ? compact('rules','events') : compact('events');
+				if (!$entity->validates($validateOpts)) {
 					return false;
 				}
 			}
@@ -856,7 +900,6 @@ class Model extends \lithium\core\StaticObject {
 	 * @filter
 	 */
 	public function delete($entity, array $options = array()) {
-		$self = static::_object();
 		$params = compact('entity', 'options');
 
 		return static::_filter(__FUNCTION__, $params, function($self, $params) {
@@ -884,7 +927,6 @@ class Model extends \lithium\core\StaticObject {
 	 * @filter
 	 */
 	public static function update($data, $conditions = array(), array $options = array()) {
-		$self = static::_object();
 		$params = compact('data', 'conditions', 'options');
 
 		return static::_filter(__FUNCTION__, $params, function($self, $params) {
@@ -911,7 +953,6 @@ class Model extends \lithium\core\StaticObject {
 	 * @filter
 	 */
 	public static function remove($conditions = array(), array $options = array()) {
-		$self = static::_object();
 		$params = compact('conditions', 'options');
 
 		return static::_filter(__FUNCTION__, $params, function($self, $params) {

@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -15,7 +15,7 @@ use lithium\util\collection\Filters;
 /**
  * Logger adapter integration test cases
  */
-class LoggerTest extends \lithium\test\Unit {
+class LoggerTest extends \lithium\test\Integration {
 
 	public function testWriteFilter() {
 
@@ -27,7 +27,9 @@ class LoggerTest extends \lithium\test\Unit {
 			return $chain->next($self, $params, $chain);
 		});
 
-		$config = array('default' => array('adapter' => 'File', 'timestamp' => false));
+		$config = array('default' => array(
+			'adapter' => 'File', 'timestamp' => false,	'format' => "{:message}\n"
+		));
 		Logger::config($config);
 
 		$result = Logger::write('info', 'Original Message');

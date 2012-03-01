@@ -40,14 +40,14 @@ use lithium\data\Connections;
 /**
  * Uncomment this configuration to use MongoDB as your default database.
  */
- /*
+
 Connections::add('default', array(
 'type' => 'MongoDb',
  	'host' => 'localhost',
  	'database' => 'bravo'
  ));
-*/
 
+/*
 Connections::add('default', array(
 'type' => 'MongoDb',
  	'host' => 'ds031107.mongolab.com:31107',
@@ -55,7 +55,7 @@ Connections::add('default', array(
  	'login' => '1a57cc30',
  	'password' => 'qg29lt9nj79voemncnopi52olm'
  ));
- 
+ */
 /**
  * Uncomment this configuration to use CouchDB as your default database.
  */

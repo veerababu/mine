@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -93,11 +93,12 @@ abstract class Collection extends \lithium\util\Collection {
 	 * @var array
 	 */
 	protected $_autoConfig = array(
-		'data', 'model', 'result', 'query', 'parent', 'stats', 'pathKey'
+		'data', 'model', 'result', 'query', 'parent', 'stats', 'pathKey', 'schema'
 	);
 
 	/**
-	 * Class constructor
+	 * Class constructor.
+	 *
 	 * @param array $config
 	 */
 	public function __construct(array $config = array()) {
@@ -142,6 +143,15 @@ abstract class Collection extends \lithium\util\Collection {
 	 */
 	public function model() {
 		return $this->_model;
+	}
+
+	/**
+	 * Returns the object's parent `Document` object.
+	 *
+	 * @return object
+	 */
+	public function parent() {
+		return $this->_parent;
 	}
 
 	public function schema($field = null) {
@@ -247,6 +257,40 @@ abstract class Collection extends \lithium\util\Collection {
 	}
 
 	/**
+	 * Sorts the objects in the collection, useful in situations where
+	 * you are already using the underlying datastore to sort results.
+	 *
+	 * Overriden to load any data that has not yet been loaded.
+	 *
+	 * @param mixed $field The field to sort the data on, can also be a callback
+	 * to a custom sort function.
+	 * @param array $options The available options are:
+	 *              - No options yet implemented
+	 * @return $this, useful for chaining this with other methods.
+	 */
+	public function sort($field = 'id', array $options = array()) {
+		$this->offsetGet(null);
+
+		if (is_string($field)) {
+			$sorter = function ($a, $b) use ($field) {
+				if (is_array($a)) {
+					$a = (object) $a;
+				}
+
+				if (is_array($b)) {
+					$b = (object) $b;
+				}
+
+				return strcmp($a->$field, $b->$field);
+			};
+		} else if (is_callable($field)) {
+			$sorter = $field;
+		}
+
+		return parent::sort($sorter, $options);
+	}
+
+	/**
 	 * Converts the current state of the data structure to an array.
 	 *
 	 * @return array Returns the array value of the data in this `Collection`.
@@ -270,6 +314,17 @@ abstract class Collection extends \lithium\util\Collection {
 			$data->assignTo($this);
 		}
 		return $this->_data[] = $data;
+	}
+
+	/**
+	 * Return's the pointer or resource that is used to load entities from the backend
+	 * data source that originated this collection. This is useful in many cases for
+	 * additional methods related to debugging queries.
+	 *
+	 * @return object The pointer or resource from the data source
+	*/
+	public function result() {
+		return $this->_result;
 	}
 
 	/**

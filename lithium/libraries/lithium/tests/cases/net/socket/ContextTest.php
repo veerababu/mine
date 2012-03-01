@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -23,10 +23,9 @@ class ContextTest extends \lithium\test\Unit {
 		'classes' => array('request' => 'lithium\net\http\Request')
 	);
 
-	protected $_testUrl = 'http://google.com';
-
 	public function skip() {
-		$this->skipIf(dns_check_record("google.com") === false, "No internet connection.");
+		$message = "No internet connection established.";
+		$this->skipIf(!$this->_hasNetwork($this->_testConfig), $message);
 	}
 
 	public function testConstruct() {
@@ -69,7 +68,7 @@ class ContextTest extends \lithium\test\Unit {
 	}
 
 	public function testMessageInConfig() {
-		$socket = new Context(array('message' => new Request()));
+		$socket = new Context(array('message' => new Request($this->_testConfig)));
 		$this->assertTrue(is_resource($socket->open()));
 	}
 

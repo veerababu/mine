@@ -2,7 +2,7 @@
 /**
  * Lithium: the most rad php framework
  *
- * @copyright     Copyright 2011, Union of RAD (http://union-of-rad.org)
+ * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
 
@@ -12,12 +12,12 @@ use lithium\g11n\Catalog;
 use lithium\g11n\catalog\adapter\Memory;
 use lithium\util\Inflector;
 
-class CatalogInflectorTest extends \lithium\test\Unit {
+class CatalogInflectorTest extends \lithium\test\Integration {
 
-	protected $_backups = array();
+	protected $_backup = array();
 
 	public function setUp() {
-		$this->_backups['catalogConfig'] = Catalog::config();
+		$this->_backup['catalogConfig'] = Catalog::config();
 		Catalog::reset();
 		Catalog::config(array(
 			'runtime' => array('adapter' => new Memory())
@@ -27,7 +27,7 @@ class CatalogInflectorTest extends \lithium\test\Unit {
 
 	public function tearDown() {
 		Catalog::reset();
-		Catalog::config($this->_backups['catalogConfig']);
+		Catalog::config($this->_backup['catalogConfig']);
 	}
 
 	public function testTransliteration() {
