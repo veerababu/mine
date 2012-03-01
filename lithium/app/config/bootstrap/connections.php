@@ -62,13 +62,25 @@ use lithium\core\Environment;
 	 	'password' => 'qg29lt9nj79voemncnopi52olm'
     )
 );
-*/
-echo("HI".Environment::get()."<br>");
 
+annoyingly: 
 if(Environment::is('production'))
-{
+wasn't working either
+give up on being fancy below
+*/
 
+if($_SERVER['SERVER_ADDR']=='127.0.0.1')
+{
 Connections::add('default', array(
+	
+        'type' => 'MongoDb',
+ 		'host' => 'localhost',
+        'database' => 'bravo'
+ ));
+
+}else
+{
+	Connections::add('default', array(
 	
         'type' => 'MongoDb',
  		'host' => 'ds031107.mongolab.com:31107',
@@ -76,14 +88,6 @@ Connections::add('default', array(
 	 	'login' => '1a57cc30',
 	 	'password' => 'qg29lt9nj79voemncnopi52olm'
     
- ));
-}else
-{
-	Connections::add('default', array(
-	
-        'type' => 'MongoDb',
- 		'host' => 'localhost',
-        'database' => 'bravo'
  ));
 }
 
