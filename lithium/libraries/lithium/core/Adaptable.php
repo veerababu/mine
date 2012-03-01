@@ -106,6 +106,7 @@ class Adaptable extends \lithium\core\StaticObject {
 	 * @return object Adapter object.
 	 */
 	public static function adapter($name = null) {
+		
 		$config = static::_config($name);
 
 		if ($config === null) {
@@ -113,12 +114,18 @@ class Adaptable extends \lithium\core\StaticObject {
 		}
 
 		if (isset($config['object'])) {
+			
 			return $config['object'];
 		}
+	
 		$class = static::_class($config, static::$_adapters);
+	
 		$settings = static::$_configurations[$name];
+	
 		$settings[0]['object'] = static::_initAdapter($class, $config);
+		
 		static::$_configurations[$name] = $settings;
+	
 		return static::$_configurations[$name][0]['object'];
 	}
 
@@ -234,6 +241,9 @@ class Adaptable extends \lithium\core\StaticObject {
 	 * @return string Returns a fully-namespaced class reference to the adapter class.
 	 */
 	protected static function _class($config, $paths = array()) {
+		
+		//$name='default';
+		
 		if (!$name = $config['adapter']) {
 			$self = get_called_class();
 			throw new ConfigException("No adapter set for configuration in class `{$self}`.");

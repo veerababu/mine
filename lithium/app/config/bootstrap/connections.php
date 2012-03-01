@@ -36,47 +36,54 @@
  * @see lithium\core\Environment
  */
 use lithium\data\Connections;
+use lithium\core\Environment;
 
-/**
- * Uncomment this configuration to use MongoDB as your default database.
- */
+
+/*  This is crashing for some reason? http://nitschinger.at/Using-Environments-in-Lithium
+ * so doing the manual way below
+ Connections::add('default',
+    'development' => array(
+        'type' => 'MongoDb',
+        'host' => 'localhost',
+        'database' => 'bravo'
+    ),
+    
+    'test' => array(
+        'type' => 'MongoDb',
+        'host' => 'localhost',
+        'database' => 'bravo'
+    ),
+    
+    'production' => array(
+        'type' => 'MongoDb',
+ 		'host' => 'ds031107.mongolab.com:31107',
+	 	'database' => 'orchestra_1a57cc30_571a0',
+	 	'login' => '1a57cc30',
+	 	'password' => 'qg29lt9nj79voemncnopi52olm'
+    )
+);
+*/
+
+if(Environment::is('production'))
+{
 
 Connections::add('default', array(
-'type' => 'MongoDb',
- 	'host' => 'localhost',
- 	'database' => 'bravo'
+	
+        'type' => 'MongoDb',
+ 		'host' => 'ds031107.mongolab.com:31107',
+	 	'database' => 'orchestra_1a57cc30_571a0',
+	 	'login' => '1a57cc30',
+	 	'password' => 'qg29lt9nj79voemncnopi52olm'
+    
  ));
-
-/*
-Connections::add('default', array(
-'type' => 'MongoDb',
- 	'host' => 'ds031107.mongolab.com:31107',
- 	'database' => 'orchestra_1a57cc30_571a0',
- 	'login' => '1a57cc30',
- 	'password' => 'qg29lt9nj79voemncnopi52olm'
+}else
+{
+	Connections::add('default', array(
+	
+        'type' => 'MongoDb',
+ 		'host' => 'localhost',
+        'database' => 'bravo'
  ));
- */
-/**
- * Uncomment this configuration to use CouchDB as your default database.
- */
-// Connections::add('default', array(
-// 	'type' => 'http',
-// 	'adapter' => 'CouchDb',
-// 	'host' => 'localhost',
-// 	'database' => 'my_app'
-// ));
-
-/**
- * Uncomment this configuration to use MySQL as your default database.
- */
-// Connections::add('default', array(
-// 	'type' => 'database',
-// 	'adapter' => 'MySql',
-// 	'host' => 'localhost',
-// 	'login' => 'root',
-// 	'password' => '',
-// 	'database' => 'my_app',
-// 	'encoding' => 'UTF-8'
-// ));
+}
 
 ?>

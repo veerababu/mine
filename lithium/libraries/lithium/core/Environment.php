@@ -278,6 +278,7 @@ class Environment {
 	protected static function _detector() {
 		return static::$_detector ?: function($request) {
 			$isLocal = in_array($request->env('SERVER_ADDR'), array('::1', '127.0.0.1'));
+			
 			switch (true) {
 				case (isset($request->env)):
 					return $request->env;
