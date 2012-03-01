@@ -42,6 +42,7 @@ class UsersController extends \lithium\action\Controller
     {
         if($this->request->data) 
         {
+        	
         	if(Auth::check('user', $this->request))
         	{
         		//print_r(Session::read());

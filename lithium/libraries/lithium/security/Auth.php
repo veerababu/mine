@@ -104,6 +104,7 @@ class Auth extends \lithium\core\Adaptable {
 	 *         storage backend used by the configured adapter.
 	 * @filter
 	 */
+	
 	public static function check($name, $credentials = null, array $options = array()) {
 		$defaults = array('checkSession' => true, 'writeSession' => true);
 		$options += $defaults;
