@@ -63,6 +63,7 @@ use lithium\core\Environment;
     )
 );
 */
+echo("HI".Environment::get()."<br>");
 
 if(Environment::is('production'))
 {
