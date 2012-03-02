@@ -35,7 +35,7 @@ function addImage(photoIndex,photoID,caption)
 {
 	photos[photoIndex]=true;
 		
-	var photoStr='<div id="div'+photoIndex+'"><img src="/image/view/'+photoID+'.jpg?1" />' +
+	var photoStr='<div id="div'+photoIndex+'"><img src="/image/view/'+photoID+'" />' +
 	             'Caption: <input id="caption'+photoIndex+'" name="caption'+photoIndex+'" type="text" value="'+caption+'" /><input type="button" value="Remove this Image" class="btn-danger" onClick=deleteImage("'+photoIndex+'") />' +
 	             ' <input type="hidden" id="photo'+photoIndex+'" name="photo'+photoIndex+'" value="'+photoID+'" /></div>';
 	            
