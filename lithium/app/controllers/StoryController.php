@@ -21,7 +21,7 @@ class qqUploadedFileXhr {
      */
      function save($author,$name) 
     {    
-    	$tmp_name = tempnam("/tmp", "FOO");
+    	$tmp_name = tempnam(sys_get_temp_dir(), "FOO");
 
 		$temp = fopen($tmp_name, "w");
 
