@@ -24,11 +24,12 @@ class StoriesController extends \lithium\action\Controller
     {
     	if($username)
     	{
-    		$stories = Story::all( array( 'author' => $username , 'status' => 'accepted' ) );
+    		$stories = Story::find('all',array('conditions' =>  array( 'author' => $username , 'status' => 'accepted' )) );
     	}else
     	{
     		$username=Session::read('user.username');
-    		$stories = Story::all( array( 'author' => $username ) );
+    		//echo($username);
+    		$stories = Story::find('all', array('conditions' => array( 'author' => $username ) ) );
         }
     	
     	$this->render(array('json' => compact('stories')));

@@ -110,7 +110,7 @@ function createStoryStr(story)
 		var pStr='photo'+n;
 		if(story[pStr])
 		{
-			str = str + '<div class="photo"><p><img src="/image/view/'+story[pStr]+'.jpg" /><p>' +
+			str = str + '<div class="photo"><p><img src="/image/view/'+story[pStr]+'.jpg?1" /><p>' +
 					story['caption'+n]+'</div>';
 		}
 	}

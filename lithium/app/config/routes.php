@@ -16,6 +16,7 @@
  * @see lithium\net\http\Router
  * @see lithium\net\http\Route
  */
+
  
 
 
@@ -23,9 +24,24 @@ use lithium\net\http\Router;
 use lithium\core\Environment;
 use lithium\action\Response;
 use app\models\Image;
+//use lithium\storage\Session;
 
 
-Router::connect('/image/view/{:id:[0-9a-f]{24}}.jpg', array(), function($request) {
+Router::connect('/image/view/{:id:[0-9a-f]{24}}.jpg', array(), function($request) 
+{
+	//Session::write('message','Image');
+	
+	return new Response(array(
+		'headers' => array('Content-type' => 'image/jpeg'),
+		'body' => Image::first($request->id)->file->getBytes()
+	));
+});
+
+// TODO: hack till orchestra gets it together
+Router::connect('/image/view/{:id:[0-9a-f]{24}}', array(), function($request) 
+{
+	//Session::write('message','Image');
+	
 	return new Response(array(
 		'headers' => array('Content-type' => 'image/jpeg'),
 		'body' => Image::first($request->id)->file->getBytes()

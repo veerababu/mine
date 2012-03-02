@@ -310,7 +310,7 @@ class StoryController extends \lithium\action\Controller
     			
     			$status="Saved.";
     			// TODO: we only need some of this data
-				$stories = Story::all( array( 'username' => $username ) );
+				$stories = Story::all(array('conditions' =>  array( 'username' => $username )));
 	    	 	// update the stories list
 	    	 	$this->render(array('json' => compact('status','story','stories')));
     		}else

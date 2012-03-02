@@ -4,7 +4,7 @@
 
 
 
-<?=$this->html->image("/image/view/{$photo->_id}.jpg", array('alt' => $photo->title)); ?>
+<?=$this->html->image("/image/view/{$photo->_id}.jpg?1", array('alt' => $photo->title)); ?>
 
 <?php foreach ($photo->tags as $tag): ?>
 	<?=$this->html->link($tag, array('Image::index', 'args' => array($tag))); ?>

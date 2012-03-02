@@ -3,7 +3,7 @@
 <?php endif ?>
 
 <?php foreach ($photos as $photo): ?>
-	<?=$this->html->image("/image/view/{$photo->_id}.jpg", array('width'=> 100)); ?>
+	<?=$this->html->image("/image/view/{$photo->_id}.jpg?1", array('width'=> 100)); ?>
 	<?=$this->html->link($photo->title, array('Image::view', 'id' => "{$photo->_id}")); ?>
 	
 	<?=$photo->title ?>

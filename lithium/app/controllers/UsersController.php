@@ -46,7 +46,7 @@ class UsersController extends \lithium\action\Controller
         	if(Auth::check('user', $this->request))
         	{
         		//print_r(Session::read());
-        		Session::write('message',Session::read('user.role'));
+        		//Session::write('message',Session::read('user.role'));
             	return $this->redirect('/');
         	}else  Session::write('message', 'Login Failed');
         	
