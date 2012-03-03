@@ -101,24 +101,7 @@ function parseBBCode(text)
 
 function createStoryStr(story)
 {
-	var str='<div class="story"> <h2><a href="/story/view/'+story.title+'">'+story.title+'</a></h2>';
-	str += 	'<div class="row byline">by <a href="/users/profile/'+story.author+'">'+story.author+'</a></div>';
-	
-	str += '<div class="row photorow">';
-	for(n=0; n<5; n++) 
-	{
-		var pStr='photo'+n;
-		if(story[pStr])
-		{
-			str = str + '<div class="photo"><p><img src="/image/view/'+story[pStr]+'" /><p>' +
-					story['caption'+n]+'</div>';
-		}
-	}
-	str += '</div>';
-	
-	str += 	parseBBCode(story.text);
-	
-	var tagStr='';
+	var tagStr='&nbsp;';
 	if(story.tags)
 	{
 		for(n=0; n<story.tags.length; n++)
@@ -127,11 +110,44 @@ function createStoryStr(story)
 		}
 	}
 	
-	str += '<div class="row"><div class="span2">'+tagStr+'</div><div class="address">'+story.address+'</div></div>';
 	
+	var str='<div class="story">';
+		str += '<div class="row storyHeader">';
+			str += '<div class="span4">'; // photo column
+				str += tagStr;
+			str += '</div>'; // end photoColumn
+			
+			str += '<div class="span5">'; // text column
+				str += '<div class="row">'; // title row
+					str += '<div class="span2 storyTitle"><a href="/story/view/'+story.title+'">'+story.title+'</a></div>';
+					str += '<div class="span2">by <a href="/users/profile/'+story.author+'">'+story.author+'</a></div>';
+				str += '</div>'; // end titlerow
+				
+				str += '<div class="row storyAddress">'; // address row
+					str+= '<div class="span2">'+story.address+'</div>';
+				str += '</div>'; // end address row
+			str += '</div>'; // end textColumn
+		str += '</div>'; // end storyHeader
 	
+		str += '<div class="row">'; // body
+			str += '<div class="span4">'; // photo column
+				for(n=0; n<5; n++) 
+				{
+					var pStr='photo'+n;
+					if(story[pStr])
+					{
+						str = str + '<div class="photo"><p><img src="/image/view/'+story[pStr]+'" /><p>' +
+								story['caption'+n]+'</div>';
+					}
+				}
+			str += '</div>'; // end photoColumn
+			
+			str += '<div class="span5">'; // text column
+				str += 	'<div class="storyText">'+parseBBCode(story.text)+'</div>';
+			str += '</div>'; // end textColumn
+		str += '</div>'; // end story body
 		
-	str += '</div>';
+	str += '</div>'; // end story
 	
 	return(str);	
 }

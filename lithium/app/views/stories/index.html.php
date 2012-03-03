@@ -226,7 +226,7 @@ function addStory(story)
 	
 	
 
-	<div class="span7 offset1">
+	<div class="span9">
 		<div id="storyList"></div>
 		
 		<div class="row">
