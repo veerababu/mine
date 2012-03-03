@@ -7,25 +7,20 @@
 	<?php echo $this->html->charset();?>
 	<title>Bravo Your City > <?php echo $this->title(); ?></title>
 	 <link href="/css/bootstrap.css" rel="stylesheet">
-	  <link href="/css/bravo.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
+	  <link href="/css/bravo.css?1" rel="stylesheet">
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
      <link href="/css/blitzer/jquery-ui.css" rel="stylesheet">
     
     <script src="/js/jquery.js"></script>
     <script src="/js/jquery-ui.js"></script>
     <script src="/js/bootstrap.js"></script>
-    <script src="/js/bravo.js?1"></script>
+    <script src="/js/bravo.js?2"></script>
     
 	
 	
 	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
 </head>
-<body data-offset="50" data-target=".subnav" data-spy="scroll" data-rendering="true">
+<body data-target=".subnav" data-spy="scroll" data-rendering="true">
     
 <?php
 $session_flash_message = $this->session->message();
@@ -46,40 +41,44 @@ $(document).ready(function()
 ?>     
           
 <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
+     
+        <div class="nav-menu">
+	        <table width="100%" ><tr>
+		        <td valign="bottom" style="padding-bottom: 10px;" width="40%">
+		         <span class="left">
+			          <a style="padding-left: 0px;" href="/stories">CITIES</a>
+			          <a href="/users/feed">FEED</a>
+			          <a href="/story/edit">SUBMIT!</a>
+			          <a href="/pages/faq">FAQ</a>
+			      </span>
+		        </td>
+		        <td>
+		        	<a href="/home"><img class="logo" src="/img/bravo_logo.png" /></a>
+		        </td>
+		        <td valign="bottom" style="padding-bottom: 10px;" width="40%" >
+		         <span class="right">
+			          <a href="/pages/about">ABOUT</a>
+			          <a href="/pages/50">50%</a>
+			          <a href="/pages/contact">CONTACT</a>
+			          <?php  echo $this->_render('element', 'login'); ?>
+		          </span>
+		        </td>
+	        </tr></table>
         
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
           
-          <a class="brand" href="/home">Bravo Your City!</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="/stories">Cities</a></li>
-              <li><a href="/users/feed">Your Feed</a></li>
-              <li><a href="/story/edit">Submit!</a></li>
-              <li><a href="/pages/about">About</a></li>
-              <li><a href="/pages/50">50%</a></li>
-              <li><a href="/pages/faq">FAQ</a></li>
-              <li><a href="/pages/contact">Contact</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-          <?php  echo $this->_render('element', 'login'); ?>
+         
+	     
+	     
+          
         </div>
-      </div>
+    
     </div>
 
     <div class="container">
-
+	
 	<?php echo $this->content(); ?>
      
 
     </div> 
-   	
-		
-	
 </body>
 </html>

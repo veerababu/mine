@@ -1,6 +1,6 @@
-#BAF9FF  Blue
+#90D4EB  Blue
 
-#FF0055  red
+#EE0909  red
 
 
 I had to make one change to MongoDb.php line 412:
