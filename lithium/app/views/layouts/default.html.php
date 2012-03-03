@@ -7,7 +7,7 @@
 	<?php echo $this->html->charset();?>
 	<title>Bravo Your City > <?php echo $this->title(); ?></title>
 	 <link href="/css/bootstrap.css" rel="stylesheet">
-	  <link href="/css/bravo.css?1" rel="stylesheet">
+	  <link href="/css/bravo.css?2" rel="stylesheet">
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
      <link href="/css/blitzer/jquery-ui.css" rel="stylesheet">
     
@@ -43,6 +43,9 @@ $(document).ready(function()
 <div class="navbar navbar-fixed-top">
      
         <div class="nav-menu">
+        	<div class="login">
+          	 <?php  echo $this->_render('element', 'login'); ?>
+          	 </div>
 	        <table width="100%" ><tr>
 		        <td valign="bottom" style="padding-bottom: 10px;" width="40%">
 		         <span class="left">
@@ -60,16 +63,11 @@ $(document).ready(function()
 			          <a href="/pages/about">ABOUT</a>
 			          <a href="/pages/50">50%</a>
 			          <a href="/pages/contact">CONTACT</a>
-			          <?php  echo $this->_render('element', 'login'); ?>
+			         
 		          </span>
 		        </td>
 	        </tr></table>
-        
-          
-         
-	     
-	     
-          
+	 		
         </div>
     
     </div>
