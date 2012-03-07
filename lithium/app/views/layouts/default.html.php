@@ -52,7 +52,7 @@ $(document).ready(function()
 			          <a style="padding-left: 0px;" href="/stories">CITIES</a>
 			          <a href="/users/feed">FEED</a>
 			          <a href="/story/edit">SUBMIT!</a>
-			          <a href="/pages/faq">FAQ</a>
+			          
 			      </span>
 		        </td>
 		        <td>
@@ -60,10 +60,9 @@ $(document).ready(function()
 		        </td>
 		        <td valign="bottom" style="padding-bottom: 10px;" width="40%" >
 		         <span class="right">
+		         	<a href="/pages/faq">FAQ</a>
 			          <a href="/pages/about">ABOUT</a>
 			          <a href="/pages/50">50%</a>
-			          <a href="/pages/contact">CONTACT</a>
-			         
 		          </span>
 		        </td>
 	        </tr></table>
@@ -76,7 +75,11 @@ $(document).ready(function()
 	
 	<?php echo $this->content(); ?>
      
+	<div class="footer">
+		<a href="/pages/contact">CONTACT</a>
+	</div>
 
     </div> 
+
 </body>
 </html>
