@@ -1,0 +1,6 @@
+<h3>What is Bravo Your City?</h3>
+Bravo Your City is a world travel and social enrichment webzine with written and visual content that is entirely user generated, but it is curated like a professional magazine. BYC's specialty is publishing authentic, unique stories for residents to world travelers but by local contributors, making it uniquely different yet conveniently similar to other global travel websites because we will offer all the same locations/destinations. The diverse content is created by a large group of local contributors, which is then curated by professional BYC editors. BYC has signature story parameters that we think you will find refreshing and fun to view or produce. Each submission must have 1 location, 1-5 photos, and 1-500 words; these guidelines make it easy to submit multiple stories.
+<p>
+<h3>Why is it called Bravo Your City?</h3>
+It's a little wink to <a href="http://bravoyourlife.com">Bravo Your Life!</a> -- the travel essay/memoir book the founder MiSoon Burzlaff wrote before she started BYC. 
+<p>
