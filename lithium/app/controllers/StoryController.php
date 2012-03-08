@@ -232,7 +232,7 @@ class StoryController extends \lithium\action\Controller
     public function getByTitle()
     {
     	$storyTitle=$this->request->params['args'][0];
-    	echo($storyTitle);
+    	$storyTitle=urldecode($storyTitle);
     	
     	$story = Story::first(array('conditions' => array('title' => $storyTitle)));
     	if($story)
