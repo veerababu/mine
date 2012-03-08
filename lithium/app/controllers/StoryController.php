@@ -232,6 +232,7 @@ class StoryController extends \lithium\action\Controller
     public function getByTitle()
     {
     	$storyTitle=$this->request->params['args'][0];
+    	echo($storyTitle);
     	
     	$story = Story::first(array('conditions' => array('title' => $storyTitle)));
     	if($story)
@@ -274,6 +275,8 @@ class StoryController extends \lithium\action\Controller
     				$tag=trim($tag);
     				if( empty($tag) ) unset( $story['tags'][$key] );
     			}
+    			$story['tags']=array_values($story['tags']);
+    			
     			
     			/* TODO: not sure the best way to handle this
     			$story['tags'][]=$story['hood'];

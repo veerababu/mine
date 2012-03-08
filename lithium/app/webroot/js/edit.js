@@ -97,6 +97,10 @@ function updateForm(data)
 	$('#StoryAddress').val(data.address);
 	$('#adminNote').html(data.adminNote);
 	
+	var tagStr='';
+	for(n=0; n<data.tags.length; n++) tagStr += data.tags[n]+', ';
+	$('#StoryTags').val(tagStr);
+	
 	$('#photoList').empty();
 	
 	for(n=0; n<5; n++) 
