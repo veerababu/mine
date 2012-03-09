@@ -5,7 +5,7 @@
 <html>
 <head>
 	<?php echo $this->html->charset();?>
-	<title>Bravo Your City > <?php echo $this->title(); ?></title>
+	<title>Bravo Your City > <?= $title ?></title>
 	 <link href="/css/bootstrap.css" rel="stylesheet">
 	  <link href="/css/bravo.css?4" rel="stylesheet">
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
@@ -49,8 +49,8 @@ $(document).ready(function()
 	        <table width="100%" ><tr>
 		        <td valign="bottom" style="padding-bottom: 10px;" width="40%">
 		         <span class="left">
-			          <a style="padding-left: 0px;" href="/stories">CITIES</a>
-			          <a href="/users/feed">FEED</a>
+			          <a style="padding-left: 0px;" href="/stories">STORIES</a>
+			          <a href="/stories/feed">FEED</a>
 			          <a href="/story/edit">SUBMIT!</a>
 			          
 			      </span>
@@ -76,7 +76,7 @@ $(document).ready(function()
 	<?php echo $this->content(); ?>
      
 	<div class="footer">
-		<a href="/pages/contact">CONTACT</a>
+		<span><a href="/pages/contact">CONTACT</a></span> | <span>Bravo Your Life! LLC</span> | <span><a href="/pages/privacy">PRIVACY</a></span> | <span><a href="http://lesswrong.com">Think</a> about things.</span>
 	</div>
 
     </div> 

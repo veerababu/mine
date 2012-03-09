@@ -20,6 +20,8 @@ Stories:
 	author
 	city
 	hood
+	phone
+	link
 	status {working,pending,accepted}
 	type {story,user}
 	tags

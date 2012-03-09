@@ -9,7 +9,30 @@ class StoriesController extends \lithium\action\Controller
 {
 	public function index() 
 	{
+		//print_r($this->request);
+		
 		$title='Find a Story';
+		$tags='';
+    	if(isset($this->request->query['tags']))
+    	{	
+    		
+    		
+    		 $tags='"'.implode('","', $this->request->query['tags'] ).'"';
+    	}
+    	//echo("tags: $tags<br>");
+    	
+    	$search='';
+    	if(isset($this->request->query['search'])) $search=$this->request->query['search'];
+    	$page=1;
+    	if(isset($this->request->query['page'])) $page=$this->request->query['page'];
+		
+		
+		return compact('title','tags','search','page');
+    }
+    
+    public function feed()
+    {
+    	$title='Feed';
 		
 		return compact($title);
     }
@@ -47,13 +70,15 @@ class StoriesController extends \lithium\action\Controller
     		if(isset($this->request->data['page'])) $page=$this->request->data['page'];
     		
     		$tags=array();
-    		foreach($this->request->data as $key => $value)
-    		{
-    			if($key[0]=='t') array_push($tags,$value);
-    		}
+    		if(isset($this->request->data['tags'])) $tags=$this->request->data['tags'];
     		
-    		if(empty($tags)) $conditions = array('status' => 'accepted');
-    		else $conditions = array('status' => 'accepted' , 'searchTags' => array('$all' => $tags));
+    		$search=array();
+    		if(isset($this->request->data['search'])) $search=$this->request->data['search'];
+    		
+    		
+    		$conditions = array('status' => 'accepted');
+    		
+    		if(!empty($tags)) $conditions['searchTags'] = array('$all' => $tags);
     		
     		
     	}else

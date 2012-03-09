@@ -1,3 +1,10 @@
+<script> 
+
+var currentFilters =[ <?php echo( $tags ); ?> ];
+var currentSearches=[ <?= $search ?> ];
+var desiredPage=<?= $page ?>;
+
+</script>
 <script src="/js/search.js" type="text/javascript"></script>
 
 <p>
@@ -7,7 +14,7 @@
 		Near: <input id="NearBox" class="span2 ui-autocomplete-input" type="text" name="near" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
 		<hr>
 		<h4>Searching For:</h4>
-		<div id="FilterList"> Everything ! </div>
+		<div id="FilterList"></div>
 		
 		
 		<hr>

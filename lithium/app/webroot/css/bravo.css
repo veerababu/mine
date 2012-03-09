@@ -113,6 +113,11 @@ margin-right: auto;
 	border-top: 1px #BAF9FF solid;
 }
 
+.footer span {
+margin-right: 20px;
+margin-left: 20px;
+}
+
 
  
  .navbar {

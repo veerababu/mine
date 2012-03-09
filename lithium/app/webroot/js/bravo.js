@@ -106,7 +106,7 @@ function createStoryStr(story)
 	{
 		for(n=0; n<story.tags.length; n++)
 		{
-			tagStr += '<span class="label tag" onclick="clickTag(this)">'+story.tags[n]+'</span> ';
+			tagStr += '<span class="label tag" onclick="clickTag(\''+story.tags[n]+'\')">'+story.tags[n]+'</span> ';
 		}
 	}
 	

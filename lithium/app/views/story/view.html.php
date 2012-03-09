@@ -15,6 +15,11 @@ function onStory(data)
 	}
 }
 
+function clickTag(filter)
+{ 
+	window.location.href = '/stories?tags[]='+filter;
+}
+
 </script>
 
 <div id="story"></div>

@@ -1,8 +1,7 @@
 var availableTags = [ ];
 var searchOptions = ["hello","dog" ];
 var locationOptions = [ ];
-var currentFilters = [ ];
-var desiredPage=1;
+
 		
 // 
 	
@@ -40,7 +39,13 @@ $(document).ready(function(){
 				source: locationOptions
 			});	
 	
-	$.post("/stories/fetch", null , onStories , "json" );
+	
+	if(currentFilters.length)
+		for(n=0; n<currentFilters.length; n++) addFilterDisplay(currentFilters[n]);
+	else $('#FilterList').text("Everything!");
+	
+	fetchStories();
+	
 	// fetch all the tags
 	$.post("/tags/get", null , onTags , "json" );
 	$.post("/tags/getCommon", null , onCommon , "json" );
@@ -126,14 +131,27 @@ function removeFilter(filter)
 	$('#FilterList').children('div[name="'+filter+'"]').remove();
 }
 
+// the story tags 
+function clickTag(filter){ addFilter(filter); }
+
 function addFilter(filter)
+{	
+	// don't allow duplicates
+	if(currentFilters.indexOf(filter) == -1)
+	{
+		addFilterDisplay(filter);
+		currentFilters.push(filter);
+		desiredPage=1;
+		fetchStories();
+	}else
+	{ // flash the duplicate
+		$('#FilterList').children('div[name="'+filter+'"]').addClass("highlight").removeClass("highlight", 750);
+	}
+}
+
+function addFilterDisplay(filter)
 {
 	if(currentFilters.length==0) $('#FilterList').empty();
-	
-	currentFilters.push(filter);
-	fetchStories();
-	
-	
 	var filterStr='<div class="highlight" name="'+filter+'"><a  onclick="removeFilter(\''+filter+'\')"><i class="icon-arrow-down"></i>'+filter+'</a><br></div>';	
 	$('#FilterList').append(filterStr);
 	$('#FilterList').children('div[name="'+filter+'"]').removeClass("highlight", 750);
@@ -155,11 +173,15 @@ function clearFilters()
 function fetchStories()
 {
 	var postData={};
+	/*
 	for(n = 0; n<currentFilters.length;  n++) 
 	{
 		postData['t'+n]=currentFilters[n];
-	}
+	}*/
 	
+	
+	postData['tags']=currentFilters;
+	postData['search']=currentSearches;
 	postData['page']=desiredPage;
 	
 	$.post("/stories/fetch", postData , onStories , "json" );
