@@ -33,9 +33,37 @@ class TagsController extends \lithium\action\Controller
     	$this->render(array('json' => compact('tags')));
     }
     
+    public function getCities()
+    {
+    	$tags=array();
+    	$tags[0]='food';
+    	$tags[1]='sleep';
+    	$tags[2]='kids';
+    	$this->render(array('json' => compact('tags')));
+    }
+    
+    public function getHoods()
+    {
+    	$tags=array();
+    	$tags[0]='food';
+    	$tags[1]='sleep';
+    	$tags[2]='kids';
+    	$this->render(array('json' => compact('tags')));
+    }
+    
     // returns the tags to display based on what is already filtered
     public function getCommon()
     {
+    	// check cache
+    	// if cache is old or empty refigure cache
+    	
+    	$tags=array();
+    	$tags[0]='food';
+    	$tags[1]='sleep';
+    	$tags[2]='kids';
+    	$this->render(array('json' => compact('tags')));
+    	
+    	/*
     	print_r($this->request->data);
     	
     	$story = Story::find($this->request->id);
@@ -47,7 +75,7 @@ class TagsController extends \lithium\action\Controller
     		$error="Story not found?";
     		
     		$this->render(array('json' => compact('error')));
-    	}
+    	}*/
     }
     
     

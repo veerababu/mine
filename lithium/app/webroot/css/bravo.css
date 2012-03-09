@@ -145,8 +145,12 @@ margin-right: auto;
 }
  
  
-
-
+.highlight{
+	font-size: 18px;
+}
+.highlight a {
+color: #EE0909;
+}
  
  .left {
  	float: left;

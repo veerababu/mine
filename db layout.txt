@@ -1,6 +1,72 @@
 MongoDB
 
-Stories:
+Users:
+	username
+	password
+	email
+	role
+	1099 info
+	Real Name? or name displayed in byline?
 
+Tags: 
+	tag
+	type {tag,city,hood,user}
+	parents
+	status {pending, approved}
+	friends // array of other tags that commonly occur with this tag
+
+Stories: 
+	address
+	author
+	city
+	hood
+	status {working,pending,accepted}
+	type {story,user}
+	tags
+	searchTags  
+	text
+	title
+	created
+	updated
+	
+	
+Updates:
+	story schema +
+	parent ID
+	
+
+//For each pair of tags we have a degree of co-occurrence	
+// this is incremented anytime someone does a filter
+// based on the filters
+// this is griefable
+TagWeb:
+hash
+tagSet
+degree
+
+CacheFilters
+hash
+tags   // the most popular tags 
+updated
+
+we could hash the tags in the set of filters
+and create the popular tag set these generate
+This can be a cron job
+if it misses the hash table then we can generate it on the fly
+
+
+
+
+	
+	
+
+
+db.stories.update( { author:"jed" }, { $set: { status : 'pending' } },false,true );
+
+db.stories.find({}, {title:1,searchTags:1});
+
+
+db.posts.find({tags: {$all: ["food", “hello”]}});
+	
 
 

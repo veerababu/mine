@@ -7,14 +7,14 @@
 	<?php echo $this->html->charset();?>
 	<title>Bravo Your City > <?php echo $this->title(); ?></title>
 	 <link href="/css/bootstrap.css" rel="stylesheet">
-	  <link href="/css/bravo.css?3" rel="stylesheet">
+	  <link href="/css/bravo.css?4" rel="stylesheet">
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
      <link href="/css/blitzer/jquery-ui.css" rel="stylesheet">
     
     <script src="/js/jquery.js"></script>
     <script src="/js/jquery-ui.js"></script>
     <script src="/js/bootstrap.js"></script>
-    <script src="/js/bravo.js?3"></script>
+    <script src="/js/bravo.js?4"></script>
     
 	
 	

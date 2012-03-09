@@ -1,6 +1,6 @@
 <link href="/css/fileuploader.css" rel="stylesheet" type="text/css">	
 <script src="/js/fileuploader.js" type="text/javascript"></script>
-<script src="/js/edit.js?1" type="text/javascript"></script>
+<script src="/js/edit.js?2" type="text/javascript"></script>
 <script type="text/javascript" src="/js/markitup/jquery.markitup.js"></script>
 <script type="text/javascript" src="/js/markitup/sets/bbcode/set.js"></script>
 <link rel="stylesheet" type="text/css" href="/js/markitup/skins/simple/style.css" />
@@ -10,21 +10,6 @@
 
 $(document).ready(function(){
 	
-            var uploader = new qq.FileUploader({
-                element: document.getElementById('image-uploader'),
-                action: '/story/addImage',
-                allowedExtensions: ['jpg','jpeg','png','gif'],
-                onComplete: imageUploaded,
-                template: '<div class="qq-uploader">' + 
-	                '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
-	                '<div id="uploadButton" class="qq-upload-button">Upload an Image</div>' +              
-	             	'</div>',
-            
-                debug: true
-            });           
-      
-	 $("#StoryText").markItUp(mySettings);
-	 
 	// fetch all the stories you have written
 	$.post("/admin/getPending", null , onStories , "json" );
 });
@@ -86,29 +71,7 @@ function onStories(data)
 <div class="row">
 	<div class="span9">
 		<form id="form1" class="well">
-		<input type="hidden" name="_id" id="StoryID" value="" />
-		
-			<label>Story Title</label>
-			<input id="StoryTitle" type="text" name="title">
-			
-		
-		
-			<label>Text of Story</label>
-			<textarea id="StoryText" class="span8" name="text"></textarea>
-		
-		
-		
-			<label>Address</label>
-			<textarea id="StoryAddress" name="address"></textarea>
-		
-		
-		<label>Photos</label>
-		
-		<div id="image-uploader">
-			
-		</div>
-		<div id="photoList"></div>
-		
+			<?php  echo $this->_render('element', 'editStory'); ?>
 		
 		<hr>
 		<label>Tell user why you are rejecting them</label>

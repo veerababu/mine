@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 use app\models\Story;
+use app\models\Tags;
 use app\models\Image;
 use lithium\security\Auth;
 use lithium\storage\Session;
@@ -248,15 +249,15 @@ class StoryController extends \lithium\action\Controller
     
     public function save() 
     {
-    	$this->updateStory("working");
+    	$this->updateStory("working",false);
     }
     
     public function publish() 
     {
-    	$this->updateStory("pending");
+    	$this->updateStory("pending",false);
     }
     
-    function updateStory($status)
+    function updateStory($status,$admin)
     {
     	if(Auth::check('user')) 
     	{
@@ -268,15 +269,7 @@ class StoryController extends \lithium\action\Controller
     			$story=$this->request->data;
     			$story['status']=$status;
     			
-    			$story['tags']=explode(',',$story['tags']);
-    			
-    			foreach($story['tags'] as $key => &$tag)
-    			{
-    				$tag=trim($tag);
-    				if( empty($tag) ) unset( $story['tags'][$key] );
-    			}
-    			$story['tags']=array_values($story['tags']);
-    			
+    			$story['tags']=Tags::cleanFormTags($story['tags']);
     			
     			/* TODO: not sure the best way to handle this
     			$story['tags'][]=$story['hood'];

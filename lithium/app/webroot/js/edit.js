@@ -1,6 +1,81 @@
 
 
 var photos=[false,false,false,false,false];  // bool array of if this slot has an image in it or not
+var availableTags = [ ];
+
+$(document).ready(function(){
+	
+            var uploader = new qq.FileUploader({
+                element: document.getElementById('image-uploader'),
+                action: '/story/addImage',
+                allowedExtensions: ['jpg','jpeg','png','gif'],
+                onComplete: imageUploaded,
+                template: '<div class="qq-uploader">' + 
+	                '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
+	                '<div id="uploadButton" class="qq-upload-button">Upload an Image</div>' +              
+	             	'</div>',
+            
+                debug: true
+            });           
+      
+	 $("#StoryText").markItUp(mySettings);
+	 
+	 // fetch all the tags
+	$.post("/tags/get", null , onTags , "json" );
+	
+		
+		
+		function split( val ) {
+			return val.split( /,\s*/ );
+		}
+		function extractLast( term ) {
+			return split( term ).pop();
+		}
+
+		$( "#StoryTags" )
+			// don't navigate away from the field on tab when selecting an item
+			.bind( "keydown", function( event ) {
+				if ( event.keyCode === $.ui.keyCode.TAB &&
+						$( this ).data( "autocomplete" ).menu.active ) {
+					event.preventDefault();
+				}
+			})
+			.autocomplete({
+				minLength: 0,
+				source: function( request, response ) {
+					// delegate back to autocomplete, but extract the last term
+					response( $.ui.autocomplete.filter(
+						availableTags, extractLast( request.term ) ) );
+				},
+				focus: function() {
+					// prevent value inserted on focus
+					return false;
+				},
+				select: function( event, ui ) {
+					var terms = split( this.value );
+					// remove the current input
+					terms.pop();
+					// add the selected item
+					terms.push( ui.item.value );
+					// add placeholder to get the comma-and-space at the end
+					terms.push( "" );
+					this.value = terms.join( ", " );
+					return false;
+				}
+			});
+});
+
+
+function onTags(data)
+{
+	onServer(data);
+	if(data.tags)
+	{
+		availableTags=data.tags;
+	}
+}
+
+
 
 function getFreePhotoSlot()
 {
@@ -93,8 +168,11 @@ function updateForm(data)
 	// see if we should show the phot upload button
 	$('#StoryID').val(data._id);
 	$('#StoryTitle').val(data.title);
+	$('#StoryAuthor').val(data.author);
 	$('#StoryText').val(data.text);
 	$('#StoryAddress').val(data.address);
+	$('#StoryCity').val(data.city);
+	$('#StoryHood').val(data.hood);
 	$('#adminNote').html(data.adminNote);
 	
 	var tagStr='';

@@ -6,5 +6,8 @@
 I had to make one change to MongoDb.php line 412:
 	if (!$data['file']['error'] /* JED && is_uploaded_file($data['file']['tmp_name']) */) {
 	
+	
+We have a cron job that runs through all posts 
+	
 	 
 

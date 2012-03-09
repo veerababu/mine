@@ -39,12 +39,40 @@ class StoriesController extends \lithium\action\Controller
     
     public function fetch()
     {
-    	$conditions = array('status' => 'accepted' );
+    	//print_r($this->request->data);
+    	$page="1";
     	
-		$stories = Story::all(compact('conditions'));
+    	if($this->request->data)
+    	{
+    		if(isset($this->request->data['page'])) $page=$this->request->data['page'];
+    		
+    		$tags=array();
+    		foreach($this->request->data as $key => $value)
+    		{
+    			if($key[0]=='t') array_push($tags,$value);
+    		}
+    		
+    		if(empty($tags)) $conditions = array('status' => 'accepted');
+    		else $conditions = array('status' => 'accepted' , 'searchTags' => array('$all' => $tags));
+    		
+    		
+    	}else
+    	{
+    		$conditions = array('status' => 'accepted' );
+    	}
+    	
+    	$count= Story::count(compact('conditions'));
+    	
+    	$limit=3;
+    	
+    	//print_r($conditions);
+		$stories = Story::all(compact('conditions','limit','page'));
 		
 		
-		$this->render(array('json' => compact('stories')));
+		// TODO: save filters so we know what the common ones are
+		
+		
+		$this->render(array('json' => compact('stories','page','count')));
     }
     
 }

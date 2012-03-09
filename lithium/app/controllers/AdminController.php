@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Story;
+use app\models\Tags;
 use app\models\Image;
 use lithium\storage\Session;
 //use app\controllers\HomeController;
@@ -36,9 +37,20 @@ class AdminController extends \lithium\action\Controller
     {
     	if(Session::read('user.role') != 'admin') return $this->redirect('/');
 		
+		$title='Admin: Pending Stories';
     	
-    	return compact('story','image');
+    	return compact($title);
     }
+    
+    // LATER: Maybe we don't need this since we are approving the story so we are implicitly approving the tags.
+    public function tags() 
+    {
+    	if(Session::read('user.role') != 'admin') return $this->redirect('/');
+		$title='Admin: Manage Tags';
+    	return compact($title);
+    }
+    
+    
     
   ////////////////////////////////////////
   // AJAX functions
@@ -115,8 +127,15 @@ class AdminController extends \lithium\action\Controller
     {
     	$id=$story['_id'];
     	$story['status']=$status;	
+		$story['tags']=Tags::cleanFormTags($story['tags']);
 		
 		unset($story['_id']);
+		
+		if($status=='accepted')
+		{
+			$story['searchTags']=Tags::processTags($story);
+			$story['created']=time();
+		}
 		
 	 	Story::update($story, array('_id' => $id ));
 	 		
