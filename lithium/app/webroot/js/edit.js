@@ -141,6 +141,11 @@ function updatePreview(story)
 		story.author='<?=$username ?>';
 		story.text= $('#StoryText').val();
 		story.address=$('#StoryAddress').val();
+		story.phone=$('#StoryPhone').val();
+		story.url=$('#StoryURL').val();
+		story.city=$('#StoryCity').val();
+		story.hood=$('#StoryHood').val();
+		
 		story.updated="today"
 		
 		for(n=0; n<5; n++) 
@@ -173,6 +178,8 @@ function updateForm(data)
 	$('#StoryAddress').val(data.address);
 	$('#StoryCity').val(data.city);
 	$('#StoryHood').val(data.hood);
+	$('#StoryPhone').val(data.phone);
+	$('#StoryURL').val(data.url);
 	$('#adminNote').html(data.adminNote);
 	
 	var tagStr='';

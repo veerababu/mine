@@ -5,7 +5,7 @@ var currentSearches=[ <?= $search ?> ];
 var desiredPage=<?= $page ?>;
 
 </script>
-<script src="/js/search.js" type="text/javascript"></script>
+<script src="/js/search.js?1" type="text/javascript"></script>
 
 <p>
 <div class="row"> 

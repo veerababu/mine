@@ -165,3 +165,25 @@ color: #EE0909;
  .right {
  	float: right;
  }
+ 
+ .box label{
+ 	
+ }
+ 
+fieldset {
+	padding: 2em;
+	margin: 0 0 1em 0;
+	border: 1px solid #e6e6e6;
+	background: #f3f3f3;
+}
+
+legend {
+	width: auto;
+	line-height: normal;
+	
+	margin-bottom: 0;	
+	padding: .5em 1em;
+	border: 1px solid #e6e6e6;
+	//background: #fff;
+	font-size: 16px;
+}
