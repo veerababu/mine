@@ -1,6 +1,6 @@
 <link href="/css/fileuploader.css" rel="stylesheet" type="text/css">	
 <script src="/js/fileuploader.js" type="text/javascript"></script>
-<script src="/js/edit.js?3" type="text/javascript"></script>
+<script src="/js/edit.js?6" type="text/javascript"></script>
 <script type="text/javascript" src="/js/markitup/jquery.markitup.js"></script>
 <script type="text/javascript" src="/js/markitup/sets/bbcode/set.js"></script>
 <link rel="stylesheet" type="text/css" href="/js/markitup/skins/simple/style.css" />
@@ -74,6 +74,7 @@ function onStories(data)
 			addStory(data.stories[index]);
 		}
 	}
+	
 }
 
 

@@ -97,20 +97,35 @@ function onStories(data)
 	}
 	if(data.count)
 	{
-		//$('#pager').find('li[class="pageButton"]').remove();
-		$('.pageButton').remove();
 		//TODO: 20 pages max
 		var numPages=Math.ceil(data.count/3);
-		for(n=numPages; n>0; n--)
+		if(numPages>1)
 		{
-			pageStr='<li class="pageButton"><a onClick="gotoPage('+n+')">'+n+'</a></li>';
-			$('#FirstPageLI').after(pageStr);
-		}
-		$('#LastPageButton').click( function(){ gotoPage(numPages); } );
+			$('#Pager').show();
+			//$('.pageButton').remove();
+			$('#Pager').find('li[class="pageButton"]').remove(); 
+			$('#Pager').find('li[class="pageButton active"]').remove(); 
+			
+			for(n=numPages; n>0; n--)
+			{
+				if(n==data.page)
+					pageStr='<li class="pageButton active"><a onClick="gotoPage('+n+')">'+n+'</a></li>';
+				else
+					pageStr='<li class="pageButton"><a onClick="gotoPage('+n+')">'+n+'</a></li>';
+				$('#FirstPageLI').after(pageStr);
+			}
+			$('#LastPageButton').click( function(){ gotoPage(numPages); } );
+		}else
+			$('#Pager').hide();
+		
+	}else
+	{
+		$('#Pager').hide();
 	}
+	
 	if(data.page)
 	{
-		
+		// TODO: highlight the current page button
 	}
 }
 

@@ -6,6 +6,7 @@ namespace app\controllers;
 use app\models\Story;
 use app\models\Tags;
 use app\models\Image;
+use app\models\Users;
 use lithium\security\Auth;
 use lithium\storage\Session;
 //use app\controllers\HomeController;
@@ -203,15 +204,17 @@ class StoryController extends \lithium\action\Controller
 		$story->desc = 'Enter description here';
 		$story->address = 'Story Address';
     	
-    	
-    	return compact('story');
+    	$title="Sumbit!";
+    	return compact('title','story');
     }
     
     public function view()
     {
+    	
     	//print_r($this->request->params->args);
     	$storyTitle=$this->request->params['args'][0];
-    	return compact('storyTitle');
+    	$title=$storyTitle;
+    	return compact('title','storyTitle');
     }
     
     ////////////////////////////////////////
@@ -249,15 +252,15 @@ class StoryController extends \lithium\action\Controller
     
     public function save() 
     {
-    	$this->updateStory("working",false);
+    	$this->updateStory("working"," saved.",true);
     }
     
     public function publish() 
     {
-    	$this->updateStory("pending",false);
+    	$this->updateStory("pending"," sent to editors for review.",false);
     }
     
-    function updateStory($status,$admin)
+    function updateStory($status,$returnText,$returnStory)
     {
     	if(Auth::check('user')) 
     	{
@@ -267,48 +270,61 @@ class StoryController extends \lithium\action\Controller
     			
     			$username=Session::read('user.username');
     			$story=$this->request->data;
-    			$story['status']=$status;
     			
-    			$story['tags']=Tags::cleanFormTags($story['tags']);
-    			
-    			/* TODO: not sure the best way to handle this
-    			$story['tags'][]=$story['hood'];
-    			$story['tags'][]=$story['city'];
-    			unset($story['hood']);
-    			unset($story['city']);
-    			*/
-    			
-    			if(isset($story['_id']) && $story['_id']==0)
-    			{ 
-    				unset($story['_id']);
-    			}
-    			
-    			if(isset($story['_id']) )
-    			{	    	 		
-	    	 		$id=$story['_id'];
-	    	 		unset($story['_id']);
-	    	 		
-	    	 		//print_r($story);
-	    	 		
-	    	 		Story::update($story, array('_id' => $id ));
-	    	 		
-	    	 		//print_r($ret);
-	    	 			 		
-	    	 		$story['author']=$username;
-	    	 		$story['_id']=$id;
-	    	 		
-    			}else
-    			{
-    				$story['author']=$username;
-    				$story = Story::create($story);
-        			$success = $story->save();
-    			}
-    			
-    			$status="Saved.";
-    			// TODO: we only need some of this data
-				$stories = Story::all(array('conditions' =>  array( 'username' => $username )));
-	    	 	// update the stories list
-	    	 	$this->render(array('json' => compact('status','story','stories')));
+		    	if(StoryController::isUnique($story['title'],$story['_id']))
+		    	{
+	    			$story['status']=$status;
+	    			$story['utitle']=strtolower($story['title']);
+	    			
+	    			$story['tags']=Tags::cleanFormTags($story['tags']);
+	    			
+	    			/* TODO: not sure the best way to handle this
+	    			$story['tags'][]=$story['hood'];
+	    			$story['tags'][]=$story['city'];
+	    			unset($story['hood']);
+	    			unset($story['city']);
+	    			*/
+	    			
+	    			if(isset($story['_id']) && $story['_id']==0)
+	    			{ 
+	    				unset($story['_id']);
+	    			}
+	    			
+	    			if(isset($story['_id']) )
+	    			{	    	 		
+		    	 		$id=$story['_id'];
+		    	 		unset($story['_id']);
+		    	 		
+		    	 		//print_r($story);
+		    	 		
+		    	 		Story::update($story, array('_id' => $id ));
+		    	 		
+		    	 		//print_r($ret);
+		    	 			 		
+		    	 		$story['author']=$username;
+		    	 		$story['_id']=$id;
+		    	 		$returnStory=false;
+		    	 		
+	    			}else
+	    			{
+	    				$story['author']=$username;
+	    				$story = Story::create($story);
+	        			$success = $story->save();
+	    			}
+	    			
+	    			$status=$story['title'].$returnText;
+	    			
+	    			
+					$stories = Story::all(array('conditions' =>  array( 'author' => $username ), 'fields' => array('title','status')));
+					
+		    	 	// update the stories list
+		    	 	if($returnStory) $this->render(array('json' => compact('status','story','stories')));
+		    	 	else $this->render(array('json' => compact('status','stories')));
+		    	}else
+		    	{
+		    		$error="Sorry a story with that name already exists. Please choose another.";
+    				$this->render(array('json' => compact('error')));
+		    	}
     		}else
     		{
     			$error="No data found?";
@@ -320,7 +336,15 @@ class StoryController extends \lithium\action\Controller
     		
     		$this->render(array('json' => compact('error')));
     	}
-	
+    }
+    
+    public static function isUnique($title,$id)
+    {
+    	$title=strtolower($title);
+    	$story=Story::first(array('conditions' => array('utitle' => $title),'fields' => array('_id')));
+    	if($story && $story['_id'] != $id) return(false);
+    	if(Users::first(array('conditions' => array('username' => $title)))) return(false);
+    	return(true);
     }
     
     public function delete() 

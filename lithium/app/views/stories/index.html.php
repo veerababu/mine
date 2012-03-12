@@ -40,9 +40,9 @@ var desiredPage=<?= $page ?>;
 		
 		
 	
-		<div class="row">
+		<!-- <div class="row">
 		Think we missed something? <?=$this->html->link('Put your City on the map!', 'Story::edit'); ?>
-		</div>
+		</div> -->
 	</div>
 </div>
 

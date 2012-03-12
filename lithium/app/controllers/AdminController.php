@@ -6,7 +6,7 @@ use app\models\Story;
 use app\models\Tags;
 use app\models\Image;
 use lithium\storage\Session;
-//use app\controllers\HomeController;
+use app\controllers\StoryController;
 
 /* 
 
@@ -71,12 +71,9 @@ class AdminController extends \lithium\action\Controller
     	
     	if($this->request->data) 
 		{
-			$stories=$this->updateStory($this->request->data,"accepted");
+			$this->updateStory($this->request->data,"accepted"," Approved!");
 	 		
-			$status="Approved";
 			
-    	 	// update the stories list
-    	 	$this->render(array('json' => compact('status','stories')));
 		}else
 		{
 			$error="No data found?";
@@ -90,11 +87,7 @@ class AdminController extends \lithium\action\Controller
     	if(Session::read('user.role') != 'admin') return $this->redirect('/');
     	if($this->request->data) 
 		{
-			$stories=$this->updateStory($this->request->data,"working");
- 
-			$status="Rejected. Showing Next story...";
-    	 	// update the stories list
-    	 	$this->render(array('json' => compact('status','stories')));
+			$stories=$this->updateStory($this->request->data,"working",", no way! Blasted that crap back.");
 		}else
 		{
 			$error="No data found?";
@@ -123,26 +116,41 @@ class AdminController extends \lithium\action\Controller
     
    
     
-    function updateStory($story,$status)
+    function updateStory($story,$status,$returnStatus)
     {
     	$id=$story['_id'];
-    	$story['status']=$status;	
-		$story['tags']=Tags::cleanFormTags($story['tags']);
-		
-		unset($story['_id']);
-		
-		if($status=='accepted')
+    	
+    	if(StoryController::isUnique($story['title'],$id))
 		{
-			$story['searchTags']=Tags::processTags($story);
-			$story['created']=time();
+			$story['utitle']=strtolower($story['title']);
+	    	
+	    	$story['status']=$status;	
+			$story['tags']=Tags::cleanFormTags($story['tags']);
+			
+			unset($story['_id']);
+			
+			if($status=='accepted')
+			{
+				$story['searchTags']=Tags::processTags($story);
+				$story['created']=time();
+			}
+			
+			
+			
+		 	Story::update($story, array('_id' => $id ));
+		 		
+		 	$conditions = array('status' => 'pending' );
+			$stories = Story::all(compact('conditions'));
+			$story=Story::find('first', compact('conditions') );
+			$status=$story['title'].$returnStatus.' Moving to the next Story...';
+				
+	    	$this->render(array('json' => compact('status','stories','story')));
+		}else
+		{
+			$error="Change the title. That one is taken.";
+			$this->render(array('json' => compact('error')));
 		}
-		
-	 	Story::update($story, array('_id' => $id ));
-	 		
-	 	$conditions = array('status' => 'pending' );
-		$stories = Story::all(compact('conditions'));
-		$story=Story::find('first', compact('conditions') );
-		return(compact('stories','story'));
+ 
     }
 }
 

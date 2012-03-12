@@ -5,6 +5,8 @@ namespace app\controllers;
 use lithium\security\Auth;
 use app\models\Users;
 use lithium\storage\Session;
+use app\controllers\StoryController;
+
 
 class UsersController extends \lithium\action\Controller 
 {
@@ -22,19 +24,43 @@ class UsersController extends \lithium\action\Controller
 
     public function register() 
     {
-        $user = Users::create($this->request->data);
-
-        if(($this->request->data) && $user->save()) 
+        if($this->request->data)
         {
-        	if(Auth::check('user', $this->request))
-            	return $this->redirect('Users::index');
-            else 
-            {
-            	Session::write('message', 'Login Failed');
-            	//return $this->redirect('/');
-            }
+        	if($this->request->data['password'])
+        	{
+        		$this->request->data['displayName']=$this->request->data['username'];		
+        		$this->request->data['username']=strtolower($this->request->data['username']);
+        		
+	        	if(StoryController::isUnique($this->request->data['username']))
+				{
+					$user = Users::create($this->request->data);
+					 
+	        		if($user->save()) 
+			        {
+			        	if(Auth::check('user', $this->request))
+			            	return $this->redirect('Users::index');
+			            else 
+			            {
+			            	Session::write('message', 'Login Failed');
+			            	//return $this->redirect('/');
+			            }
+			        }
+				}else
+				{
+					$user = Users::create($this->request->data);
+					Session::write('message', 'Sorry that username is already taken.');
+				}
+        	}else
+			{
+				$user = Users::create($this->request->data);
+				Session::write('message', 'You must enter a password.');
+			}  
+		}else
+		{
+			$user = Users::create($this->request->data);
         }
-        return compact('user');
+		
+		return compact('user');
     }
     
     
@@ -42,7 +68,7 @@ class UsersController extends \lithium\action\Controller
     {
         if($this->request->data) 
         {
-        	
+        	$this->request->data['username']=strtolower($this->request->data['username']);
         	if(Auth::check('user', $this->request))
         	{
         		//print_r(Session::read());

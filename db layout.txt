@@ -1,10 +1,12 @@
 MongoDB
 
 Users:
+	display name
 	username
 	password
 	email
 	role
+	agreed to EULA
 	1099 info
 	Real Name? or name displayed in byline?
 
@@ -16,6 +18,7 @@ Tags:
 	friends // array of other tags that commonly occur with this tag
 
 Stories: 
+	utitle  : unique title. This is the lowercase of the displayed title
 	address
 	author
 	city
@@ -62,6 +65,8 @@ if it misses the hash table then we can generate it on the fly
 	
 	
 
+
+db.users.update( { username:"jed" }, { $set: { role : 'admin' } },false,true );
 
 db.stories.update( { author:"jed" }, { $set: { status : 'pending' } },false,true );
 

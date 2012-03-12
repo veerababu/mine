@@ -85,7 +85,7 @@ color: #EE0909;
 
 .login {
 float:right;
-margin-top: 10px;
+margin-top: 30px;
 }
 
 .login a {
@@ -110,6 +110,7 @@ margin-right: auto;
 }
 
 .footer {
+margin-top: 30px;
 	border-top: 1px #BAF9FF solid;
 }
 
@@ -128,12 +129,12 @@ margin-left: 20px;
  	border-bottom: 8px #000000 solid;
  }
  
- .nav-menu 
+.nav-menu 
  {
  	width: 1170px;
  	margin-left: auto;
 	margin-right: auto;
-	
+	margin-top: -20px;
 	
  	//vertical-align:bottom;
  }
@@ -170,6 +171,10 @@ color: #EE0909;
  	
  }
  
+ .active a {
+ 	background: #F9FBC7;
+ }
+ 
 fieldset {
 	padding: 2em;
 	margin: 0 0 1em 0;
@@ -186,4 +191,12 @@ legend {
 	border: 1px solid #e6e6e6;
 	//background: #fff;
 	font-size: 16px;
+}
+
+#WordCount {
+	float: right;
+}
+
+.wordLimitAlert {
+	color: red;
 }

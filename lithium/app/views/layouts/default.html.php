@@ -7,18 +7,33 @@
 	<?php echo $this->html->charset();?>
 	<title>Bravo Your City > <?= $title ?></title>
 	 <link href="/css/bootstrap.css" rel="stylesheet">
-	  <link href="/css/bravo.css?5" rel="stylesheet">
+	  <link href="/css/bravo.css?6" rel="stylesheet">
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
      <link href="/css/blitzer/jquery-ui.css" rel="stylesheet">
     
     <script src="/js/jquery.js"></script>
     <script src="/js/jquery-ui.js"></script>
     <script src="/js/bootstrap.js"></script>
-    <script src="/js/bravo.js?5"></script>
+    <script src="/js/bravo.js?6"></script>
     
 	
 	
 	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-29896614-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
 </head>
 <body data-target=".subnav" data-spy="scroll" data-rendering="true">
     
@@ -29,12 +44,7 @@ if($session_flash_message)
 {
   ?>
 <script type="text/javascript" language="javascript">
-$(document).ready(function()
-{
-	var statusMsg='<?= $session_flash_message ?>';
-	$('#status').html(statusMsg);
-});
-
+startStatusMessage='<?= $session_flash_message ?>';
 </script>
   <?php
 }

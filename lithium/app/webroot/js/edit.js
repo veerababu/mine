@@ -18,7 +18,10 @@ $(document).ready(function(){
                 debug: true
             });           
       
-	 $("#StoryText").markItUp(mySettings);
+	 $("#StoryText").bind( "keydown", function( event ) {
+				if((event.keyCode === $.ui.keyCode.SPACE) ||
+					(event.keyCode === $.ui.keyCode.DELETE)) updateWordCount();
+			}).markItUp(mySettings);
 	 
 	 // fetch all the tags
 	$.post("/tags/get", null , onTags , "json" );
@@ -200,6 +203,29 @@ function updateForm(data)
 	{
 		$('#uploadButton').hide();
 	}else $('#uploadButton').show();
+	
+	updateWordCount();
+}
+
+
+function updateWordCount()
+{
+	var str='';
+	
+	var fullStr = $('#StoryText').val() + " ";
+	var initial_whitespace_rExp = /^[^A-Za-z0-9]+/gi;
+	var left_trimmedStr = fullStr.replace(initial_whitespace_rExp, "");
+	var non_alphanumerics_rExp = rExp = /[^A-Za-z0-9]+/gi;
+	var cleanedStr = left_trimmedStr.replace(non_alphanumerics_rExp, " ");
+	var splitString = cleanedStr.split(" ");
+	var wordCount = splitString.length -1;
+	
+	if(wordCount > 500)
+	{
+		str='<span class="wordLimitAlert">Over 500 word limit. Words: '+wordCount+'</span>';
+	}else str='words: '+wordCount;
+	
+	$('#WordCount').html(str);
 }
 
 // remove the image div from the form

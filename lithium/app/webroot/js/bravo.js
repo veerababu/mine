@@ -17,17 +17,42 @@
 type specific:
 */
 
+var startStatusMessage='';
+
+$(document).ready(function(){
+	
+   $('#error').hide();
+   if(startStatusMessage=='') $('#status').hide();
+   else $('#status').html(startStatusMessage);
+});
+
 function addStatus(status)
 {
 	$('#status').html(status);
+	$('#status').show();
 }
 
 function onServer(data)
 {
-	if(data.error) $('#error').html(data.error);
-	else $('#error').text('');
-	if(data.status) $('#status').html(data.status);
-	else $('#status').text('');
+	if(data.error && data.error!="" )
+	{
+		$('#error').html(data.error);
+		$('#error').show();
+	}else 
+	{
+		$('#error').text('');
+		$('#error').hide();
+	}
+	
+	if(data.status && data.status!="") 
+	{
+		$('#status').html(data.status);
+		$('#status').show();
+	}else
+	{
+		$('#status').text('');
+		$('#status').hide();
+	}
 }
 
 
@@ -148,6 +173,23 @@ function createStoryStr(story)
 		str += '</div>'; // end story body
 		
 	str += '</div>'; // end story
+	
+	return(str);	
+}
+
+
+
+function createStoryThumbStr(story)
+{
+	if(story.text.length>160)
+	{
+		story.text=story.text.slice(0,160);
+		story.text += "...";
+	}
+	var str='<div class="thumbStory">';
+	if(story['photo0'])	str += '<img src="/image/view/'+story['photo0']+'" />';
+	str += '<div class="storyTitle"><a href="/story/view/'+story.title+'">'+story.title+'</a></div>';
+	str += 	'<div class="thumbText">'+parseBBCode(story.text)+'</div>';
 	
 	return(str);	
 }

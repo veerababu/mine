@@ -6,7 +6,7 @@
 
 
 
-
+<div id="WordCount"></div>
 <textarea id="StoryText" class="span8" name="text"></textarea>
 
 <div class="row">
