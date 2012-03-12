@@ -5,16 +5,19 @@
 <html>
 <head>
 	<?php echo $this->html->charset();?>
-	<title>Bravo Your City > <?= $title ?></title>
+	<title>Bravo Your City > <?php echo($title); ?></title>
 	 <link href="/css/bootstrap.css" rel="stylesheet">
-	  <link href="/css/bravo.css?6" rel="stylesheet">
     <link href="/css/bootstrap-responsive.css" rel="stylesheet">
      <link href="/css/blitzer/jquery-ui.css" rel="stylesheet">
+    
     
     <script src="/js/jquery.js"></script>
     <script src="/js/jquery-ui.js"></script>
     <script src="/js/bootstrap.js"></script>
-    <script src="/js/bravo.js?6"></script>
+    
+	<link href="/css/bravo.css?7" rel="stylesheet">
+    <script src="/js/date.format.js?7"></script>
+    <script src="/js/bravo.js?7"></script>
     
 	
 	

@@ -148,6 +148,8 @@ function updatePreview(story)
 		story.url=$('#StoryURL').val();
 		story.city=$('#StoryCity').val();
 		story.hood=$('#StoryHood').val();
+		story.state=$('#StoryState').val();
+		story.country=$('#StoryCountry').val();
 		
 		story.updated="today"
 		
@@ -180,10 +182,13 @@ function updateForm(data)
 	$('#StoryText').val(data.text);
 	$('#StoryAddress').val(data.address);
 	$('#StoryCity').val(data.city);
+	$('#StoryState').val(data.state);
+	$('#StoryCountry').val(data.country);
 	$('#StoryHood').val(data.hood);
 	$('#StoryPhone').val(data.phone);
 	$('#StoryURL').val(data.url);
 	$('#adminNote').html(data.adminNote);
+	$('#StoryStatus').val(data.status);
 	
 	var tagStr='';
 	for(n=0; n<data.tags.length; n++) tagStr += data.tags[n]+', ';

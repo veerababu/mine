@@ -124,7 +124,21 @@ function parseBBCode(text)
 	return(text)
 }
 
-function createStoryStr(story)
+function makeMapLink(story,innerText)
+{
+	var link='';
+	if(story.address)
+	{
+		link +='<a target="_blank" href="http://maps.google.com/maps?q='+story.address;
+		if(story.city) link += ' ,'+story.city;
+		if(story.state) link +=' ,'+story.state;
+		if(story.country) link +=' ,'+story.country;
+		link += '">'+innerText+'</a>';
+	}
+	return(link);
+}
+
+function createStoryStr(story,innerText)
 {
 	var tagStr='&nbsp;';
 	if(story.tags)
@@ -144,12 +158,31 @@ function createStoryStr(story)
 			
 			str += '<div class="span5">'; // text column
 				str += '<div class="row">'; // title row
-					str += '<div class="span2 storyTitle"><a href="/story/view/'+story.title+'">'+story.title+'</a></div>';
-					str += '<div class="span2">by <a href="/users/profile/'+story.author+'">'+story.author+'</a></div>';
+					str += '<div class="span3 storyTitle"><a href="/story/view/'+story.title+'">'+story.title+'</a></div>';
+					str += '<div class="span1">by <a href="/users/profile/'+story.author+'">'+story.author+'</a><br></div>';
 				str += '</div>'; // end titlerow
 				
 				str += '<div class="row storyAddress">'; // address row
-					str+= '<div class="span2">'+story.address+'</div>';
+					str+= '<div class="span3">';
+					
+					var mapLink=makeMapLink(story,'map');
+					
+					if(story.address) str += story.address+' ('+mapLink+')<br>';
+					if(story.hood) str += '<a onclick="clickTag(\''+story.hood+'\')">'+story.hood+'</a><br>';
+					if(story.city) str += '<a onclick="clickTag(\''+story.city+'\')">'+story.city+'</a>';
+					if(story.state) str += ', <a onclick="clickTag(\''+story.state+'\')">'+story.state+'</a>';
+					if(story.country) str += ', <a onclick="clickTag(\''+story.country+'\')">'+story.country+'</a><br>';
+					else str += '<br>';
+					if(story.phone) str += story.phone+'<br>';
+					if(story.url) str += '<a href="http://'+story.url+'">'+story.url+'</a><br>';
+				str+= '</div>';
+					str+= '<div class="span1 updated">';
+						var date = new Date(story.updated*1000);
+						//date = dateFormat(date, "yyyy-mm-dd'T'HH:MM:ss'Z'");
+						date = dateFormat(date, "dd mmm yyyy");
+						str+= date;
+						
+					str += '</div>'; // end date span
 				str += '</div>'; // end address row
 			str += '</div>'; // end textColumn
 		str += '</div>'; // end storyHeader

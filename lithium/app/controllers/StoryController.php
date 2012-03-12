@@ -270,6 +270,7 @@ class StoryController extends \lithium\action\Controller
     			//print_r($this->request->data);
     			
     			$author=Session::read('user.displayName');
+    			//echo($author);
     			$story=$this->request->data;
     			
 		    	if(StoryController::isUnique($story['title'],$story['_id']))

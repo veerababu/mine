@@ -1,5 +1,6 @@
 <input type="hidden" name="_id" id="StoryID"  />
 <input type="hidden" name="author" id="StoryAuthor"  />
+<input type="hidden" name="status" id="StoryStatus"  />
 
 <label>Story Title</label>
 <input id="StoryTitle" type="text" name="title">
@@ -21,6 +22,10 @@
 <tr><td class="span2" >City</td><td><input id="StoryCity" type="text" name="city">
 </td></tr>
 <tr><td class="span2" >Neigborhood</td><td><input id="StoryHood" type="text" name="hood">
+</td></tr>
+<tr><td class="span2" >Sate or Province</td><td><input id="StoryState" type="text" name="state">
+</td></tr>
+<tr><td class="span2" >Country</td><td><input id="StoryCountry" type="text" name="country">
 </td></tr>
 <tr><td class="span2" >Phone</td><td><div class="input-prepend">
   <span class="add-on"><i class="icon-home"></i></span>

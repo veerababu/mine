@@ -39,8 +39,10 @@ class UsersController extends \lithium\action\Controller
 	        		if($user->save()) 
 			        {
 			        	if(Auth::check('user', $this->request))
-			            	return $this->redirect('Users::index');
-			            else 
+			        	{
+			        		Session::write('message', 'Welcome');
+			            	return $this->redirect('/');
+			        	}else 
 			            {
 			            	Session::write('message', 'Login Failed');
 			            	//return $this->redirect('/');

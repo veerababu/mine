@@ -201,6 +201,10 @@ legend {
 	color: red;
 }
 
+.updated {
+	font-size: 12px;
+}
+
 .thumbStory {
 	margin-bottom: 15px;
 }

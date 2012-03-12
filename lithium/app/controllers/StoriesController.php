@@ -50,7 +50,7 @@ class StoriesController extends \lithium\action\Controller
     		$stories = Story::find('all',array('conditions' =>  array( 'author' => $username , 'status' => 'accepted' )) );
     	}else
     	{
-    		$username=Session::read('user.username');
+    		$username=Session::read('user.displayName');
     		//echo($username);
     		$stories = Story::find('all', array('conditions' => array( 'author' => $username ) ) );
         }
