@@ -214,7 +214,8 @@ class StoryController extends \lithium\action\Controller
     	//print_r($this->request->params->args);
     	$storyTitle=$this->request->params['args'][0];
     	$title=$storyTitle;
-    	return compact('title','storyTitle');
+    	$admin=(Session::read('user.role') == 'admin');
+    	return compact('title','storyTitle','admin');
     }
     
     ////////////////////////////////////////
@@ -268,7 +269,7 @@ class StoryController extends \lithium\action\Controller
     		{
     			//print_r($this->request->data);
     			
-    			$username=Session::read('user.username');
+    			$author=Session::read('user.displayName');
     			$story=$this->request->data;
     			
 		    	if(StoryController::isUnique($story['title'],$story['_id']))
@@ -301,13 +302,13 @@ class StoryController extends \lithium\action\Controller
 		    	 		
 		    	 		//print_r($ret);
 		    	 			 		
-		    	 		$story['author']=$username;
+		    	 		$story['author']=$author;
 		    	 		$story['_id']=$id;
 		    	 		$returnStory=false;
 		    	 		
 	    			}else
 	    			{
-	    				$story['author']=$username;
+	    				$story['author']=$author;
 	    				$story = Story::create($story);
 	        			$success = $story->save();
 	    			}
@@ -315,7 +316,7 @@ class StoryController extends \lithium\action\Controller
 	    			$status=$story['title'].$returnText;
 	    			
 	    			
-					$stories = Story::all(array('conditions' =>  array( 'author' => $username ), 'fields' => array('title','status')));
+					$stories = Story::all(array('conditions' =>  array( 'author' => $author ), 'fields' => array('title','status')));
 					
 		    	 	// update the stories list
 		    	 	if($returnStory) $this->render(array('json' => compact('status','story','stories')));
@@ -371,7 +372,7 @@ class StoryController extends \lithium\action\Controller
 			// max file size in bytes
 			$sizeLimit = 10 * 1024 * 1024;
 			
-			$username=Session::read('user.username');
+			$username=Session::read('user.displayName');
 			
 			$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
 			$photoID = $uploader->handleUpload($username);

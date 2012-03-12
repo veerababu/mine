@@ -12,6 +12,7 @@ $(document).ready(function(){
 	
 	// fetch all the stories you have written
 	$.post("/admin/getPending", null , onStories , "json" );
+	if('<?=$storyTitle ?>'!='') $.post("/story/getByTitle/<?=$storyTitle ?>", null , onStories , "json" );
 });
 
 function approve()

@@ -9,6 +9,7 @@ Users:
 	agreed to EULA
 	1099 info
 	Real Name? or name displayed in byline?
+	created
 
 Tags: 
 	tag
@@ -21,6 +22,7 @@ Stories:
 	utitle  : unique title. This is the lowercase of the displayed title
 	address
 	author
+	authorID
 	city
 	hood
 	phone

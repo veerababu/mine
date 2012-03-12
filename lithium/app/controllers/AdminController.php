@@ -28,19 +28,16 @@ class AdminController extends \lithium\action\Controller
     {
     	if(Session::read('user.role') != 'admin') return $this->redirect('/');
     		
-		$title='Admin Center';
-		
-		return compact($title);
-    }
-    
-    public function edit() 
-    {
-    	if(Session::read('user.role') != 'admin') return $this->redirect('/');
+		//print_r($this->request);
+    	if($this->request->params['args'][0]) $storyTitle=$this->request->params['args'][0];
+    	else $storyTitle='';
 		
 		$title='Admin: Pending Stories';
     	
-    	return compact($title);
+    	return compact('title','storyTitle');
     }
+    
+   
     
     // LATER: Maybe we don't need this since we are approving the story so we are implicitly approving the tags.
     public function tags() 
@@ -124,7 +121,7 @@ class AdminController extends \lithium\action\Controller
 		{
 			$story['utitle']=strtolower($story['title']);
 	    	
-	    	$story['status']=$status;	
+	    	
 			$story['tags']=Tags::cleanFormTags($story['tags']);
 			
 			unset($story['_id']);
@@ -132,8 +129,14 @@ class AdminController extends \lithium\action\Controller
 			if($status=='accepted')
 			{
 				$story['searchTags']=Tags::processTags($story);
-				$story['created']=time();
+				if($story['status'] != 'accepted') 
+				{
+					$story['created']=time();
+					$story['updated']=$story['created'];
+				}else $story['updated']=time();
 			}
+			
+			$story['status']=$status;	
 			
 			
 			

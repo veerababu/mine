@@ -30,6 +30,7 @@ class UsersController extends \lithium\action\Controller
         	{
         		$this->request->data['displayName']=$this->request->data['username'];		
         		$this->request->data['username']=strtolower($this->request->data['username']);
+        		$this->request->data['created']=time();
         		
 	        	if(StoryController::isUnique($this->request->data['username']))
 				{

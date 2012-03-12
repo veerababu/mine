@@ -187,7 +187,7 @@ function createStoryThumbStr(story)
 		story.text += "...";
 	}
 	var str='<div class="thumbStory">';
-	if(story['photo0'])	str += '<img src="/image/view/'+story['photo0']+'" />';
+	if(story['photo0'])	str += '<a href="/story/view/'+story.title+'"><img src="/image/view/'+story['photo0']+'" /></a>';
 	str += '<div class="storyTitle"><a href="/story/view/'+story.title+'">'+story.title+'</a></div>';
 	str += 	'<div class="thumbText">'+parseBBCode(story.text)+'</div>';
 	
