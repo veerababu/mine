@@ -151,7 +151,7 @@ function updatePreview(story)
 		story.state=$('#StoryState').val();
 		story.country=$('#StoryCountry').val();
 		
-		story.updated="today"
+		story.updated=Math.round(+new Date()/1000);
 		
 		for(n=0; n<5; n++) 
 		{
@@ -191,7 +191,7 @@ function updateForm(data)
 	$('#StoryStatus').val(data.status);
 	
 	var tagStr='';
-	for(n=0; n<data.tags.length; n++) tagStr += data.tags[n]+', ';
+	if(data.tags) for(n=0; n<data.tags.length; n++) tagStr += data.tags[n]+', ';
 	$('#StoryTags').val(tagStr);
 	
 	$('#photoList').empty();

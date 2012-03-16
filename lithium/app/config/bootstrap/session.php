@@ -59,7 +59,7 @@ Auth::config(array(
 Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     $ctrl    = $chain->next($self, $params, $chain);
     
-    $username=Session::read('user.displayName');
+    $username=Session::read('user.username');
     if($username) $ctrl->set(compact('username') );
     return $ctrl;
     

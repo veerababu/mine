@@ -1,5 +1,5 @@
 <?php if(isset($username)) { ?>
-	<a href="/users/profile/<?=$username ?>"><?=$username ?></a>
+	<a href="/users/profile"><?=$username ?></a>
 	 <a href="/logout">logout</a>
 <?php }else{ ?>
 	<a  href="/login">Login</a>

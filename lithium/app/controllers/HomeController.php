@@ -20,7 +20,7 @@ class HomeController extends \lithium\action\Controller
     public function fetch()
     {
     	$limit=6;
-    	$conditions = array('status' => 'accepted');
+    	$conditions = array('status' => 'accepted' );
     	$stories = Story::all(compact('conditions','limit'));	
 		$this->render(array('json' => compact('stories')));
     }

@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use lithium\util\Inflector;
 
 class Tags extends \lithium\data\Model 
 {
@@ -8,23 +9,23 @@ class Tags extends \lithium\data\Model
 	// Look up tags in DB. make a list of their parent tags
 	// stick any new tags in the DB. 
 	// RETURN: list of searchTags
-	public static function processTags($story)
+	public static function createSearchTags($story)
 	{
 		
-		$tags=$story['tags'];
-		array_push($tags,$story['hood']);
-		array_push($tags,$story['city']);
-		array_push($tags,$story['author']);
+		$searchTags=$story['tags'];
+		array_push($searchTags,Inflector::slug($story['hood']));
+		array_push($searchTags,Inflector::slug($story['city']));
+		array_push($searchTags,Inflector::slug($story['author']));
 		
 		
 		// TODO: remove dup tags
-		foreach($tags as $key => &$tag)
+		foreach($searchTags as $key => &$tag)
 		{
 			$tag=trim($tag);
-			if( empty($tag) ) unset( $tags[$key] );
+			if( empty($tag) ) unset( $searchTags[$key] );
 		}
 		
-		return( array_values($tags) );
+		return( array_values($searchTags) );
 	}
 	
 	public static function cleanFormTags($tags)

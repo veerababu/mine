@@ -15,9 +15,9 @@
     <script src="/js/jquery-ui.js"></script>
     <script src="/js/bootstrap.js"></script>
     
-	<link href="/css/bravo.css?7" rel="stylesheet">
+	<link href="/css/bravo.css?8" rel="stylesheet">
     <script src="/js/date.format.js?7"></script>
-    <script src="/js/bravo.js?7"></script>
+    <script src="/js/bravo.js?8"></script>
     
 	
 	

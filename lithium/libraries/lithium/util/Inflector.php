@@ -396,7 +396,9 @@ class Inflector {
 	 * @param string $replacement The replacement to use for spaces.
 	 * @return string The converted string.
 	 */
-	public static function slug($string, $replacement = '-') {
+	public static function slug($string, $replacement = '-') 
+	{
+		$string=strtolower($string);  // JED
 		$map = static::$_transliteration + array(
 			'/[^\w\s]/' => ' ', '/\\s+/' => $replacement,
 			'/(?<=[a-z])([A-Z])/' => $replacement . '\\1',

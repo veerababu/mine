@@ -1,16 +1,39 @@
+The User profile info is stored in the stories section. This is to allow it to use the same filtering mechanism.
+	But can we just apply the filters to the Users?
+	Are there cases where you will want results that are mixed between users and stories?
+		Microguides?
+		The feed?
+		
+	Location info?
+	
+How are we going to slug the various authors with the same names? Linda Johnson and Linda Johnson? 
+
+When you click on an author's name you want to see other things written by that guy. 	
+
+
+
 MongoDB
 
 Users:
-	display name
-	username
+	slug  : unique title. This is the lowercase and slugged URL cleaned version of the displayed title
+	username  : lower case
+	
 	password
 	email
 	role
 	agreed to EULA
 	1099 info
-	Real Name? or name displayed in byline?
+	
+	title: the username that is displayed on stories
+	
+	all story data
+	
+	public { true, false }
 	created
-
+	updated
+	
+	
+	
 Tags: 
 	tag
 	type {tag,city,hood,user}
@@ -19,16 +42,16 @@ Tags:
 	friends // array of other tags that commonly occur with this tag
 
 Stories: 
-	utitle  : unique title. This is the lowercase of the displayed title
+	slug  : unique title. This is the lowercase and slugged URL cleaned version of the displayed title
 	address
 	author
-	authorID
+	authorSlug
 	city
 	hood
 	phone
 	url
 	status {working,pending,accepted}
-	type {story,user}
+	// type {story,user,location?}
 	tags
 	searchTags  
 	text
@@ -64,18 +87,22 @@ if it misses the hash table then we can generate it on the fly
 
 
 
-	
+hi how do you do the equivalent of: db.posts.update( { author: "oldAuthor"}, { $set: { author : "newAuthor"}, $addToSet: { blah : "foo"} }, false, true );  with a Model?	
 	
 
+db.stories.update( { authorSlug:"jed-bob8"}, { $pull: { searchTags : 'jed-bob7'}},false,true);
 
+db.users.update( { username:"jed" }, { $set: { public : 1 } },false,true );
 db.users.update( { username:"jed" }, { $set: { role : 'admin' } },false,true );
 
 db.stories.update( { author:"jed" }, { $set: { status : 'pending' } },false,true );
 
+db.stories.update( { title:"Chicken & Waffles " }, { $set: { created : 1331320686 , updated : 1331320686 } },false,true );
+
 db.stories.find({}, {title:1,searchTags:1});
 
 
-db.posts.find({tags: {$all: ["food", “hello”]}});
+db.posts.find({tags: {$all: ["food", ï¿½helloï¿½]}});
 	
 
 

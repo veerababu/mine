@@ -85,24 +85,6 @@ function i4_tmpl(tmpl, vals)
 	
 	return tmpl.replace(rgxp, repr);
 }
-/*
-story.title=$('#StoryTitle').val();
-		story.author=<?=$username ?>
-		story.text=$('#StoryText').val();
-		story.address=$('#StoryAddress').val();
-		story.updated="today"
-		
-		for(n=0; n<5; n++) 
-		{
-			if(photos[n])
-			{
-				var pStr='photo'+n;
-				story[pStr]=$('['+pStr+']').val();
-				story['caption'+n]=$('[caption'+n+']').val();
-				//story['pos'+n]=
-			}
-		}
-*/
 
 function parseBBCode(text)
 {
@@ -158,8 +140,8 @@ function createStoryStr(story,innerText)
 			
 			str += '<div class="span5">'; // text column
 				str += '<div class="row">'; // title row
-					str += '<div class="span3 storyTitle"><a href="/story/view/'+story.title+'">'+story.title+'</a></div>';
-					str += '<div class="span1">by <a href="/users/profile/'+story.author+'">'+story.author+'</a><br></div>';
+					if(story.title) str += '<div class="span3 storyTitle"><a href="/story/view/'+story.slug+'">'+story.title+'</a></div>';
+					if(story.author && story.authorSlug) str += '<div>by <a href="/users/view/'+story.authorSlug+'">'+story.author+'</a><br></div>';  // was span1
 				str += '</div>'; // end titlerow
 				
 				str += '<div class="row storyAddress">'; // address row
@@ -174,13 +156,17 @@ function createStoryStr(story,innerText)
 					if(story.country) str += ', <a onclick="clickTag(\''+story.country+'\')">'+story.country+'</a><br>';
 					else str += '<br>';
 					if(story.phone) str += story.phone+'<br>';
-					if(story.url) str += '<a href="http://'+story.url+'">'+story.url+'</a><br>';
+					if(story.url) str += '<a target="_blank" href="http://'+story.url+'">'+story.url+'</a><br>';
 				str+= '</div>';
+					
 					str+= '<div class="span1 updated">';
+					if(story.updated)
+					{
 						var date = new Date(story.updated*1000);
 						//date = dateFormat(date, "yyyy-mm-dd'T'HH:MM:ss'Z'");
 						date = dateFormat(date, "dd mmm yyyy");
 						str+= date;
+					}
 						
 					str += '</div>'; // end date span
 				str += '</div>'; // end address row
@@ -201,7 +187,7 @@ function createStoryStr(story,innerText)
 			str += '</div>'; // end photoColumn
 			
 			str += '<div class="span5">'; // text column
-				str += 	'<div class="storyText">'+parseBBCode(story.text)+'</div>';
+				if(story.text) str += 	'<div class="storyText">'+parseBBCode(story.text)+'</div>';
 			str += '</div>'; // end textColumn
 		str += '</div>'; // end story body
 		
@@ -220,8 +206,8 @@ function createStoryThumbStr(story)
 		story.text += "...";
 	}
 	var str='<div class="thumbStory">';
-	if(story['photo0'])	str += '<a href="/story/view/'+story.title+'"><img src="/image/view/'+story['photo0']+'" /></a>';
-	str += '<div class="storyTitle"><a href="/story/view/'+story.title+'">'+story.title+'</a></div>';
+	if(story['photo0'])	str += '<a href="/story/view/'+story.slug+'"><img src="/image/view/'+story['photo0']+'" /></a>';
+	str += '<div class="storyTitle"><a href="/story/view/'+story.slug+'">'+story.title+'</a></div>';
 	str += 	'<div class="thumbText">'+parseBBCode(story.text)+'</div>';
 	
 	return(str);	

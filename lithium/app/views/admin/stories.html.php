@@ -4,7 +4,7 @@
 <script type="text/javascript" src="/js/markitup/sets/bbcode/set.js"></script>
 <link rel="stylesheet" type="text/css" href="/js/markitup/skins/simple/style.css" />
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
-<script src="/js/edit.js?7" type="text/javascript"></script>
+<script src="/js/edit.js?8" type="text/javascript"></script>
 
 <script>
 

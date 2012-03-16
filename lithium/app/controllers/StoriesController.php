@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Story;
+use lithium\util\Inflector;
 use lithium\storage\Session;
 
 class StoriesController extends \lithium\action\Controller 
@@ -50,7 +51,7 @@ class StoriesController extends \lithium\action\Controller
     		$stories = Story::find('all',array('conditions' =>  array( 'author' => $username , 'status' => 'accepted' )) );
     	}else
     	{
-    		$username=Session::read('user.displayName');
+    		$username=Session::read('user.title');
     		//echo($username);
     		$stories = Story::find('all', array('conditions' => array( 'author' => $username ) ) );
         }
@@ -69,8 +70,8 @@ class StoriesController extends \lithium\action\Controller
     	{
     		if(isset($this->request->data['page'])) $page=$this->request->data['page'];
     		
-    		$tags=array();
-    		if(isset($this->request->data['tags'])) $tags=$this->request->data['tags'];
+    		$searchTags=array();
+    		if(isset($this->request->data['tags'])) $searchTags=$this->request->data['tags'];
     		
     		$search=array();
     		if(isset($this->request->data['search'])) $search=$this->request->data['search'];
@@ -78,7 +79,14 @@ class StoriesController extends \lithium\action\Controller
     		
     		$conditions = array('status' => 'accepted');
     		
-    		if(!empty($tags)) $conditions['searchTags'] = array('$all' => $tags);
+    		if(!empty($searchTags)) 
+    		{
+    			foreach($searchTags as &$tag)
+				{
+    				$tag=Inflector::slug($tag);
+				}
+    			$conditions['searchTags'] = array('$all' => $searchTags);
+    		}
     		
     		
     	}else

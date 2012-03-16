@@ -7,6 +7,7 @@ use app\models\Tags;
 use app\models\Image;
 use lithium\storage\Session;
 use app\controllers\StoryController;
+use lithium\util\Inflector;
 
 /* 
 
@@ -29,7 +30,7 @@ class AdminController extends \lithium\action\Controller
     	if(Session::read('user.role') != 'admin') return $this->redirect('/');
     		
 		//print_r($this->request);
-    	if($this->request->params['args'][0]) $storyTitle=$this->request->params['args'][0];
+    	if($this->request->params['args'] && $this->request->params['args'][0]) $storyTitle=$this->request->params['args'][0];
     	else $storyTitle='';
 		
 		$title='Admin: Pending Stories';
@@ -98,7 +99,7 @@ class AdminController extends \lithium\action\Controller
     	$storyID=$this->request->data['_id'];
     	if($storyID)
     	{
-    		echo($storyID);
+    		//echo($storyID);
     		Story::remove(array('_id' => $storyID ));
     		$status="Deleted";
     		
@@ -116,19 +117,18 @@ class AdminController extends \lithium\action\Controller
     function updateStory($story,$status,$returnStatus)
     {
     	$id=$story['_id'];
+    	$story['title']=trim($story['title']);
+    	$story['slug']=Inflector::slug($story['title']);
     	
-    	if(StoryController::isUnique($story['title'],$id))
+    	if(StoryController::isUnique($story['slug'],$id))
 		{
-			$story['utitle']=strtolower($story['title']);
-	    	
-	    	
 			$story['tags']=Tags::cleanFormTags($story['tags']);
 			
 			unset($story['_id']);
 			
 			if($status=='accepted')
 			{
-				$story['searchTags']=Tags::processTags($story);
+				$story['searchTags']=Tags::createSearchTags($story);
 				if($story['status'] != 'accepted') 
 				{
 					$story['created']=time();

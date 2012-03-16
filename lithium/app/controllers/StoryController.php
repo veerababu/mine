@@ -9,6 +9,7 @@ use app\models\Image;
 use app\models\Users;
 use lithium\security\Auth;
 use lithium\storage\Session;
+use lithium\util\Inflector;
 //use app\controllers\HomeController;
 
 
@@ -237,9 +238,10 @@ class StoryController extends \lithium\action\Controller
     public function getByTitle()
     {
     	$storyTitle=$this->request->params['args'][0];
-    	$storyTitle=urldecode($storyTitle);
+    	$storyTitle=strtolower(urldecode($storyTitle));
     	
-    	$story = Story::first(array('conditions' => array('title' => $storyTitle)));
+    	//echo($storyTitle);
+    	$story = Story::first(array('conditions' => array('slug' => $storyTitle)));
     	if($story)
     	{
     		$this->render(array('json' => compact('story')));
@@ -269,14 +271,16 @@ class StoryController extends \lithium\action\Controller
     		{
     			//print_r($this->request->data);
     			
-    			$author=Session::read('user.displayName');
+    			$author=Session::read('user.title');
+    			
     			//echo($author);
     			$story=$this->request->data;
+    			$story['title']=trim($story['title']);
+    			$story['slug']=Inflector::slug($story['title']);
     			
-		    	if(StoryController::isUnique($story['title'],$story['_id']))
+		    	if(StoryController::isUnique($story['slug'],$story['_id']))
 		    	{
 	    			$story['status']=$status;
-	    			$story['utitle']=strtolower($story['title']);
 	    			
 	    			$story['tags']=Tags::cleanFormTags($story['tags']);
 	    			
@@ -304,12 +308,14 @@ class StoryController extends \lithium\action\Controller
 		    	 		//print_r($ret);
 		    	 			 		
 		    	 		$story['author']=$author;
+		    	 		$story['authorSlug']=Inflector::slug($author);
 		    	 		$story['_id']=$id;
 		    	 		$returnStory=false;
 		    	 		
 	    			}else
 	    			{
 	    				$story['author']=$author;
+	    				$story['authorSlug']=Inflector::slug($author);
 	    				$story = Story::create($story);
 	        			$success = $story->save();
 	    			}
@@ -340,12 +346,10 @@ class StoryController extends \lithium\action\Controller
     	}
     }
     
-    public static function isUnique($title,$id)
+    public static function isUnique($slug, $id)
     {
-    	$title=strtolower($title);
-    	$story=Story::first(array('conditions' => array('utitle' => $title),'fields' => array('_id')));
+    	$story=Story::first(array('conditions' => array('slug' => $slug),'fields' => array('_id')));
     	if($story && $story['_id'] != $id) return(false);
-    	if(Users::first(array('conditions' => array('username' => $title)))) return(false);
     	return(true);
     }
     
@@ -373,7 +377,7 @@ class StoryController extends \lithium\action\Controller
 			// max file size in bytes
 			$sizeLimit = 10 * 1024 * 1024;
 			
-			$username=Session::read('user.displayName');
+			$username=Session::read('user.title');
 			
 			$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
 			$photoID = $uploader->handleUpload($username);
