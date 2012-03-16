@@ -84,8 +84,9 @@ and create the popular tag set these generate
 This can be a cron job
 if it misses the hash table then we can generate it on the fly
 
+Story::update( $array( '$pull' => array('searchTags' => $oldTag) ), array( 'authorSlug' => $oldSlug ) );
 
-
+hi does anyone know why this isn't working: Story::update( $array( '$pull' => array('searchTags' => $oldTag) ), array( 'authorSlug' => $oldSlug ) );  Story is a Model. The DB is mongo. 
 
 hi how do you do the equivalent of: db.posts.update( { author: "oldAuthor"}, { $set: { author : "newAuthor"}, $addToSet: { blah : "foo"} }, false, true );  with a Model?	
 	

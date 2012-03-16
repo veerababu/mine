@@ -203,15 +203,10 @@ class UsersController extends \lithium\action\Controller
 		    		$update=array( 	'$set' => array( 'author' => $story['title'] , 'authorSlug' => $story['slug']), 
 		    						'$addToSet' => array( 'searchTags' => $story['slug'] ) );
 		    		$update2=array( '$pull' => array('searchTags' => $oldSlug) );
-		    		// TODO: $pull not working?
+		    		// LATER: Not sure this didn't work as one Update?
 		    			
-		    		//echo("old: $oldSlug");	
-		    		//print_r($update);		
-		    		//$update['author']=$story['title'];
-		    		//$update['authorSlug']=$story['slug'];
-		    		//$update['searchTags']=$story['
 		    		if(	!Story::update($update, array( 'authorSlug' => $oldSlug ) ) || 
-		    			!Story::update($update2, array( 'authorSlug' => $oldSlug ) ) )
+		    			!Story::update($update2) )
 		    		{
 		    			$error="Problem changing old stories";
 		    		}
