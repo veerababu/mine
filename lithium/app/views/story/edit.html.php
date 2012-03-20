@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="/css/jcrop/jcrop.css" />
 <script src="/js/edit.js?9" type="text/javascript"></script>
 <script type="text/javascript" src="/js/jcrop/jquery.jcrop.js"></script>
-<script src="/js/crop.js?3" type="text/javascript" ></script>
+<script src="/js/crop.js?4" type="text/javascript" ></script>
 
 <style>
 .linear {

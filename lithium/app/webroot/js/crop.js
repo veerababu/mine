@@ -31,6 +31,44 @@ function fileSelected(ele)
 	loadImg(ele.files[0]);
 }
 
+// sometimes the img.width hasn't set yet by the next line. This seems like a bug but whatever here is the work around.
+function waitForImg(img,photoIndex,count)
+{
+	if(img.width==0)
+	{
+		if(count>10) 
+		{
+			$('#error').text("Image load failed? "+photoIndex).show();
+   			deleteImage(photoIndex);
+		}else
+		{
+			setTimeout( function() { waitForImg(img,photoIndex,count++); }, 300); 
+		}
+	}else
+	{
+     	var width=img.width;
+		var height=img.height;
+
+	    if(width>maxImageWidth) width=maxImageWidth;
+	    if(height>maxImageHeight) height=maxImageHeight;
+	    
+	    var ratio=Math.min(width/img.width,height/img.height);
+	    if(ratio*img.width < width) width=ratio*img.width;
+	    else if(ratio*img.height < height) height=ratio*img.height;
+		
+		$('#workingCanvas'+photoIndex).height(height);
+		$('#workingCanvas'+photoIndex).width(width);
+		
+		var index=photoIndex;
+		 edit.photos[photoIndex].jcrop =$.Jcrop($('#pic'+photoIndex), { 
+			onSelect: function(c){ return cropImage(c,index); } } );
+		
+		var c=[];
+		c.x=0; c.y=0; c.w=img.width; c.h=img.height;
+		cropImage(c,photoIndex);
+	   closeCropPane(photoIndex);
+   }
+}
 
 function loadImg(imgFile) 
 {
@@ -48,41 +86,7 @@ function loadImg(imgFile)
 	    reader.photoIndex=photoIndex;
 	    reader.onload = (function(x) { return function(e) { 
 	    	x.src = e.target.result;
-	    	if(x.width && x.height)
-	    	{
-		     	var width=x.width;
-	    		var height=x.height;
-	    
-			    if(width>maxImageWidth) 
-			    {
-			    	width=maxImageWidth;
-			    	
-			    }
-			    if(height>maxImageHeight) height=maxImageHeight;
-			    
-			    var ratio=Math.min(width/x.width,height/x.height);
-			    if(ratio*x.width < width) width=ratio*x.width;
-			    else if(ratio*x.height < height) height=ratio*x.height;
-	    		
-	    		$('#workingCanvas'+this.photoIndex).height(height);
-	    		$('#workingCanvas'+this.photoIndex).width(width);
-	    		
-	    		var index=this.photoIndex;
-	    		 edit.photos[this.photoIndex].jcrop =$.Jcrop($('#pic'+this.photoIndex), { 
-					//setSelect:   [ 0, 0, c.w, c.h ],
-					onSelect: function(c){ return cropImage(c,index); } } );
-	    		
-	    		var c=[];
-	    		c.x=0; c.y=0; c.w=x.width; c.h=x.height;
-	    		cropImage(c,this.photoIndex);
-			   closeCropPane(this.photoIndex);
-		   }else
-		   {
-		   		$('#error').text("Image load failed? "+this.photoIndex);
-		   		deleteImage(this.photoIndex);
-		   }
-    		
-    		
+	    	waitForImg(x,this.photoIndex,0);
 	    };  })(img);
 	    reader.readAsDataURL(imgFile);
 	}
