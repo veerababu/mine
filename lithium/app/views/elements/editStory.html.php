@@ -46,8 +46,7 @@
 
 
 <label>Photos</label>
-
-<div id="image-uploader">
-
-</div>
+<!--
+<div id="image-uploader"></div>
 <div id="photoList"></div>
+-->

@@ -409,7 +409,9 @@ class MongoDb extends \lithium\data\Source {
 
 		switch (true) {
 			case  (is_array($data['file']) && array_keys($data['file']) == $uploadKeys):
+				
 				if (!$data['file']['error'] /* JED && is_uploaded_file($data['file']['tmp_name']) */) {
+					
 					$method = 'storeFile';
 					$file = $data['file']['tmp_name'];
 					$data['filename'] = $data['file']['name'];

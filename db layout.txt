@@ -95,6 +95,7 @@ db.stories.update( { authorSlug:"jed-bob8"}, { $pull: { searchTags : 'jed-bob7'}
 
 db.users.update( { username:"jed" }, { $set: { public : 1 } },false,true );
 db.users.update( { username:"jed" }, { $set: { role : 'admin' } },false,true );
+db.users.update( { username:"misoon burzlaff" }, { $set: { role : 'admin' } },false,true );
 
 db.stories.update( { author:"jed" }, { $set: { status : 'pending' } },false,true );
 

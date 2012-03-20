@@ -1,22 +1,16 @@
 
+var edit=[];
+edit.photos=[];
+edit.imagesSaving=0;
+edit.userWantsSave=false;
+edit.userWantsPublish=false;
+edit.availableTags = [ ];
 
-var photos=[false,false,false,false,false];  // bool array of if this slot has an image in it or not
-var availableTags = [ ];
 
 $(document).ready(function(){
 	
-            var uploader = new qq.FileUploader({
-                element: document.getElementById('image-uploader'),
-                action: '/story/addImage',
-                allowedExtensions: ['jpg','jpeg','png','gif'],
-                onComplete: imageUploaded,
-                template: '<div class="qq-uploader">' + 
-	                '<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>' +
-	                '<div id="uploadButton" class="qq-upload-button">Upload an Image</div>' +              
-	             	'</div>',
-            
-                debug: true
-            });           
+	for(var n=0; n<5; n++)
+    	edit.photos[n]={ filled: false, updated: false};
       
 	 $("#StoryText").bind( "keydown", function( event ) {
 				if((event.keyCode === $.ui.keyCode.SPACE) ||
@@ -36,7 +30,7 @@ $(document).ready(function(){
 		}
 
 		$( "#StoryTags" )
-			// don't navigate away from the field on tab when selecting an item
+			// dont navigate away from the field on tab when selecting an item
 			.bind( "keydown", function( event ) {
 				if ( event.keyCode === $.ui.keyCode.TAB &&
 						$( this ).data( "autocomplete" ).menu.active ) {
@@ -48,7 +42,7 @@ $(document).ready(function(){
 				source: function( request, response ) {
 					// delegate back to autocomplete, but extract the last term
 					response( $.ui.autocomplete.filter(
-						availableTags, extractLast( request.term ) ) );
+						edit.availableTags, extractLast( request.term ) ) );
 				},
 				focus: function() {
 					// prevent value inserted on focus
@@ -74,7 +68,7 @@ function onTags(data)
 	onServer(data);
 	if(data.tags)
 	{
-		availableTags=data.tags;
+		edit.availableTags=data.tags;
 	}
 }
 
@@ -84,41 +78,38 @@ function getFreePhotoSlot()
 {
 	for(n=0; n<5; n++)
 	{
-		if(!photos[n]) return(n);
+		if(!edit.photos[n].filled) return(n);
 	}
 	return(-1);
 }
 
-function imageUploaded(id, fileName, data)
+
+
+
+function addExistingImage(photoIndex,photoID,caption)
 {
-	onServer(data);
+	edit.photos[photoIndex].filled=true;
+		
+	srcStr='src="/image/view/'+photoID+'"';
 	
-	var photoID=data.photoID;
-	var photoIndex=getFreePhotoSlot();
-	if(photoID && photoIndex>-1)
-	{
-		addImage(photoIndex,photoID,"");	            
-		
-		if(getFreePhotoSlot()==-1)
-		{
-			$('#uploadButton').hide();
-		}
-		
-		updatePreview();
-	}
-}
-
-
-function addImage(photoIndex,photoID,caption)
-{
-	photos[photoIndex]=true;
-		
-	var photoStr='<div id="div'+photoIndex+'"><img src="/image/view/'+photoID+'" />' +
-	             'Caption: <input id="caption'+photoIndex+'" name="caption'+photoIndex+'" type="text" value="'+caption+'" /><input type="button" value="Remove this Image" class="btn-danger" onClick=deleteImage("'+photoIndex+'") />' +
-	             ' <input type="hidden" id="photo'+photoIndex+'" name="photo'+photoIndex+'" value="'+photoID+'" /></div>';
+	var photoStr='<div class="photoEditBox" id="div'+photoIndex+'">' +
+					'<input type="hidden" id="photo'+photoIndex+'" name="photo'+photoIndex+'" value="'+photoID+'"  />' +
+					'<div class="row" id="thumbDiv'+photoIndex+'" >'+
+						'<div class="span3">'+
+							'<img '+srcStr+' class="thumbImage" />' +
+						'</div>'+
+						'<div class="span5"><div class="row">'+
+		             			'Caption: <input id="caption'+photoIndex+'" name="caption'+photoIndex+'" type="text" />' +
+		             		'</div><div class="row pebButtons">'+
+			          			'<div class="span2 offset3"><input type="button" value="Remove this Image" class="btn-danger" onClick=deleteImage("'+photoIndex+'") /></div>' +
+		          		'</div></div>'+
+		          	'</div>' +		
+	             '</div>';
+	
 	            
 	$('#photoList').append(photoStr);
 }
+
 
 function changeStory(storyID)
 {
@@ -155,7 +146,7 @@ function updatePreview(story)
 		
 		for(n=0; n<5; n++) 
 		{
-			if(photos[n])
+			if(edit.photos[n].filled)
 			{
 				var pStr='photo'+n;
 				story[pStr]=$('#photo'+n).val();
@@ -200,14 +191,14 @@ function updateForm(data)
 	{
 		if(data['photo'+n])
 		{
-			addImage(n,data['photo'+n],data['caption'+n]);
-		}else photos[n]=false;
+			addExistingImage(n,data['photo'+n],data['caption'+n]);
+		}else edit.photos[n].filled=false;
 	}
 	
 	if(getFreePhotoSlot()==-1)
 	{
-		$('#uploadButton').hide();
-	}else $('#uploadButton').show();
+		$('#imageDrop').hide();
+	}else $('#imageDrop').show();
 	
 	updateWordCount();
 }
@@ -240,9 +231,9 @@ function deleteImage(slotID)
 	$('#div'+slotID).remove();
 	updatePreview();
 	
-	if(getFreePhotoSlot()==-1)
+	if(getFreePhotoSlot()>=-1)
 	{
-		$('#uploadButton').show();
+		$('#imageDrop').show();
 	}
-	photos[slotID]=false;
+	edit.photos[slotID].filled=false;
 }

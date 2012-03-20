@@ -4,7 +4,7 @@
 <script type="text/javascript" src="/js/markitup/sets/bbcode/set.js"></script>
 <link rel="stylesheet" type="text/css" href="/js/markitup/skins/simple/style.css" />
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
-<script src="/js/edit.js?8" type="text/javascript"></script>
+<script src="/js/edit.js?9" type="text/javascript"></script>
 
 <script>
 
@@ -17,9 +17,19 @@ $(document).ready(function(){
 
 function approve()
 {
-	$('#status').text="Approving...";
-	$('#error').text="";
-	$.post("/admin/approve", $('#form1').serialize() , onServer , "json" );
+	uploadImages();
+	if(edit.imagesSaving>0)
+	{
+		edit.userWantsSave=true;
+		$('#status').text="Uploading Images first. ";
+	}else
+	{
+		edit.userWantsSave=false;
+		
+		$('#status').text="Approving...";
+		$('#error').text="";
+		$.post("/admin/approve", $('#form1').serialize() , onServer , "json" );
+	}
 	
 	return(false);
 }

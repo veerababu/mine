@@ -15,9 +15,9 @@
     <script src="/js/jquery-ui.js"></script>
     <script src="/js/bootstrap.js"></script>
     
-	<link href="/css/bravo.css?8" rel="stylesheet">
+	<link href="/css/bravo.css?9" rel="stylesheet">
     <script src="/js/date.format.js?7"></script>
-    <script src="/js/bravo.js?8"></script>
+    <script src="/js/bravo.js?9"></script>
     
 	
 	
@@ -54,7 +54,6 @@ startStatusMessage='<?= $session_flash_message ?>';
 ?>     
           
 <div class="navbar navbar-fixed-top">
-     
         <div class="nav-menu">
         	<div class="login">
           	 <?php  echo $this->_render('element', 'login'); ?>
@@ -63,7 +62,7 @@ startStatusMessage='<?= $session_flash_message ?>';
 		        <td valign="bottom" style="padding-bottom: 10px;" width="40%">
 		         <span class="left">
 			          <a style="padding-left: 0px;" href="/stories">STORIES</a>
-			          <a href="/stories/feed">FEED</a>
+			          <!-- <a href="/stories/feed">FEED</a> -->
 			          <a href="/story/edit">SUBMIT!</a>
 			          
 			      </span>

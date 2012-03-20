@@ -1,5 +1,5 @@
 <?php
-
+/*
 namespace app\controllers;
 
 use app\models\Image;
@@ -51,5 +51,6 @@ class ImageController extends \lithium\action\Controller
 		return compact('photo');
     }
 }
+*/
 
 ?>

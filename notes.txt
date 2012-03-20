@@ -1,3 +1,7 @@
+preview for local images
+
+
+
 #90D4EB  Blue
 
 #EE0909  red
@@ -9,7 +13,87 @@ I had to make one change to MongoDb.php line 412:
 Inflector.php line 401:
 	$string=strtolower($string);  // JED
 	
+bootstrap.css line 57
+  //JED: height: auto;
+	
 We have a cron job that runs through all posts 
+
+Image cropping:
+http://github.com/valums/file-uploader <-- uploader 
+
+http://www.pandamatak.com/people/anand/blog/2010/11/clientside_image_crop_and_then.html  <-- using jquery but local upload fails on chrome
+http://stackoverflow.com/questions/2303690/resizing-an-image-in-an-html5-canvas  <-- code for doing the resample
+http://studio.html5rocks.com/#Photos   <- local upload works on chrome and FF
+
+
+'<canvas id="canv1_'+photoIndex+'" ></canvas>'+
+
+
+if(edit.photos[photoIndex].jcrop)
+	{ 
+		edit.photos[photoIndex].jcrop.destroy();
+		edit.photos[photoIndex].jcrop=null;
+	}
+
+
+var file = YOUR_FILE,
+    fileType = file.type,
+    reader = new FileReader();
+
+reader.onloadend = function() {
+  var image = new Image();
+      image.src = reader.result;
+
+  image.onload = function() {
+    var maxWidth = 960,
+        maxHeight = 960,
+        imageWidth = image.width,
+        imageHeight = image.height;
+
+    if (imageWidth > imageHeight) {
+      if (imageWidth > maxWidth) {
+        imageHeight *= maxWidth / imageWidth;
+        imageWidth = maxWidth;
+      }
+    }
+    else {
+      if (imageHeight > maxHeight) {
+        imageWidth *= maxHeight / imageHeight;
+        imageHeight = maxHeight;
+      }
+    }
+
+    var canvas = document.createElement('canvas');
+    canvas.width = imageWidth;
+    canvas.height = imageHeight;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(this, 0, 0, imageWidth, imageHeight);
+
+    // The resized file ready for upload
+    var finalFile = canvas.toDataURL(fileType);
+  }
+}
+
+reader.readAsDataURL(file);
+
+
+(function(x) { return function(e) {
+                x.src = e.target.result;
+                if (x.height > x.width) {
+                    x.width *= 200.0/x.height;
+                    x.height="200";
+                } else {
+                    x.height *= 200.0/x.width;
+                    x.width="200";
+                }
+                ctx = document.getElementById('canv1').getContext('2d');
+                ctx.clearRect(0,0,200,200);
+                ctx.drawImage(x, 0, 0, x.width, x.height);
+                jQuery('#pic').Jcrop({ aspectRatio: 1, onSelect: cropImage });
+            };
+        })(img);
+
 	
 	 
 

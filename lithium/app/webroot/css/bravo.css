@@ -208,3 +208,14 @@ legend {
 .thumbStory {
 	margin-bottom: 15px;
 }
+.photoEditBox {
+	margin-bottom: 10px;
+	border-bottom: 2px #000000 solid;
+}
+.pebButtons {
+	margin-top: 50px;
+}
+.thumbImage {
+	max-width: 200px;
+	max-height: 200px;
+}

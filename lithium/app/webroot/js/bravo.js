@@ -18,6 +18,8 @@ type specific:
 */
 
 var startStatusMessage='';
+var maxImageWidth=700;
+var maxImageHeight=700;
 
 $(document).ready(function(){
 	
