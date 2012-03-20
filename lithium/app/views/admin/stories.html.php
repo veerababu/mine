@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/js/markitup/skins/simple/style.css" />
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
 <script src="/js/edit.js?9" type="text/javascript"></script>
-<script src="/js/crop.js?2" type="text/javascript" ></script>
+<script src="/js/crop.js?4" type="text/javascript" ></script>
 
 <script>
 
