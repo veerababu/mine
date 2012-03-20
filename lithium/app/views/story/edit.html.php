@@ -3,57 +3,13 @@
 <script type="text/javascript" src="/js/markitup/sets/bbcode/set.js"></script>
 <link rel="stylesheet" type="text/css" href="/js/markitup/skins/simple/style.css" />
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
-<link rel="stylesheet" type="text/css" href="/css/jcrop/jcrop.css" />
+<link rel="stylesheet" type="text/css" href="/css/jcrop/jcrop.css?1" />
 <script src="/js/edit.js?9" type="text/javascript"></script>
 <script type="text/javascript" src="/js/jcrop/jquery.jcrop.js"></script>
 <script src="/js/crop.js?4" type="text/javascript" ></script>
 
 <style>
-.linear {
-  background: -webkit-gradient(linear, left bottom, left top,
-                               from(#eee), color-stop(0.25, #fff),
-                               to(#eee), color-stop(0.75, #fff));
-}
-.shadow {
-  -moz-box-shadow: 3px 3px 10px #666666;
-  -webkit-box-shadow: 3px 3px 10px #666666;
-  box-shadow: 3px 3px 10px #666666;
-}
 
-.center {
-  //display : -webkit-box;
-  //display : -moz-box;
-  display : box;
-  -webkit-box-orient : vertical;
-  -webkit-box-pack : center;
-  -webkit-box-align : center;
-  -moz-box-orient : vertical;
-  -moz-box-pack : center;
-  -moz-box-align : center;
-  box-orient: vertical;
-  box-pack: center;
-  box-align: center;
-}
-
-
-
-#imageDrop {
-  height: 100px;
-  width: 450px;
-  border-radius: 10px;
-  border: 2px dashed #ccc;
-  color: #336699;
-  font-family: 'Josefin Sans Std Light', Helvetica, sans-serif;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-#imageDrop.rounded {
-  -webkit-box-shadow: inset 0px 0px 50px #777;
-  -moz-box-shadow: inset 0px 0px 50px #777;
-  box-shadow: inset 0px 0px 50px #777;
-
-}
 </style>
       
 <script>
@@ -174,15 +130,7 @@ function addStory(story)
 		<?=$this->form->create($story,array("class" => "well","id" => "form1" )); // Echoes a <form> tag and binds the helper to $post ?>
 		
 			<?php  echo $this->_render('element', 'editStory'); ?>
-			
-		<div id="imageDrop" class="center linear">
-      		<h2>Drop image files here.</h2>
-			<span>or <input type="file" onChange="fileSelected(this)" multiple="multiple" name="file" ></span>
-        </div>
-<hr>
-	<div id="photoList"></div>
-	<input type="button" value="Upload all images" class="btn-info" onClick="uploadImages()" />
-<hr>	
+				
 		<label>Editor Comments</label>
 		<div class="alert alert-error" id="adminNote"></div>
 		

@@ -1,9 +1,9 @@
-<link href="/css/fileuploader.css" rel="stylesheet" type="text/css">	
-<script src="/js/fileuploader.js" type="text/javascript"></script>
 <script type="text/javascript" src="/js/markitup/jquery.markitup.js"></script>
 <script type="text/javascript" src="/js/markitup/sets/bbcode/set.js"></script>
 <link rel="stylesheet" type="text/css" href="/js/markitup/skins/simple/style.css" />
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
+<link rel="stylesheet" type="text/css" href="/css/jcrop/jcrop.css?1" />
+<script type="text/javascript" src="/js/jcrop/jquery.jcrop.js"></script>
 <script src="/js/edit.js?9" type="text/javascript"></script>
 <script src="/js/crop.js?4" type="text/javascript" ></script>
 

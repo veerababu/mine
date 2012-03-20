@@ -46,7 +46,11 @@
 
 
 <label>Photos</label>
-<!--
-<div id="image-uploader"></div>
-<div id="photoList"></div>
--->
+		<div id="imageDrop" class="center linear">
+      		<h2>Drop image files here.</h2>
+			<span>or <input type="file" onChange="fileSelected(this)" multiple="multiple" name="file" ></span>
+        </div>
+<hr>
+	<div id="photoList"></div>
+	<input type="button" value="Upload all images" class="btn-info" onClick="uploadImages()" />
+<hr>
