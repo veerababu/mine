@@ -48,32 +48,39 @@ function loadImg(imgFile)
 	    reader.photoIndex=photoIndex;
 	    reader.onload = (function(x) { return function(e) { 
 	    	x.src = e.target.result;
-	     	var width=x.width;
-    		var height=x.height;
-    
-		    if(width>maxImageWidth) 
-		    {
-		    	width=maxImageWidth;
-		    	
-		    }
-		    if(height>maxImageHeight) height=maxImageHeight;
-		    
-		    var ratio=Math.min(width/x.width,height/x.height);
-		    if(ratio*x.width < width) width=ratio*x.width;
-		    else if(ratio*x.height < height) height=ratio*x.height;
-    		
-    		$('#workingCanvas'+this.photoIndex).height(height);
-    		$('#workingCanvas'+this.photoIndex).width(width);
-    		
-    		var index=this.photoIndex;
-    		 edit.photos[this.photoIndex].jcrop =$.Jcrop($('#pic'+this.photoIndex), { 
-				//setSelect:   [ 0, 0, c.w, c.h ],
-				onSelect: function(c){ return cropImage(c,index); } } );
-    		
-    		var c=[];
-    		c.x=0; c.y=0; c.w=x.width; c.h=x.height;
-    		cropImage(c,this.photoIndex);
-		   closeCropPane(this.photoIndex);
+	    	if(x.width && x.height)
+	    	{
+		     	var width=x.width;
+	    		var height=x.height;
+	    
+			    if(width>maxImageWidth) 
+			    {
+			    	width=maxImageWidth;
+			    	
+			    }
+			    if(height>maxImageHeight) height=maxImageHeight;
+			    
+			    var ratio=Math.min(width/x.width,height/x.height);
+			    if(ratio*x.width < width) width=ratio*x.width;
+			    else if(ratio*x.height < height) height=ratio*x.height;
+	    		
+	    		$('#workingCanvas'+this.photoIndex).height(height);
+	    		$('#workingCanvas'+this.photoIndex).width(width);
+	    		
+	    		var index=this.photoIndex;
+	    		 edit.photos[this.photoIndex].jcrop =$.Jcrop($('#pic'+this.photoIndex), { 
+					//setSelect:   [ 0, 0, c.w, c.h ],
+					onSelect: function(c){ return cropImage(c,index); } } );
+	    		
+	    		var c=[];
+	    		c.x=0; c.y=0; c.w=x.width; c.h=x.height;
+	    		cropImage(c,this.photoIndex);
+			   closeCropPane(this.photoIndex);
+		   }else
+		   {
+		   		$('#error').text("Image load failed? "+this.photoIndex);
+		   		deleteImage(this.photoIndex);
+		   }
     		
     		
 	    };  })(img);
