@@ -23,7 +23,7 @@
 </td></tr>
 <tr><td class="span2" >Neigborhood</td><td><input id="StoryHood" type="text" name="hood">
 </td></tr>
-<tr><td class="span2" >Sate or Province</td><td><input id="StoryState" type="text" name="state">
+<tr><td class="span2" >State or Province</td><td><input id="StoryState" type="text" name="state">
 </td></tr>
 <tr><td class="span2" >Country</td><td><input id="StoryCountry" type="text" name="country">
 </td></tr>

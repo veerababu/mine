@@ -140,30 +140,6 @@ function onSlide(event, ui, photoIndex)
 	cropImage(c,photoIndex);  
 }
 
-/*
-function maximizePhoto(photoIndex)
-{
-	var photo=document.getElementById('pic'+photoIndex);
-	var width=photo.naturalWidth;
-	var height=photo.naturalHeight;
-	
-	if(width>maxImageWidth) 
-	{
-		width=maxImageWidth;
-		
-	}
-	if(height>maxImageHeight) height=maxImageHeight;
-	
-	var ratio=Math.min(width/photo.naturalWidth,height/photo.naturalHeight);
-	if(ratio*photo.naturalWidth < width) width=ratio*photo.naturalWidth;
-	else if(ratio*photo.naturalHeight < height) height=ratio*photo.naturalHeight;
-		 
-	photo=$('#pic'+photoIndex);
-	photo.width(width);
-	photo.height(height);
-}*/   
-
-
 
 function openCropPane(photoIndex)
 {
@@ -175,32 +151,29 @@ function closeCropPane(photoIndex)
 {
 	var thumbCanvas=document.getElementById('thumbCanvas'+photoIndex);
 	var workingCanvas=document.getElementById('workingCanvas'+photoIndex);
-	
-	if(workingCanvas.width>200) thumbCanvas.width=200;
-	else thumbCanvas.width=workingCanvas.width;
-	
-	if(workingCanvas.height>200) thumbCanvas.height=200;
-	else thumbCanvas.height=workingCanvas.height;
-	
-	var ratio=Math.min(thumbCanvas.width/workingCanvas.width,thumbCanvas.height/workingCanvas.height);
-	if(ratio*workingCanvas.width < thumbCanvas.width) thumbCanvas.width=ratio*workingCanvas.width;
-	if(ratio*workingCanvas.height < thumbCanvas.height) thumbCanvas.height=ratio*workingCanvas.height;
-	
-    var ctx2 = thumbCanvas.getContext('2d');
-    ctx2.clearRect(0,0,thumbCanvas.width,thumbCanvas.height);
-    
-    ctx2.drawImage(workingCanvas, 0, 0, workingCanvas.width, workingCanvas.height, 0, 0, thumbCanvas.width, thumbCanvas.height);
-   
-	
-	//var photo=$('#thumbCanvas'+photoIndex);
-	//photo.show();
-	
-	$('#resize'+photoIndex).hide();
-	$('#thumbDiv'+photoIndex).show();
-	
-	//$('#cropButton'+photoIndex).show();
-	//$('#closeButton'+photoIndex).hide();
-	//$('#closeButton'+photoIndex).hide();
+	if(workingCanvas && thumbCanvas)
+	{
+		if(workingCanvas.width>200) thumbCanvas.width=200;
+		else thumbCanvas.width=workingCanvas.width;
+		
+		if(workingCanvas.height>200) thumbCanvas.height=200;
+		else thumbCanvas.height=workingCanvas.height;
+		
+		var ratio=Math.min(thumbCanvas.width/workingCanvas.width,thumbCanvas.height/workingCanvas.height);
+		if(ratio*workingCanvas.width < thumbCanvas.width) thumbCanvas.width=ratio*workingCanvas.width;
+		if(ratio*workingCanvas.height < thumbCanvas.height) thumbCanvas.height=ratio*workingCanvas.height;
+		
+	    var ctx2 = thumbCanvas.getContext('2d');
+	    ctx2.clearRect(0,0,thumbCanvas.width,thumbCanvas.height);
+	    
+	    ctx2.drawImage(workingCanvas, 0, 0, workingCanvas.width, workingCanvas.height, 0, 0, thumbCanvas.width, thumbCanvas.height);
+		
+		$('#resize'+photoIndex).hide();
+		$('#thumbDiv'+photoIndex).show();
+	}else 
+	{
+		$('#error').text("Working canvas not found? "+photoIndex);
+	}
 }
 
 
