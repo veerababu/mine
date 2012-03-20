@@ -1,4 +1,5 @@
 preview for local images
+enforce image size on server
 
 
 
