@@ -38,7 +38,7 @@ class HomeController extends \lithium\action\Controller
  		for($loop=0; $loop<100; $loop++)
     	{   	
     		//echo("$loop ");
-    		$rand = mt_rand( 1333738021,time());
+    		$rand = mt_rand( 1331937596,time());
     		//$rand = mt_rand( time()-100,time());
     		
     		$conditions = array('status' => 'accepted', 'updated' => array('$gte' => $rand)  );
