@@ -61,6 +61,11 @@ class TagsController extends \lithium\action\Controller
     	$tags[0]='food';
     	$tags[1]='sleep';
     	$tags[2]='kids';
+    	$tags[3]='outside';
+    	$tags[4]='morsels';
+    	$tags[5]='musings';
+    	$tags[6]='adventure';
+    	
     	$this->render(array('json' => compact('tags')));
     	
     	/*

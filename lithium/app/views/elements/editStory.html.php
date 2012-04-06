@@ -52,5 +52,10 @@
         </div>
 <hr>
 	<div id="photoList"></div>
-	<input type="button" value="Upload all images" class="btn-info" onClick="uploadImages()" />
+	<div class="row"> 
+		<div class="span2"><input type="button" value="Upload all images" class="btn-info" onClick="uploadImages()" /></div>
+		<div class="span3 offset3">Big First Image: <input id="StoryLayout" name="layout" type="checkbox"></div>
+	</div>
 <hr>
+
+

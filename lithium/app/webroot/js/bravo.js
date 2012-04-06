@@ -175,27 +175,95 @@ function createStoryStr(story,innerText)
 			str += '</div>'; // end textColumn
 		str += '</div>'; // end storyHeader
 	
+		
 		str += '<div class="row">'; // body
-			str += '<div class="span4">'; // photo column
-				for(n=0; n<5; n++) 
-				{
-					var pStr='photo'+n;
-					if(story[pStr])
-					{
-						str = str + '<div class="photo"><p><img src="/image/view/'+story[pStr]+'" /><p>' +
-								story['caption'+n]+'</div>';
-					}
-				}
-			str += '</div>'; // end photoColumn
-			
-			str += '<div class="span5">'; // text column
-				if(story.text) str += 	'<div class="storyText">'+parseBBCode(story.text)+'</div>';
-			str += '</div>'; // end textColumn
+		if(story.layout && story.layout==1)
+		{	//big pic
+			str += createBigImageLayout(story);
+		}else
+		{	// normal
+			str += createNormalLayout(story);
+		}
 		str += '</div>'; // end story body
+		
 		
 	str += '</div>'; // end story
 	
 	return(str);	
+}
+
+function createNormalLayout(story)
+{
+	var str='';
+	str += '<div class="span4">'; // photo column
+	for(n=0; n<5; n++) 
+	{
+		var pStr='photo'+n;
+		if(story[pStr])
+		{
+			str = str + '<div class="photo"><p><img class="leftPhoto" src="/image/view/'+story[pStr]+'" /><p>' +
+					story['caption'+n]+'</div>';
+		}
+	}
+	str += '</div>'; // end photoColumn
+	
+	str += '<div class="span5">'; // text column
+		if(story.text) 
+		{
+			var text=parseBBCode(story.text);
+			if(text.length>250)
+				str += 	'<div class="storyTextMC">'+text+'</div>';
+			else str += 	'<div class="storyTextSC">'+text+'</div>';
+		}
+	str += '</div>'; // end textColumn
+	return(str);
+}
+
+function createBigImageLayout(story)
+{
+	var str='';
+	str += '<div class="row">';
+	str += '<div class="topPhoto"><p><img class="topPhoto" src="/image/view/'+story['photo0']+'" /><p>' +
+					story['caption0']+'</div></div>';
+		
+			
+	if(story['photo1'])
+	{		
+		str += '<div class="span4">'; // photo column
+		for(n=1; n<5; n++) 
+		{
+			var pStr='photo'+n;
+			if(story[pStr])
+			{
+				str = str + '<div class="photo"><p><img class="leftPhoto" src="/image/view/'+story[pStr]+'" /><p>' +
+						story['caption'+n]+'</div>';
+			}
+		}
+		str += '</div>'; // end photoColumn
+		
+		str += '<div class="span5">'; // text column
+			if(story.text) 
+			{
+				var text=parseBBCode(story.text);
+				if(text.length>250)
+					str += 	'<div class="storyTextMC">'+text+'</div>';
+				else str += 	'<div class="storyTextSC">'+text+'</div>';
+			}
+		str += '</div>'; // end textColumn
+	}else
+	{
+		str += '<div class="span7 offset1">'; // text column
+			if(story.text) 
+			{
+				var text=parseBBCode(story.text);
+				if(text.length>300)
+					str += 	'<div class="storyTextMC">'+text+'</div>';
+				else str += 	'<div class="storyTextSC">'+text+'</div>';
+			}
+		str += '</div>'; // end textColumn
+	}
+	
+	return(str);
 }
 
 
@@ -209,7 +277,7 @@ function createStoryThumbStr(story)
 	}
 	var str='<div class="thumbStory">';
 	if(story['photo0'])	str += '<a href="/story/view/'+story.slug+'"><img src="/image/view/'+story['photo0']+'" /></a>';
-	str += '<div class="storyTitle"><a href="/story/view/'+story.slug+'">'+story.title+'</a></div>';
+	str += '<div class="thumbTitle"><a href="/story/view/'+story.slug+'">'+story.title+'</a></div>';
 	str += 	'<div class="thumbText">'+parseBBCode(story.text)+'</div>';
 	
 	return(str);	

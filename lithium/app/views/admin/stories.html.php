@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
 <link rel="stylesheet" type="text/css" href="/css/jcrop/jcrop.css?1" />
 <script type="text/javascript" src="/js/jcrop/jquery.jcrop.js"></script>
-<script src="/js/edit.js?9" type="text/javascript"></script>
+<script src="/js/edit.js?10" type="text/javascript"></script>
 <script src="/js/crop.js?4" type="text/javascript" ></script>
 
 <script>
@@ -15,6 +15,8 @@ $(document).ready(function(){
 	$.post("/admin/getPending", null , onStories , "json" );
 	if('<?=$storyTitle ?>'!='') $.post("/story/getByTitle/<?=$storyTitle ?>", null , onStories , "json" );
 });
+
+function saveStory(){ approve(); }
 
 function approve()
 {
@@ -97,7 +99,7 @@ function onStories(data)
 		<div class="row"></div>
 		</form>
 	</div>
-	<div class="span2 well">
+	<div class="span2 well black">
 		<h2>Stories</h2>
 		<div id="pending" ></div>
 	</div>

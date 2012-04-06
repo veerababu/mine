@@ -24,12 +24,12 @@ function clickTag(filter)
 
 <div class="row"> 
 	<div class="span2">
-		<div class="row well">
+		<div class="row well black">
 			<h2>BYC!</h2>
 			<h2>Local Stories by Global Users</h2>
 			<a href="/stories/edit">Get started and share your story!</a>
 		</div>
-		<div class="row well">
+		<div class="row well black">
 			<h3>Top Ten:</h3>
 			<ol id="TopTen">
 				<li>a</li>

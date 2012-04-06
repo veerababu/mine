@@ -141,6 +141,9 @@ function updatePreview(story)
 		story.hood=$('#StoryHood').val();
 		story.state=$('#StoryState').val();
 		story.country=$('#StoryCountry').val();
+		story.tags=$('#StoryTags').val().split(",");
+		if( $('#StoryLayout').is(':checked') ) story.layout=1;
+		else story.layout=0;
 		
 		story.updated=Math.round(+new Date()/1000);
 		
@@ -180,6 +183,9 @@ function updateForm(data)
 	$('#StoryURL').val(data.url);
 	$('#adminNote').html(data.adminNote);
 	$('#StoryStatus').val(data.status);
+	if(data.layout)	$('#StoryLayout').attr('checked', true);
+	else $('#StoryLayout').attr('checked', false);
+
 	
 	var tagStr='';
 	if(data.tags) for(n=0; n<data.tags.length; n++) tagStr += data.tags[n]+', ';

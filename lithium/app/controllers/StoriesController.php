@@ -60,7 +60,7 @@ class StoriesController extends \lithium\action\Controller
     }
     
    
-    
+    // User searches for stories
     public function fetch()
     {
     	//print_r($this->request->data);
@@ -100,6 +100,11 @@ class StoriesController extends \lithium\action\Controller
     	
     	//print_r($conditions);
 		$stories = Story::all(compact('conditions','limit','page'));
+		
+		/*
+		if(count($stories)==0)
+		{
+		} */ 
 		
 		
 		// TODO: save filters so we know what the common ones are

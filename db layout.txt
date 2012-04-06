@@ -41,6 +41,10 @@ Tags:
 	status {pending, approved}
 	friends // array of other tags that commonly occur with this tag
 
+
+// I think we should change it so there is a table for published stories and one for unpublished ones.
+// the unpublished ones can have a status telling why they aren't published yet
+
 Stories: 
 	slug  : unique title. This is the lowercase and slugged URL cleaned version of the displayed title
 	address
@@ -50,14 +54,15 @@ Stories:
 	hood
 	phone
 	url
-	status {working,pending,accepted}
+	status {working,pending,updating,accepted}
+	
 	// type {story,user,location?}
 	tags
 	searchTags  
 	text
 	title
-	created
-	updated
+	created	 //
+	updated   // date it was last updated
 	
 	
 Updates:
@@ -93,11 +98,12 @@ hi how do you do the equivalent of: db.posts.update( { author: "oldAuthor"}, { $
 
 db.stories.update( { authorSlug:"jed-bob8"}, { $pull: { searchTags : 'jed-bob7'}},false,true);
 
+
 db.users.update( { username:"jed" }, { $set: { public : 1 } },false,true );
 db.users.update( { username:"jed" }, { $set: { role : 'admin' } },false,true );
 db.users.update( { username:"misoon burzlaff" }, { $set: { role : 'admin' } },false,true );
 
-db.stories.update( { author:"jed" }, { $set: { status : 'pending' } },false,true );
+db.stories.update( { title:"Big First Image" }, { $set: { layout : 1 } },false,true );
 
 db.stories.update( { title:"Chicken & Waffles " }, { $set: { created : 1331320686 , updated : 1331320686 } },false,true );
 

@@ -94,6 +94,10 @@ function onStories(data)
 		{
 			addStory(data.stories[index]);
 		}
+		if(data.stories.length==0)
+		{
+			showEmptyResultsMessage();
+		}
 	}
 	if(data.count)
 	{
@@ -127,6 +131,12 @@ function onStories(data)
 	{
 		// TODO: highlight the current page button
 	}
+}
+
+function showEmptyResultsMessage()
+{
+	var msg='<p><p><p><div class="center"> That\'s funny. No one has written about that yet. <a href="/story/edit">Be the first to write about it!</a> </div>';
+	$('#storyList').html(msg);
 }
 
 function gotoPage(page)

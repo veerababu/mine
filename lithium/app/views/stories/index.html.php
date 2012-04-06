@@ -5,11 +5,11 @@ var currentSearches=[ <?= $search ?> ];
 var desiredPage=<?= $page ?>;
 
 </script>
-<script src="/js/search.js?1" type="text/javascript"></script>
+<script src="/js/search.js?2" type="text/javascript"></script>
 
 <p>
 <div class="row"> 
-	<div class="span2 well">
+	<div class="span2 well black">
 		Search For: <input id="SearchBox" class="span2 ui-autocomplete-input" type="text" name="search" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
 		Near: <input id="NearBox" class="span2 ui-autocomplete-input" type="text" name="near" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
 		<hr>

@@ -24,6 +24,11 @@ $(document).ready(function()
     dropbox.addEventListener('dragover', onDragOver, false);
     dropbox.addEventListener('dragleave', onDragLeave, false);
     dropbox.addEventListener('drop', onDrop, false);
+    
+    if(typeof FileReader == "undefined")
+    {
+    	$('#error').html("Sorry you need a modern browser to handle uploading photos. Please try Chrome or Fire Fox.").show();
+    }
 });
 
 function fileSelected(ele)
