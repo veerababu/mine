@@ -111,6 +111,10 @@ db.stories.find({}, {title:1,searchTags:1});
 
 
 db.posts.find({tags: {$all: ["food", �hello�]}});
+
+now= time()/1000;
+rand = (1333769751-1331937596)*Math.random()+1331937596;
+db.stories.findOne( { status : 'accepted', updated : { $lte : rand } } ,{title:1,updated:1} )
 	
 
 
