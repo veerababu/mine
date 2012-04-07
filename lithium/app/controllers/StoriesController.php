@@ -97,9 +97,10 @@ class StoriesController extends \lithium\action\Controller
     	$count= Story::count(compact('conditions'));
     	
     	$limit=3;
+    	$order= array('updated' => -1);
     	
     	//print_r($conditions);
-		$stories = Story::all(compact('conditions','limit','page'));
+		$stories = Story::all(compact('conditions','limit','page','order'));
 		
 		/*
 		if(count($stories)==0)
