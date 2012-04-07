@@ -119,6 +119,8 @@ class AdminController extends \lithium\action\Controller
     	$id=$story['_id'];
     	$story['title']=trim($story['title']);
     	$story['slug']=Inflector::slug($story['title']);
+    	if( isset($story['layout']) ) $story['layout']=1;
+    	else  $story['layout']=0;
     	
     	if(StoryController::isUnique($story['slug'],$id))
 		{
