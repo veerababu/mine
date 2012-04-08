@@ -140,7 +140,7 @@ class UsersController extends \lithium\action\Controller
     {
     	$userSlug=Inflector::slug(Session::read('user.title'));
     	
-    	$user = Users::first(array('conditions' => array('slug' => $userSlug), 'fields' => array('title','text','tags','city','hood','country','url','email','public')));
+    	$user = Users::first(array('conditions' => array('slug' => $userSlug), 'fields' => array('title','text','tags','city','hood','country','url','email','public','photo0','photo1','photo2','photo3','photo4','caption0','caption1','caption2','caption3','caption4')));
     	if($user)
     	{
     		$this->render(array('json' => compact('user')));
@@ -158,7 +158,7 @@ class UsersController extends \lithium\action\Controller
     	$userSlug=strtolower(urldecode($userSlug));
     	
     	//echo($userSlug);
-    	$story = Users::first(array('conditions' => array('slug' => $userSlug, 'public' => 1), 'fields' => array('title','text','tags','city','hood','country','url','updated')));
+    	$story = Users::first(array('conditions' => array('slug' => $userSlug, 'public' => 1), 'fields' => array('title','text','tags','city','hood','country','url','updated','photo0','photo1','photo2','photo3','photo4','caption0','caption1','caption2','caption3','caption4')));
     	if($story)
     	{
     		$story['author']=$story['title'];

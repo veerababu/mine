@@ -23,22 +23,7 @@ function clickTag(filter)
 </script>
 
 <div class="row"> 
-	<div class="span2">
-		<div class="row well">
-			<h2>BYC!</h2>
-			<h2>Local Stories by Global Users</h2>
-			<a href="/stories/edit">Get started and share your story!</a>
-		</div>
-		<div class="row well">
-			<h3>Top Ten:</h3>
-			<ol id="TopTen">
-				<li>a</li>
-				<li>a</li>
-				<li>a</li>
-				<li>a</li>
-			</ol>
-		</div>
-	</div>
+	<?php  echo $this->_render('element', 'cta_nav'); ?>
 	
 	
 

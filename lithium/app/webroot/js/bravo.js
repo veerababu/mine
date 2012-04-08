@@ -282,3 +282,10 @@ function createStoryThumbStr(story)
 	
 	return(str);	
 }
+
+function slugify(text)
+{
+	text = text.toLowerCase();
+	text = text.replace(/\s/gi, "-");
+	return(text);
+}

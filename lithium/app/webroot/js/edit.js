@@ -132,7 +132,8 @@ function updatePreview(story)
 	{
 		story=[];
 		story.title=$('#StoryTitle').val();
-		story.author='<?=$username ?>';
+		story.slug=slugify(story.title);
+		story.author=$('#StoryAuthor').val();
 		story.text= $('#StoryText').val();
 		story.address=$('#StoryAddress').val();
 		story.phone=$('#StoryPhone').val();
@@ -235,11 +236,14 @@ function updateWordCount()
 function deleteImage(slotID)
 {
 	$('#div'+slotID).remove();
+	edit.photos[slotID].filled=false;
+	
+	
 	updatePreview();
 	
 	if(getFreePhotoSlot()>=-1)
 	{
 		$('#imageDrop').show();
 	}
-	edit.photos[slotID].filled=false;
+	
 }

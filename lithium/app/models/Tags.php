@@ -21,7 +21,7 @@ class Tags extends \lithium\data\Model
 		// TODO: remove dup tags
 		foreach($searchTags as $key => &$tag)
 		{
-			$tag=trim($tag);
+			$tag=Inflector::slug($tag);
 			if( empty($tag) ) unset( $searchTags[$key] );
 		}
 		

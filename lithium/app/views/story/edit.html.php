@@ -1,11 +1,11 @@
 
 <script type="text/javascript" src="/js/markitup/jquery.markitup.js"></script>
 <script type="text/javascript" src="/js/markitup/sets/bbcode/set.js"></script>
+<script type="text/javascript" src="/js/jcrop/jquery.jcrop.js"></script>
 <link rel="stylesheet" type="text/css" href="/js/markitup/skins/simple/style.css" />
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
-<link rel="stylesheet" type="text/css" href="/css/jcrop/jcrop.css?1" />
-<script src="/js/edit.js?10" type="text/javascript"></script>
-<script type="text/javascript" src="/js/jcrop/jquery.jcrop.js"></script>
+<link href="/css/jcrop/jcrop.css?1" rel="stylesheet" type="text/css"  />
+<script src="/js/edit.js?11" type="text/javascript"></script>
 <script src="/js/crop.js?4" type="text/javascript" ></script>
 
 <style>

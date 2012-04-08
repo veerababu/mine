@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
 <link rel="stylesheet" type="text/css" href="/css/jcrop/jcrop.css?1" />
 <script type="text/javascript" src="/js/jcrop/jquery.jcrop.js"></script>
-<script src="/js/edit.js?10" type="text/javascript"></script>
+<script src="/js/edit.js?11" type="text/javascript"></script>
 <script src="/js/crop.js?4" type="text/javascript" ></script>
 
 <script>
