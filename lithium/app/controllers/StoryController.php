@@ -281,7 +281,7 @@ class StoryController extends \lithium\action\Controller
 		        $photo = Image::create();
 		        $data=compact('author','file');
 		        //print_r($data);
-		        $photo->save($data);
+		        // TEMP $photo->save($data);
 				$photoID=$photo->_id;
 				$this->render(array('json' => array('photoID' => "$photoID", 'photoIndex' => "$index" )));
 			    
