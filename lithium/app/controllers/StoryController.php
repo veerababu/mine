@@ -280,8 +280,8 @@ class StoryController extends \lithium\action\Controller
 		        $author=Session::read('user.title');
 		        $photo = Image::create();
 		        $data=compact('author','file');
-		        print_r($data);
-		        //$photo->save($data);
+		        //print_r($data);
+		        $photo->save($data);
 				$photoID=$photo->_id;
 				$this->render(array('json' => array('photoID' => "$photoID", 'photoIndex' => "$index" )));
 			    
