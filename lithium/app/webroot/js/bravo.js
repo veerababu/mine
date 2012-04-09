@@ -136,11 +136,11 @@ function createStoryStr(story,innerText)
 	
 	var str='<div class="story">';
 		str += '<div class="row storyHeader">';
-			str += '<div class="span4">'; // photo column
+			str += '<div class="span3">'; // photo column
 				str += tagStr;
 			str += '</div>'; // end photoColumn
 			
-			str += '<div class="span5">'; // text column
+			str += '<div class="span5 offset1">'; // text column
 				str += '<div class="row">'; // title row
 					if(story.title) str += '<div class="span3 storyTitle"><a href="/story/view/'+story.slug+'">'+story.title+'</a></div>';
 					if(story.author && story.authorSlug) str += '<div>by <a href="/users/view/'+story.authorSlug+'">'+story.author+'</a><br></div>';  // was span1

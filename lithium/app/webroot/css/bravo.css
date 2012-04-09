@@ -44,16 +44,19 @@ font-size: 15px;
  	width: 1170px;
  	margin-left: auto;
 	margin-right: auto;
-	margin-top: 54px;
-	margin-bottom: 5px;
+	margin-top: 48px;
+	margin-bottom: 20px;
 	
-	border-top: 2px black solid;
+	border-bottom: 3px black solid;
 	
  	//vertical-align:bottom;
  }
+ 
  .nav-menu table a {
  	padding-left: 20px;
  	font-size: 20px;
+ 	font-weight:bold;
+ 	
  	color: black;
  }
 .nav-menu table a:visited {color:#000000;}
@@ -109,7 +112,8 @@ margin-bottom: 9px;
     
 .story {
 margin-bottom: 15px;
-border-bottom: thin red solid;
+padding-bottom: 20px;
+border-bottom: thin black solid;
 }
 
 .storyHeader{
@@ -147,6 +151,10 @@ color: #EE0909;
 	cursor: pointer; 
 }
 
+
+.bigText {
+	font-size: 20px;
+}
 
 
 

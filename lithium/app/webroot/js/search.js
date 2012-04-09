@@ -135,7 +135,7 @@ function onStories(data)
 
 function showEmptyResultsMessage()
 {
-	var msg='<p><p><p><div class="center"> That\'s funny. No one has written about that yet. <a href="/story/edit">Be the first to write about it!</a> </div>';
+	var msg='<p><p><p><div class="center bigText">Nothing was found because we are just starting out. <a href="/story/edit">Please share your story!</a> </div>';
 	$('#storyList').html(msg);
 }
 

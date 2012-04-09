@@ -57,18 +57,18 @@ startStatusMessage='<?= $session_flash_message ?>';
 <div class="row top-nav"><div class="login"><?php  echo $this->_render('element', 'login'); ?></div></div>
 <div class="row nav-menu">
           <table width="100%" ><tr>
-		        <td valign="bottom" style="padding-bottom: 10px;" width="40%">
+		        <td valign="bottom"  width="40%">
 		         <span class="left">
 			          <a style="padding-left: 0px;" href="/stories">STORIES</a>
 			          <!-- <a href="/stories/feed">FEED</a> -->
-			          <a href="/story/edit">SUBMIT!</a>
+			          <a href="/story/edit">SHARE</a>
 			          
 			      </span>
 		        </td>
 		        <td>
 		        	
 		        </td>
-		        <td valign="bottom" style="padding-bottom: 10px;" width="40%" >
+		        <td valign="bottom"  width="40%" >
 		         <span class="right">
 		         	<a href="/pages/faq">FAQ</a>
 			          <a href="/pages/about">ABOUT</a>
@@ -84,7 +84,7 @@ startStatusMessage='<?= $session_flash_message ?>';
 	<?php echo $this->content(); ?>
      
 	<div class="footer">
-		<span><a href="/pages/contact">CONTACT</a></span> | <span>Bravo Your Life! LLC</span> | <span><a href="/pages/privacy">PRIVACY</a></span> | <span><a href="http://lesswrong.com">Think</a> about things.</span>
+		<span><a href="/pages/contact">CONTACT</a></span> | <span>Bravo Your Life! Inc</span> | <span><a href="/pages/privacy">PRIVACY</a></span> | <span><a href="http://lesswrong.com">Think</a> about things.</span>
 	</div>
 
     </div> 
