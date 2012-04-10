@@ -93,13 +93,13 @@ function addExistingImage(photoIndex,photoID,caption)
 	srcStr='src="/image/view/'+photoID+'"';
 	
 	var photoStr='<div class="photoEditBox" id="div'+photoIndex+'">' +
-					'<input type="hidden" id="photo'+photoIndex+'" name="photo'+photoIndex+'" value="'+photoID+'"  />' +
+					'<input type="hidden" id="photo'+photoIndex+'" name="photos[]" value="'+photoID+'"  />' +
 					'<div class="row" id="thumbDiv'+photoIndex+'" >'+
 						'<div class="span3">'+
 							'<img '+srcStr+' class="thumbImage" />' +
 						'</div>'+
 						'<div class="span5"><div class="row">'+
-		             			'Caption: <input id="caption'+photoIndex+'" name="caption'+photoIndex+'" type="text" />' +
+		             			'Caption: <input id="caption'+photoIndex+'" name="captions[]" type="text" />' +
 		             		'</div><div class="row pebButtons">'+
 			          			'<div class="span2 offset3"><input type="button" value="Remove this Image" class="btn-danger" onClick=deleteImage("'+photoIndex+'") /></div>' +
 		          		'</div></div>'+
@@ -152,10 +152,8 @@ function updatePreview(story)
 		{
 			if(edit.photos[n].filled)
 			{
-				var pStr='photo'+n;
-				story[pStr]=$('#photo'+n).val();
-				story['caption'+n]=$('#caption'+n).val();
-				//story['pos'+n]=
+				story.photos.push( $('#photo'+n).val() );
+				story.captions.push( $('#caption'+n).val() );	
 			}
 		}
 	}
@@ -170,7 +168,7 @@ function updatePreview(story)
 function updateForm(data)
 {
 	// clear all the photos
-	// see if we should show the phot upload button
+	
 	$('#StoryID').val(data._id);
 	$('#StoryTitle').val(data.title);
 	$('#StoryAuthor').val(data.author);
@@ -196,12 +194,13 @@ function updateForm(data)
 	
 	for(n=0; n<5; n++) 
 	{
-		if(data['photo'+n])
+		if(n<data.photos.length)
 		{
-			addExistingImage(n,data['photo'+n],data['caption'+n]);
+			addExistingImage(n,data.photos[n],data.captions[n]);
 		}else edit.photos[n].filled=false;
 	}
 	
+	// see if we should show the photo upload button
 	if(getFreePhotoSlot()==-1)
 	{
 		$('#imageDrop').hide();
@@ -245,5 +244,13 @@ function deleteImage(slotID)
 	{
 		$('#imageDrop').show();
 	}
+	
+}
+
+function createStoryPostStr()
+{
+	var str=$('#form1').serialize();
+	
+	return(str);
 	
 }

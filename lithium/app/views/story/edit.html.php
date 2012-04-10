@@ -5,8 +5,8 @@
 <link rel="stylesheet" type="text/css" href="/js/markitup/skins/simple/style.css" />
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
 <link href="/css/jcrop/jcrop.css?1" rel="stylesheet" type="text/css"  />
-<script src="/js/edit.js?11" type="text/javascript"></script>
-<script src="/js/crop.js?5" type="text/javascript" ></script>
+<script src="/js/edit.js?12" type="text/javascript"></script>
+<script src="/js/crop.js?6" type="text/javascript" ></script>
 
 <style>
 
@@ -35,8 +35,9 @@ function saveStory()
 		edit.userWantsSave=false;
 		$('#status').text="Saving...";
 		$('#error').text="";
+		
 			
-		$.post("/story/save", $('#form1').serialize() , onStories , "json" );
+		$.post("/story/save", createStoryPostStr() , onStories , "json" );
 	}
 	
 	return(false);
@@ -54,7 +55,7 @@ function publishStory()
 		$('#status').text="Publishing...";
 		$('#error').text="";
 			
-		$.post("/story/publish", $('#form1').serialize() , onStories , "json" );
+		$.post("/story/publish", createStoryPostStr() , onStories , "json" );
 	}
 	return(false);
 }

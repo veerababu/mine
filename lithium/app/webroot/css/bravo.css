@@ -239,7 +239,7 @@ legend {
 	margin-bottom: 15px;
 }
 
-.thumbStory img {
+.thumbStory img, #ThumbImage {
 	max-width:230px;
 	max-height:160px;
 }
@@ -251,8 +251,10 @@ legend {
 }
 
 .photoEditBox {
+	padding: 5px;
 	margin-bottom: 10px;
-	border-bottom: 2px #000000 solid;
+	border-radius: 10px;
+  	border: 2px dashed #ccc;
 }
 
 .leftPhoto {

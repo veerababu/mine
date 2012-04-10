@@ -115,6 +115,40 @@ db.posts.find({tags: {$all: ["food", �hello�]}});
 now= time()/1000;
 rand = (1333769751-1331937596)*Math.random()+1331937596;
 db.stories.findOne( { status : 'accepted', updated : { $lte : rand } } ,{title:1,updated:1} )
+
+
+db.stories.update( {title:"EEEEEEEEE" }, { photos : .photo0 },false,false);
+
+db.stories.find( { photos: { $exists : true } } , {title:1, photos:1, captions:1} );
+db.stories.find( { photo0: { $exists : true } } , {title:1, photo0:1, caption0:1, photos:1 } );
+
+function photoSwitch() {
+	story=db.stories.findOne( { photo0: { $exists : true } } );
+	if(story)
+	{
+		print(story.title);
+		story.photos=[];
+		story.captions=[];
+		
+		for(n=0; n<5; n++)
+		{	
+			if(story['photo'+n])
+			{
+				//print("photo: "+story['photo'+n] );
+				story.photos.push(story['photo'+n]);
+				//print("after: "+story.photos );
+				story.captions.push(story['caption'+n]);
+				delete story['photo'+n];
+				delete story['caption'+n];
+			}
+			//story.photos.push("hi");
+		}
+		
+		db.stories.save(story);
+	}else print("All Done");
+}
+
+UPDATE bob set bob.x=bob.y;
 	
 
 

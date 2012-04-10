@@ -196,13 +196,14 @@ function createNormalLayout(story)
 {
 	var str='';
 	str += '<div class="span4">'; // photo column
-	for(n=0; n<5; n++) 
+	if(story.photos)
 	{
-		var pStr='photo'+n;
-		if(story[pStr])
+		for(n=0; n<story.photos.length; n++) 
 		{
-			str = str + '<div class="photo"><p><img class="leftPhoto" src="/image/view/'+story[pStr]+'" /><p>' +
-					story['caption'+n]+'</div>';
+			
+			str = str + '<div class="photo"><p><img class="leftPhoto" src="/image/view/'+story.photos[n]+'" /><p>' +
+						story.captions[n]+'</div>';
+			
 		}
 	}
 	str += '</div>'; // end photoColumn
@@ -223,21 +224,18 @@ function createBigImageLayout(story)
 {
 	var str='';
 	str += '<div class="row">';
-	str += '<div class="topPhoto"><p><img class="topPhoto" src="/image/view/'+story['photo0']+'" /><p>' +
+	str += '<div class="topPhoto"><p><img class="topPhoto" src="/image/view/'+story.photos[0]+'" /><p>' +
 					story['caption0']+'</div></div>';
 		
-			
-	if(story['photo1'])
+	if(story.photos[1])
 	{		
+		
 		str += '<div class="span4">'; // photo column
-		for(n=1; n<5; n++) 
+		for(n=1; n<story.photos.length; n++) 
 		{
-			var pStr='photo'+n;
-			if(story[pStr])
-			{
-				str = str + '<div class="photo"><p><img class="leftPhoto" src="/image/view/'+story[pStr]+'" /><p>' +
-						story['caption'+n]+'</div>';
-			}
+			str = str + '<div class="photo"><p><img class="leftPhoto" src="/image/view/'+story.photos[n]+'" /><p>' +
+						story.captions[n]+'</div>';
+			
 		}
 		str += '</div>'; // end photoColumn
 		
@@ -276,7 +274,7 @@ function createStoryThumbStr(story)
 		story.text += "...";
 	}
 	var str='<div class="thumbStory">';
-	if(story['photo0'])	str += '<a href="/story/view/'+story.slug+'"><img src="/image/view/'+story['photo0']+'" /></a>';
+	if(story.photos[0])	str += '<a href="/story/view/'+story.slug+'"><img src="/image/view/'+story.photos[0]+'" /></a>';
 	str += '<div class="thumbTitle"><a href="/story/view/'+story.slug+'">'+story.title+'</a></div>';
 	str += 	'<div class="thumbText">'+parseBBCode(story.text)+'</div>';
 	

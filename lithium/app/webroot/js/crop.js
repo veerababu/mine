@@ -109,13 +109,13 @@ function addLocalImage(imgFile,photoIndex)
 	edit.photos[photoIndex].scale=1;
 	
 	var photoStr='<div class="photoEditBox" id="div'+photoIndex+'">' +
-					'<input type="hidden" id="photo'+photoIndex+'" name="photo'+photoIndex+'"  />' +
+					'<input type="hidden" id="photo'+photoIndex+'" name="photos[]"  />' +
 					'<div class="row" id="thumbDiv'+photoIndex+'" >'+
 						'<div class="span3">'+
 							'<canvas id="thumbCanvas'+photoIndex+'" ></canvas>'+
 						'</div>'+
 						'<div class="span5"><div class="row">'+
-		             			'Caption: <input id="caption'+photoIndex+'" name="caption'+photoIndex+'" type="text" />' +
+		             			'Caption: <input id="caption'+photoIndex+'" name="captions[]" type="text" />' +
 		             		'</div><div class="row pebButtons">'+
 			          			'<div class="span2"><input type="button" id="cropButton'+photoIndex+'" value="Resize and Crop Image" class="btn-info" onclick="openCropPane('+photoIndex+')" /></div>' +
 			          			'<div class="span2 offset1"><input type="button" value="Remove this Image" class="btn-danger" onClick=deleteImage("'+photoIndex+'") /></div>' +
@@ -235,19 +235,22 @@ function uploadSelection() {
 
 // go through all the images that have been edited and send them to the server
 function uploadImages()
-{
+{	
 	for(var n=0; n<5; n++)
 	{
-		if(edit.photos[n].changed)
+		if(edit.photos[n].filled)
 		{
-			edit.photos[n].changed=false;
-			
-			var imgData = document.getElementById('workingCanvas'+n).toDataURL("image/jpeg");
-		    var postStr = "index="+n+"&name="+edit.photos[n].name+"&i=" + encodeURIComponent(imgData);
-		    edit.imagesSaving++;
-		    $.post('/story/saveImage', postStr, onSaveImage, "json" );
-		    
-    	}
+			if(edit.photos[n].changed)
+			{
+				edit.photos[n].changed=false;
+				
+				var imgData = document.getElementById('workingCanvas'+n).toDataURL("image/jpeg");
+			    var postStr = "index="+n+"&name="+edit.photos[n].name+"&i=" + encodeURIComponent(imgData);
+			    edit.imagesSaving++;
+			    $.post('/story/saveImage', postStr, onSaveImage, "json" );
+	    	}
+	    	
+		}
     }   
 }
 

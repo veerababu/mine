@@ -17,7 +17,7 @@
     
 	<link href="/css/bravo.css?11" rel="stylesheet">
     <script src="/js/date.format.js?7"></script>
-    <script src="/js/bravo.js?11"></script>
+    <script src="/js/bravo.js?12"></script>
     
 	
 	
