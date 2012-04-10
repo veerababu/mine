@@ -274,7 +274,7 @@ function onSaveImage(data)
 	}
 }
 
-/*
+
 
     Element.prototype.hasClassName = function(name) {
       return new RegExp("(?:^|\\s+)" + name + "(?:\\s+|$)").test(this.className);
@@ -330,7 +330,7 @@ function onSaveImage(data)
             this.insertAdjacentElement(where, parsedText)
         }
     }
-    */
+    
 
 
 function onDragEnter(e) {

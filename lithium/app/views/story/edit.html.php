@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
 <link href="/css/jcrop/jcrop.css?1" rel="stylesheet" type="text/css"  />
 <script src="/js/edit.js?11" type="text/javascript"></script>
-<script src="/js/crop.js?4" type="text/javascript" ></script>
+<script src="/js/crop.js?5" type="text/javascript" ></script>
 
 <style>
 
