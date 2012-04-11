@@ -225,7 +225,7 @@ function createBigImageLayout(story)
 	var str='';
 	str += '<div class="row">';
 	str += '<div class="topPhoto"><p><img class="topPhoto" src="/image/view/'+story.photos[0]+'" /><p>' +
-					story['caption0']+'</div></div>';
+					story.captions[0]+'</div></div>';
 		
 	if(story.photos[1])
 	{		

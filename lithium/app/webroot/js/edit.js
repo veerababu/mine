@@ -1,6 +1,7 @@
 
 var edit=[];
 edit.photos=[];
+edit.thumb=[];
 edit.imagesSaving=0;
 edit.userWantsSave=false;
 edit.userWantsPublish=false;
@@ -99,7 +100,7 @@ function addExistingImage(photoIndex,photoID,caption)
 							'<img '+srcStr+' class="thumbImage" />' +
 						'</div>'+
 						'<div class="span5"><div class="row">'+
-		             			'Caption: <input id="caption'+photoIndex+'" name="captions[]" type="text" />' +
+		             			'Caption: <input id="caption'+photoIndex+'" name="captions[]" type="text" value="'+caption+'" />' +
 		             		'</div><div class="row pebButtons">'+
 			          			'<div class="span2 offset3"><input type="button" value="Remove this Image" class="btn-danger" onClick=deleteImage("'+photoIndex+'") /></div>' +
 		          		'</div></div>'+
@@ -147,7 +148,8 @@ function updatePreview(story)
 		else story.layout=0;
 		
 		story.updated=Math.round(+new Date()/1000);
-		
+		story.photos=[];
+		story.captions=[];
 		for(n=0; n<5; n++) 
 		{
 			if(edit.photos[n].filled)

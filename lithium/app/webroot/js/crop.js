@@ -27,9 +27,17 @@ $(document).ready(function()
     
     if(typeof FileReader == "undefined")
     {
-    	$('#error').html("Sorry you need a modern browser to handle uploading photos. Please try Chrome or Fire Fox.").show();
+    	$('#error').html("Sorry you need a modern browser to handle uploading photos. Please try Chrome or FireFox.").show();
     }
+    
+    $('#resizeThumb').hide();
+    $('#sizeSliderThumb').slider({ value: 100, slide: function(event, ui) { return onThumbSlide(event,ui); } });
 });
+
+function toggleThumbResizePane()
+{
+	$('#resizeThumb').toggle();
+}
 
 function fileSelected(ele)
 {
@@ -142,11 +150,40 @@ function addLocalImage(imgFile,photoIndex)
     
 	return(img);
 }
+function onThumbSlide(event, ui)
+{
+	edit.thumb.scale=ui.value/100;
+	//$('#status').text(edit.photos[photoIndex].scale);
+	var c=edit.thumb.jcrop.tellSelect();
+	if(c.w==0 && c.h==0)
+	{
+		c.w=$('#picThumb').width();
+		c.h=$('#picThumb').height();
+	}
+	cropThumbImage(c); 
+}
+
+// look for the next photo to use as the source image
+// change the crop source and the resulting thumb
+function changeThumbSource()
+{
+	for(n=0; n<5; n++)
+	{
+		edit.thumb++;
+		if(edit.thumb>=5) edit.thumb=0;
+			
+		if(edit.photos[edit.thumb].filled)
+		{
+			
+			return;
+		}
+	}
+}
 
 function onSlide(event, ui, photoIndex) 
 {
 	edit.photos[photoIndex].scale=ui.value/100;
-	$('#status').text(edit.photos[photoIndex].scale);
+	//$('#status').text(edit.photos[photoIndex].scale);
 	var c=edit.photos[photoIndex].jcrop.tellSelect();
 	if(c.w==0 && c.h==0)
 	{
@@ -216,6 +253,36 @@ function cropImage(c,photoIndex)
 	height=height*edit.photos[photoIndex].scale;
 	
 	$('#workingCanvas'+photoIndex).height(height).width(width);
+	canv2.height=height;
+	canv2.width=width;
+	
+    var ctx2 = canv2.getContext('2d');
+    ctx2.clearRect(0,0,width,height);
+    
+    ctx2.drawImage(source, c.x, c.y, c.w, c.h, 0, 0, width, height);
+}
+
+function cropThumbImage(c) 
+{	
+	edit.thumb.changed=true;
+	
+	var source=document.getElementById('picThumb');
+	var canv2=document.getElementById('workingCanvasThumb');
+	
+	var width=c.w;
+	var height=c.h;
+	
+	if(width>maxImageWidth) width=maxImageWidth;
+	if(height>maxImageHeight) height=maxImageHeight;
+	
+	var ratio=Math.min(width/c.w,height/c.h);
+	if(ratio*c.w < width) width=ratio*c.w;
+	else if(ratio*c.h < height) height=ratio*c.h;
+	
+	width=width*edit.photos[photoIndex].scale;
+	height=height*edit.photos[photoIndex].scale;
+	
+	$('#workingCanvasThumb').height(height).width(width);
 	canv2.height=height;
 	canv2.width=width;
 	

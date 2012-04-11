@@ -5,8 +5,8 @@
 <link rel="stylesheet" type="text/css" href="/js/markitup/skins/simple/style.css" />
 <link rel="stylesheet" type="text/css" href="/js/markitup/sets/bbcode/style.css" />
 <link href="/css/jcrop/jcrop.css?1" rel="stylesheet" type="text/css"  />
-<script src="/js/edit.js?12" type="text/javascript"></script>
-<script src="/js/crop.js?6" type="text/javascript" ></script>
+<script src="/js/edit.js?13" type="text/javascript"></script>
+<script src="/js/crop.js?7" type="text/javascript" ></script>
 
 <style>
 

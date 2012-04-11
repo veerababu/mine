@@ -148,7 +148,6 @@ function photoSwitch() {
 	}else print("All Done");
 }
 
-UPDATE bob set bob.x=bob.y;
 	
 
 
