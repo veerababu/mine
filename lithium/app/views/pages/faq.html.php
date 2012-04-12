@@ -1,3 +1,7 @@
+<div class="row">
+	<?php  echo $this->_render('element', 'cta_nav'); ?>
+	<div class="span9">
+	
 <h1>GENERAL</h1> 
 
 <h3>What is Bravo Your City?</h3>
@@ -39,3 +43,4 @@ All contributors must fill out a W9 (American) or W8 (Foreign) tax form electron
 <h3>Where and how are these stories sold?</h3> 
 This answer must be saved for the Beta release. It will all make perfect sense then.
 --> 
+</div></div>
