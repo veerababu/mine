@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Users;
 use app\models\Story;
 use app\models\Tags;
 use app\models\Image;
@@ -23,6 +24,12 @@ class AdminController extends \lithium\action\Controller
 	{
 		if(Session::read('user.role') != 'admin') return $this->redirect('/');
 			
+		$title='Admin: Stats';
+		
+		$userCount=Users::count();
+		$storyCount=Story::count();
+    	
+    	return compact('title','userCount','storyCount');
     }
     
     public function stories()
