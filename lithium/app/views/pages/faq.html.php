@@ -16,6 +16,7 @@ It's a little wink to <a href="http://bravoyourlife.com">Bravo Your Life!</a> --
 
 <h1>CONTRIBUTORS</h1> 
 
+
 <h3>How can I become a contributing writer or photographer?</h3>
 Just click <a href="/story/edit">submit</a> 
 
