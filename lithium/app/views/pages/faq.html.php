@@ -5,7 +5,7 @@
 <h1>GENERAL</h1> 
 
 <h3>What is Bravo Your City?</h3>
-Bravo Your City is a global travel and social enrichment webzine with written and visual content that is entirely user generated but is edited and published like a professional magazine. BYC publishes authentic and unique stories for the world -- by the world -- about the world. The diverse content is created by a large group of global contributors, which is then curated by professional editors. BYC's signature submission parameters of: 1 location, 1-5 photos and 1-500 words of text make it easy to submit multiple stories.
+Bravo Your City is a global travel and social enrichment webzine with written and visual content that is entirely user generated but is edited and published like a professional magazine. BYC publishes authentic and unique stories for the world -- by the world -- about the world. The diverse content is created by a large group of global people, which is then curated by professional editors. BYC's signature submission parameters of: 1 location, 1-5 photos and 1-500 words of text make it easy to submit multiple stories.
 
 <h3>What is your purpose?</h3>
 The aim of BYC is to create a global platform for people to contribute a variety of travel, human interest and social enrichment stories in a professional way. We think there are enough people in the world who have a love for writing and photography -- who may not be able to work full time as a writer or photographer -- but will enjoy seeing what happens with their creative freelancing efforts on BYC. 
