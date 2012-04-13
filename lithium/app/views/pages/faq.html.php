@@ -30,7 +30,7 @@ Yes. We think the submission guidelines keep it simple and sweet, so try your ha
 No. We do encourage you to submit the most about what you know. It makes sense that you'd contribute stories about where you live, but if you travel often, want to cover stories in your hometown, or places you used to live, we'd love to receive those submissions. We encourage all submissions to reflect you. Tell us about the dumpling cafe you always visit when you go to Shanghai. Feature an interesting or notable person in your hometown. 
 
 <h3>What kind of cities do you want content for?</h3> 
-We want places you think need to be on the BYC map. Of course, we want all the glossy cosmopolitan cities, but we also want BYC to be a resource for what's going on in small towns (like in Napa Valley or upstate New York) or mid-sized cities you might not think people are interested in. Travelers do find themselves in Cleveland, Little Rock, Minneapolis, Sacramento, Narita, Incheon, Lyon, Cornwall, etc and they will want to use BYC to learn about these off-the-radar locations.
+We want places you think need to be on the BYC map. Of course, we want all the glossy cosmopolitan cities, but we also want BYC to be a resource for what's going on in small towns (like in Napa Valley or upstate New York) or mid-sized cities you might not think people are interested in. Travelers do find themselves in Cleveland, Little Rock, Minneapolis, Sacramento, Narita, Incheon, Lyon, Cornwall, etc and they will want to use BYC to learn about these under-the-radar locations.
 
 <h3>What are tags?</h3> 
 Tags help us lead readers to your stories or your profile. It's another way of saying categories that apply to your story.
