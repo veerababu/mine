@@ -2,6 +2,8 @@
 var edit=[];
 edit.photos=[];
 edit.thumb=[];
+edit.thumb.changed=false;
+edit.thumbIndex=0;
 edit.imagesSaving=0;
 edit.userWantsSave=false;
 edit.userWantsPublish=false;
@@ -147,6 +149,8 @@ function updatePreview(story)
 		if( $('#StoryLayout').is(':checked') ) story.layout=1;
 		else story.layout=0;
 		
+		
+		
 		story.updated=Math.round(+new Date()/1000);
 		story.photos=[];
 		story.captions=[];
@@ -187,6 +191,7 @@ function updateForm(data)
 	if(data.layout)	$('#StoryLayout').attr('checked', true);
 	else $('#StoryLayout').attr('checked', false);
 
+	if(data.thumbPhoto) setThumbSrc("/image/view/"+data.thumbPhoto);
 	
 	var tagStr='';
 	if(data.tags) for(n=0; n<data.tags.length; n++) tagStr += data.tags[n]+', ';

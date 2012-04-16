@@ -30,8 +30,9 @@ $(document).ready(function()
     	$('#error').html("Sorry you need a modern browser to handle uploading photos. Please try Chrome or FireFox.").show();
     }
     
-    $('#resizeThumb').hide();
-    $('#sizeSliderThumb').slider({ value: 100, slide: function(event, ui) { return onThumbSlide(event,ui); } });
+    //$('#resizeThumb').hide();
+    //$('#sizeSliderThumb').slider({ value: 100, slide: function(event, ui) { return onThumbSlide(event,ui); } });
+    
 });
 
 function toggleThumbResizePane()
@@ -150,10 +151,11 @@ function addLocalImage(imgFile,photoIndex)
     
 	return(img);
 }
+/*
 function onThumbSlide(event, ui)
 {
 	edit.thumb.scale=ui.value/100;
-	//$('#status').text(edit.photos[photoIndex].scale);
+	
 	var c=edit.thumb.jcrop.tellSelect();
 	if(c.w==0 && c.h==0)
 	{
@@ -162,6 +164,7 @@ function onThumbSlide(event, ui)
 	}
 	cropThumbImage(c); 
 }
+*/
 
 // look for the next photo to use as the source image
 // change the crop source and the resulting thumb
@@ -169,15 +172,48 @@ function changeThumbSource()
 {
 	for(n=0; n<5; n++)
 	{
-		edit.thumb++;
-		if(edit.thumb>=5) edit.thumb=0;
+		edit.thumbIndex++;
+		if(edit.thumbIndex>=5) edit.thumbIndex=0;
 			
-		if(edit.photos[edit.thumb].filled)
+		if(edit.photos[edit.thumbIndex].filled)
 		{
+			
+			var photoID = $('#photo'+edit.thumbIndex).val();
+			if(photoID)
+			{	// remote image
+				var src='/image/view/'+photoID;
+			}else
+			{	// local image
+			
+				var src = $('#pic'+edit.thumbIndex).attr("src");
+			}
+			
+			edit.thumb.changed=true;
+			setThumbSrc(src);
 			
 			return;
 		}
 	}
+}
+
+function setThumbSrc(src)
+{
+	$('#picThumb').attr("src", src).load( function(){			
+				if(edit.thumb.jcrop) edit.thumb.jcrop.destroy();
+				
+				edit.thumb.jcrop =$.Jcrop($('#picThumb'), { 
+						aspectRatio: 23 / 16,
+						//setSelect: [0,0,230,160],
+						onSelect: function(c){ return cropThumbImage(c,true); } } );
+				var c=edit.thumb.jcrop.tellSelect();
+				if(c.w==0 && c.h==0)
+				{
+					c.w=$('#picThumb').width();
+					c.h=$('#picThumb').height();
+				}
+				cropThumbImage(c,false);
+			
+			});
 }
 
 function onSlide(event, ui, photoIndex) 
@@ -262,34 +298,43 @@ function cropImage(c,photoIndex)
     ctx2.drawImage(source, c.x, c.y, c.w, c.h, 0, 0, width, height);
 }
 
-function cropThumbImage(c) 
+function cropThumbImage(c,changed) 
 {	
-	edit.thumb.changed=true;
 	
+	if(changed) edit.thumb.changed=true;
 	var source=document.getElementById('picThumb');
-	var canv2=document.getElementById('workingCanvasThumb');
+	var canv2=document.getElementById('thumbCanvas');
 	
+	/*
 	var width=c.w;
 	var height=c.h;
 	
 	if(width>maxImageWidth) width=maxImageWidth;
 	if(height>maxImageHeight) height=maxImageHeight;
 	
+	
+	
 	var ratio=Math.min(width/c.w,height/c.h);
 	if(ratio*c.w < width) width=ratio*c.w;
 	else if(ratio*c.h < height) height=ratio*c.h;
 	
-	width=width*edit.photos[photoIndex].scale;
-	height=height*edit.photos[photoIndex].scale;
 	
-	$('#workingCanvasThumb').height(height).width(width);
+	width=width*edit.thumb.scale;
+	height=height*edit.thumb.scale;
+	
+	if(width<230) width=230;
+	if(height<160) height=160;
+	
+	$('#thumbCanvas').height(height).width(width);
 	canv2.height=height;
 	canv2.width=width;
+	*/
 	
     var ctx2 = canv2.getContext('2d');
-    ctx2.clearRect(0,0,width,height);
+    ctx2.clearRect(0,0,230,160);
+   
     
-    ctx2.drawImage(source, c.x, c.y, c.w, c.h, 0, 0, width, height);
+    ctx2.drawImage(source, c.x, c.y, c.w, c.h, 0, 0, 230, 160);
 }
 
 // Package the contents of canvas 2 and dispatch to server. Also need to catch the error return.
@@ -319,6 +364,16 @@ function uploadImages()
 	    	
 		}
     }   
+    
+    if(edit.thumb.changed)
+    {
+    	edit.thumb.changed=false;
+    	
+    	var imgData = document.getElementById('thumbCanvas').toDataURL("image/jpeg");
+	     var postStr = "index=-1&name=thumb&i=" + encodeURIComponent(imgData);
+	    edit.imagesSaving++;
+	    $.post('/story/saveImage', postStr, onSaveImage, "json" );
+    }
 }
 
 function onSaveImage(data)
@@ -327,8 +382,15 @@ function onSaveImage(data)
 	
 	var photoID=data.photoID;
 	var photoIndex=data.photoIndex;
+	if(photoIndex<0)
+	{	// thumbnail
+		$('#StoryThumbPhoto').val(photoID);
+	}else
+	{
+		$('#photo'+photoIndex).val(photoID);
+	}
 	
-	$('#photo'+photoIndex).val(photoID);
+	
 	
 	edit.imagesSaving--;
 	

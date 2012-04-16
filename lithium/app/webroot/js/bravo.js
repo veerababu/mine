@@ -18,7 +18,7 @@ type specific:
 */
 
 var startStatusMessage='';
-var maxImageWidth=1000;
+var maxImageWidth=850;
 var maxImageHeight=1000;
 
 $(document).ready(function(){
@@ -274,7 +274,7 @@ function createStoryThumbStr(story)
 		story.text += "...";
 	}
 	var str='<div class="thumbStory">';
-	if(story.photos[0])	str += '<a href="/story/view/'+story.slug+'"><img src="/image/view/'+story.photos[0]+'" /></a>';
+	if(story.photos[0])	str += '<a href="/story/view/'+story.slug+'"><img src="/image/view/'+story.thumbPhoto+'" /></a>';
 	str += '<div class="thumbTitle"><a href="/story/view/'+story.slug+'">'+story.title+'</a></div>';
 	str += 	'<div class="thumbText">'+parseBBCode(story.text)+'</div>';
 	

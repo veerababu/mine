@@ -44,16 +44,12 @@
 <div id="thumbnailEdit" class="photoEditBox" >
 	<input type="hidden" id="StoryThumbPhoto" name="thumbPhoto"  />
 	<label>Thumbnail</label>
-	<canvas id="thumbCanvas" ></canvas>
+	<canvas id="thumbCanvas" width="230" height="160"></canvas>
 	<input type="button" value="Change Thumbnail Image" class="btn-info" onclick="changeThumbSource()" />
-	<input type="button" value="Resize and Crop Thumbnail" class="btn-info" onclick="toggleThumbResizePane()" />
+	<!-- <input type="button" value="Resize and Crop Thumbnail" class="btn-info" onclick="toggleThumbResizePane()" /> -->
 		
 	<div id="resizeThumb" >
-		<div class="row"> 
-			<div class="span2">Scale Image:</div> <div class="span4" id="sizeSliderThumb"></div>
-		</div>
  		<div class="row">
- 			<div class="span8"><canvas id="workingCanvasThumb" ></canvas></div>
  			<div class="span8"><img id="picThumb" ></img></div>
  			<div class="span8">Source Image. Select a portion to crop.</img></div>
  		</div>
