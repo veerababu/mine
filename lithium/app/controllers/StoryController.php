@@ -139,6 +139,9 @@ class StoryController extends \lithium\action\Controller
 	    			
 	    			$story['tags']=Tags::cleanFormTags($story['tags']);
 	    			
+	    			$story['url']=str_replace("http://","",$story['url']);
+	    			$story['url']=str_replace("https://","",$story['url']);
+	    			
 	    			/* TODO: not sure the best way to handle this
 	    			$story['tags'][]=$story['hood'];
 	    			$story['tags'][]=$story['city'];

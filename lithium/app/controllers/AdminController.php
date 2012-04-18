@@ -134,6 +134,8 @@ class AdminController extends \lithium\action\Controller
 			$story['tags']=Tags::cleanFormTags($story['tags']);
 			
 			unset($story['_id']);
+			$story['url']=str_replace("http://","",$story['url']);
+			$story['url']=str_replace("https://","",$story['url']);
 			
 			if($status=='accepted')
 			{

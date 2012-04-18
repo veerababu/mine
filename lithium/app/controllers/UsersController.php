@@ -188,6 +188,9 @@ class UsersController extends \lithium\action\Controller
     			
     			$story=$this->request->data;
     			$story['title']=trim($story['title']);
+    			$story['url']=str_replace("http://","",$story['url']);
+				$story['url']=str_replace("https://","",$story['url']);
+				
     			//echo($story['title']);
     			//echo("  old one  $oldTitle");
     			if($story['title'] != $oldTitle)
