@@ -95,7 +95,7 @@ function parseBBCode(text)
 	text = text.replace(/\[u\]([^]*?)\[\/u\]/gim,'<u>$1</u>');
 	//text = text.replace(/\[img\]([^]*?)\[\/img\]/gim,'<img src="$1" alt="$1" />');
 	text = text.replace(/\[email\](.*?)\[\/email\]/gim,'<a href="mailto:$1">$1</a>');
-	text = text.replace(/\[url\="?(.*?)"?\]([^]*?)\[\/url\]/gim,'<a href="$1">$2</a>');
+	text = text.replace(/\[url\="?(.*?)"?\]([^]*?)\[\/url\]/gim,'<a  target="_blank" href="$1">$2</a>');
 	text = text.replace(/\[size\="?(.*?)"?\]([^]*?)\[\/size\]/gim,'<span style="font-size:$1%">$2</span>');
 	text = text.replace(/\[color\="?(.*?)"?\]([^]*?)\[\/color\]/gim,'<span style="color:$1">$2</span>');
 	text = text.replace(/\[quote\]([^]*?)\[\/quote\]/gim,'<blockquote>$1</blockquote>');
