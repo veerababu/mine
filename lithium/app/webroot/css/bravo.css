@@ -256,9 +256,18 @@ legend {
 
 .thumbTitle {
 	text-transform:uppercase;
-	font-size: 24px;
+	font-size: 20px;
 	color: black;
 	padding-left: 5px;
+	margin-bottom: 4px;
+}
+
+.thumbTitle a {
+	color: black;
+}
+
+.thumbTitle a:hover {
+	color:#EE0909;
 }
 
 .thumbText {
@@ -287,6 +296,10 @@ legend {
 .redWell {
 background: #e54025;
 border-radius: 0px 0px 0px 0px;
+
+-moz-box-shadow: 0 0 6px rgba(0,0,0,.1);
+	-webkit-box-shadow: 0 0 6px rgba(0,0,0,.1);
+	box-shadow: 0 0 6px rgba(0,0,0,.3);
 }
 
 .redWell img {
@@ -298,6 +311,10 @@ margin-left: 15px;
 	border-radius: 0px 0px 0px 0px;
 	background: #000000;
 	color: #ffffff;
+	
+	-moz-box-shadow: 0 0 6px rgba(0,0,0,.1);
+	-webkit-box-shadow: 0 0 6px rgba(0,0,0,.1);
+	box-shadow: 0 0 10px rgba(0,0,0,.3);
 }
 
 .black a {
