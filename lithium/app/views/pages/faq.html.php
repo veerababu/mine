@@ -5,7 +5,7 @@
 <h1>GENERAL</h1> 
 
 <h3>What is Bravo Your City?</h3>
-BYC publishes authentic and unique stories for the world -- by the world -- about the world. BYC is a user-generated, global travel and social enrichment webzine with written and visual content that is edited and published as a professional magazine. The diverse content is created by a large group of global people, which is then curated by professional editors. BYC's sweet and simple submission parameters of: 1 location, 1-5 photos and 1-500 words make it easy to submit multiple stories.
+BYC publishes authentic and unique stories for the world -- by the world -- about the world. BYC is a user-generated, global travel and social enrichment webzine with written and visual content that is edited and published as a professional magazine. The diverse content is created by everyday global people, which is then curated by professional editors. BYC's sweet and simple submission parameters of: 1 location, 1-5 photos and 1-500 words make it easy to submit multiple stories.
 
 <h3>What is your purpose?</h3>
 The aim of BYC is to create a global platform for people to contribute a variety of travel, lifestyle, human interest and social enrichment stories in a professional way. We think there are enough people in the world who have a love for writing and photography -- who may not be able to work full time as a writer or photographer -- but will enjoy the rewards from their freelancing efforts on BYC. We hope to serve local communities while providing a resource for people to learn about their global neighbors. It's a place for global travelers who are looking for a more authentic traveling experience, but it is also for locals who want to learn and share about what's happening in their community while giving back to it at the same time through BYC <a href="/pages/50">50% profit sharing</a>.
@@ -28,6 +28,9 @@ Yes. We think the submission guidelines keep it simple and sweet, so try your ha
 
 <h3>Do I need to live in the city or area of the city I submit about?</h3> 
 No. We do encourage you to submit the most about what you know. It makes sense that you'd contribute stories about where you live, but if you travel often, want to cover stories in your hometown, or places you used to live, we'd love to receive those submissions. We encourage all submissions to reflect you. Tell us about the dumpling cafe you always visit when you go to Shanghai. Feature an interesting or notable person in your hometown. 
+
+<h3>What kind of stories are you looking to publish?</h3> 
+BYC wants to publish any story that you think is interesting. We like traditional travel features, restaurant reviews, fashion/ art/ design content, but we also want human interest and lifestyle stories. The options are endless, and you can be very creative. The stories can be photo heavy with very little text or vice versa.
 
 <h3>What kind of cities do you want content for?</h3> 
 We want places you think need to be on the BYC map. Of course, we want all the glossy cosmopolitan cities, but we also want BYC to be a resource for what's going on in small towns (like in Napa Valley or upstate New York) or mid-sized cities you might not think people are interested in. Travelers do find themselves in Cleveland, Little Rock, Minneapolis, Sacramento, Narita, Incheon, Lyon, Cornwall, etc and they will want to use BYC to learn about these under-the-radar locations.
