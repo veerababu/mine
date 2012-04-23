@@ -42,9 +42,10 @@ Tags help us lead readers to your stories or your profile. It's another way of s
 When you submit the story, add as many tags as you would like that help us categorize your story. For example, if you are writing about a Japanese restaurant in the Mission that specializes in ramen and is a very cozy spot, perfect to bring a date, you would tag your story: food, Japanese, ramen, noodles, restaurant, dates, romantic. The location is tagged when you add the address and neighborhood. As the site grows, it will autosuggest the most common tags as you begin to type them, but feel free to add your own tags if there is no suggestion.
 
 <h3>Do you pay contributors for content that gets published to BYC?</h3> 
-Yes! If your story is curated into a BYC Microguide and bought by other users, you will be paid. Since we are just starting out, we need more stories before Microguides can be in full effect. <a href="/story/edit">Please share your story!</a>  
+Yes! You can choose to be paid a percentage of your stories' sales or donate that percentage to a charity BYC features.</a>  
 
 <!--
+
 <h3>How much do you pay contibutors?</h3>
 Contributors will receive 5% of the profit from their stories that are sold.
 
