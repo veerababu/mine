@@ -105,6 +105,12 @@ function onStories(data)
 		var numPages=Math.ceil(data.count/3);
 		if(numPages>1)
 		{
+			var str='<ul class="pager"> <li id="FirstPageLI" class="previous"><a onClick="gotoPage(1)" >&larr; Start</a></li>';
+			str += '<li class="next"><a id="LastPageButton" >End &rarr;</a></li></ul>';
+			
+			$('#Pager').html(str);
+			
+		
 			var startPage=numPages;
 			var minPage=0;
 			if(numPages>15)
@@ -115,9 +121,6 @@ function onStories(data)
 			}
 			
 			$('#Pager').show();
-			//$('.pageButton').remove();
-			$('#Pager').find('li[class="pageButton"]').remove(); 
-			$('#Pager').find('li[class="pageButton active"]').remove(); 
 			
 			for(n=startPage; n>minPage; n--)
 			{

@@ -5,7 +5,7 @@ var currentSearches=[ <?= $search ?> ];
 var desiredPage=<?= $page ?>;
 
 </script>
-<script src="/js/search.js?3" type="text/javascript"></script>
+<script src="/js/search.js?4" type="text/javascript"></script>
 
 <p>
 <div class="row"> 
@@ -31,11 +31,7 @@ var desiredPage=<?= $page ?>;
 		<div id="storyList"></div>
 		
 		<div id="Pager" class="row">
-			<ul class="pager">
-  				<li id="FirstPageLI" class="previous"><a onClick="gotoPage(1)" >&larr; Start</a></li>
- 				
-			  <li class="next"><a id="LastPageButton" >End &rarr;</a></li>
-			</ul>
+			
 		</div>
 		
 		
