@@ -116,9 +116,9 @@ function onStories(data)
 			if(numPages>15)
 			{
 				minPage=Math.max(data.page-7,0);
-				startPage=Math.min(minPage+15,numPages);
-				
-				$('#FirstPageLI').after('...');
+				startPage=minPage+15;
+				if(startPage>numPages) startPage=numPages;
+				else $('#FirstPageLI').after('...'); 
 			}
 			
 			$('#Pager').show();
