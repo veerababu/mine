@@ -31,7 +31,7 @@ function approve()
 		
 		$('#status').text="Approving...";
 		$('#error').text="";
-		$.post("/admin/approve", $('#form1').serialize() , onServer , "json" );
+		$.post("/admin/approve", $('#form1').serialize() , onStories , "json" );
 	}
 	
 	return(false);

@@ -152,11 +152,13 @@ class AdminController extends \lithium\action\Controller
 			
 			
 		 	Story::update($story, array('_id' => $id ));
+		 	
+		 	$status=$story['title'].$returnStatus.' Moving to the next Story...';
 		 		
 		 	$conditions = array('status' => 'pending' );
 			$stories = Story::all(compact('conditions'));
 			$story=Story::find('first', compact('conditions') );
-			$status=$story['title'].$returnStatus.' Moving to the next Story...';
+			
 				
 	    	$this->render(array('json' => compact('status','stories','story')));
 		}else
