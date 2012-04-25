@@ -1,6 +1,6 @@
 <div class="span3">
 		<div class="well redWell">
-			<a href="/story/edit"><img src="/img/cta.png" /></a>
+			<a href="/story/edit"><img src="/img/cta.png?1" /></a>
 		</div>
 		
 		<div class="well black">
