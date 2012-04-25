@@ -212,7 +212,7 @@ function createNormalLayout(story)
 		if(story.text) 
 		{
 			var text=parseBBCode(story.text);
-			if(text.length>250)
+			if(text.length>1000)
 				str += 	'<div class="storyTextMC">'+text+'</div>';
 			else str += 	'<div class="storyTextSC">'+text+'</div>';
 		}
@@ -243,7 +243,7 @@ function createBigImageLayout(story)
 			if(story.text) 
 			{
 				var text=parseBBCode(story.text);
-				if(text.length>250)
+				if(text.length>1000)
 					str += 	'<div class="storyTextMC">'+text+'</div>';
 				else str += 	'<div class="storyTextSC">'+text+'</div>';
 			}
@@ -254,7 +254,7 @@ function createBigImageLayout(story)
 			if(story.text) 
 			{
 				var text=parseBBCode(story.text);
-				if(text.length>300)
+				if(text.length>1000)
 					str += 	'<div class="storyTextMC">'+text+'</div>';
 				else str += 	'<div class="storyTextSC">'+text+'</div>';
 			}

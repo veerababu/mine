@@ -15,9 +15,9 @@
     <script src="/js/jquery-ui.js"></script>
     <script src="/js/bootstrap.js"></script>
     
-	<link href="/css/bravo.css?14" rel="stylesheet">
+	<link href="/css/bravo.css?15" rel="stylesheet">
     <script src="/js/date.format.js?7"></script>
-    <script src="/js/bravo.js?15"></script>
+    <script src="/js/bravo.js?16"></script>
     
 	
 	
@@ -53,7 +53,7 @@ startStatusMessage='<?= $session_flash_message ?>';
 }
 ?>     
 
-<a href="/home"><img class="logo" src="/img/logo2.png" /></a>
+<a href="/home"><img class="logo" src="/img/byc-logo.png" /></a>
 <div class="row top-nav"><div class="login"><?php  echo $this->_render('element', 'login'); ?></div></div>
 <div class="row nav-menu">
           <table width="100%" ><tr>

@@ -46,6 +46,7 @@ font-size: 15px;
 	margin-right: auto;
 	margin-top: 48px;
 	margin-bottom: 20px;
+	padding-bottom: 5px;
 	
 	border-bottom: 3px black solid;
 	
@@ -294,18 +295,16 @@ legend {
 }
 
 .redWell {
-background: #e54025;
+background: #dc3e2e;
 border-radius: 0px 0px 0px 0px;
+text-align: center;
 
 -moz-box-shadow: 0 0 6px rgba(0,0,0,.1);
 	-webkit-box-shadow: 0 0 6px rgba(0,0,0,.1);
 	box-shadow: 0 0 6px rgba(0,0,0,.3);
 }
 
-.redWell img {
-margin-left: 15px;
 
-}
 
 .black {
 	border-radius: 0px 0px 0px 0px;
