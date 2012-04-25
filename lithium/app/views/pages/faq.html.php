@@ -35,6 +35,9 @@ BYC wants to publish any story that you think is interesting. We like traditiona
 <h3>What kind of cities do you want content for?</h3> 
 We want places you think need to be on the BYC map. Of course, we want all the glossy cosmopolitan cities, but we also want BYC to be a resource for what's going on in small towns (like in Napa Valley or upstate New York) or mid-sized cities you might not think people are interested in. Travelers do find themselves in Cleveland, Little Rock, Minneapolis, Sacramento, Narita, Incheon, Lyon, Cornwall, etc and they will want to use BYC to learn about these under-the-radar locations.
 
+<h3>What size photos should I upload?</h3> 
+For now, medium sized JPG that are medium to large in quality are the best. Anything over 1.5 MB will take too long to load. 
+
 <h3>What are tags?</h3> 
 Tags help us lead readers to your stories or your profile. It's another way of saying categories that apply to your story.
 
@@ -42,7 +45,7 @@ Tags help us lead readers to your stories or your profile. It's another way of s
 When you submit the story, add as many tags as you would like that help us categorize your story. For example, if you are writing about a Japanese restaurant in the Mission that specializes in ramen and is a very cozy spot, perfect to bring a date, you would tag your story: food, Japanese, ramen, noodles, restaurant, dates, romantic. The location is tagged when you add the address and neighborhood. As the site grows, it will autosuggest the most common tags as you begin to type them, but feel free to add your own tags if there is no suggestion.
 
 <h3>Do you pay contributors for content that gets published to BYC?</h3> 
-Yes! You can choose to be paid a percentage of your stories' sales or donate that percentage to a charity BYC features.</a>  
+Yes! All will be revealed when we beta release this summer.</a>  
 
 <!--
 
