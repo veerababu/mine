@@ -53,7 +53,7 @@ startStatusMessage='<?= $session_flash_message ?>';
 }
 ?>     
 
-<a href="/home"><img class="logo" src="/img/byc-logo.png" /></a>
+<a href="/home"><img class="logo" src="/img/byc-logo.png?1" /></a>
 <div class="row top-nav"><div class="login"><?php  echo $this->_render('element', 'login'); ?></div></div>
 <div class="row nav-menu">
           <table width="100%" ><tr>
