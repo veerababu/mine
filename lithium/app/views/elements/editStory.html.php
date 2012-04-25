@@ -72,7 +72,11 @@
 	
 	<div class="row"> 
 		<div class="span2"><input type="button" value="Upload all images" class="btn-info" onClick="uploadImages()" /></div>
-		<div class="span3 offset3">Big First Image: <input id="StoryLayout" name="layout" type="checkbox"></div>
+		<div id="UploadStatus" class="span1"></div>
+		<div class="span2">
+		    <div class="progress progress-striped active"> <div id="UploadProgress" class="bar" style="width: 0%;"></div></div>
+		</div>
+		<div class="span3">Big First Image: <input id="StoryLayout" name="layout" type="checkbox"></div>
 	</div>
 <hr>
 

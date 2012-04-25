@@ -29,7 +29,7 @@ $(document).ready(function()
     {
     	$('#error').html("Sorry you need a modern browser to handle uploading photos. Please try Chrome or FireFox.").show();
     }
-    
+       
     //$('#resizeThumb').hide();
     //$('#sizeSliderThumb').slider({ value: 100, slide: function(event, ui) { return onThumbSlide(event,ui); } });
     
@@ -305,30 +305,7 @@ function cropThumbImage(c,changed)
 	var source=document.getElementById('picThumb');
 	var canv2=document.getElementById('thumbCanvas');
 	
-	/*
-	var width=c.w;
-	var height=c.h;
-	
-	if(width>maxImageWidth) width=maxImageWidth;
-	if(height>maxImageHeight) height=maxImageHeight;
-	
-	
-	
-	var ratio=Math.min(width/c.w,height/c.h);
-	if(ratio*c.w < width) width=ratio*c.w;
-	else if(ratio*c.h < height) height=ratio*c.h;
-	
-	
-	width=width*edit.thumb.scale;
-	height=height*edit.thumb.scale;
-	
-	if(width<230) width=230;
-	if(height<160) height=160;
-	
-	$('#thumbCanvas').height(height).width(width);
-	canv2.height=height;
-	canv2.width=width;
-	*/
+
 	
     var ctx2 = canv2.getContext('2d');
     ctx2.clearRect(0,0,230,160);
@@ -345,6 +322,15 @@ function uploadSelection() {
     $.post('saveUpload.php', postStr, function(resp) {alert('Success - ' + resp);});
 }
 
+
+function fileUploadProgress(e)
+{
+	var done = e.position || e.loaded, total = e.totalSize || e.total;
+	var per=(Math.floor(done/total*1000)/10);
+    //console.log('xhr.upload progress: ' + done + ' / ' + total + ' = ' + per + '%');
+    $('#UploadProgress').width(''+per+'%');
+}
+
 // go through all the images that have been edited and send them to the server
 function uploadImages()
 {	
@@ -356,10 +342,31 @@ function uploadImages()
 			{
 				edit.photos[n].changed=false;
 				
+				$('#UploadStatus').text(edit.photos[n].name);
+				$('#UploadProgress').width('0%');
+				
 				var imgData = document.getElementById('workingCanvas'+n).toDataURL("image/jpeg");
 			    var postStr = "index="+n+"&name="+edit.photos[n].name+"&i=" + encodeURIComponent(imgData);
 			    edit.imagesSaving++;
-			    $.post('/story/saveImage', postStr, onSaveImage, "json" );
+			    
+			    var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+			    $.ajax({
+			    	  type: 'POST',
+			    	  url: '/story/saveImage',
+			    	  data: postStr,
+			    	  xhr: function() {
+			              var xhr = jQuery.ajaxSettings.xhr();
+			              if (xhr.upload) {
+			                  xhr.upload.onprogress = fileUploadProgress;
+			              }
+			              return xhr;
+			          },
+			    	  
+			    	  success: onSaveImage,
+			    	  dataType: 'json'
+			    	});
+			    
+			    //$.post('/story/saveImage', postStr, onSaveImage, "json" );
 	    	}
 	    	
 		}
@@ -375,6 +382,7 @@ function uploadImages()
 	    $.post('/story/saveImage', postStr, onSaveImage, "json" );
     }
 }
+
 
 function onSaveImage(data)
 {
@@ -394,8 +402,13 @@ function onSaveImage(data)
 	
 	edit.imagesSaving--;
 	
+	uploadImages();
+	
 	if(edit.imagesSaving==0)
 	{
+		$('#UploadStatus').text('Uploaded');
+		$('#UploadProgress').width('0%');
+		
 		if( edit.userWantsSave )
 		{
 			saveStory();

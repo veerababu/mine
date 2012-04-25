@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/css/jcrop/jcrop.css?1" />
 <script type="text/javascript" src="/js/jcrop/jquery.jcrop.js"></script>
 <script src="/js/edit.js?14" type="text/javascript"></script>
-<script src="/js/crop.js?8" type="text/javascript" ></script>
+<script src="/js/crop.js?9" type="text/javascript" ></script>
 
 <script>
 

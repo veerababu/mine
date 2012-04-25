@@ -198,7 +198,7 @@ function updateForm(data)
 	$('#StoryTags').val(tagStr);
 	
 	$('#photoList').empty();
-	
+	if(!data.photos) data.photos=[];
 	for(n=0; n<5; n++) 
 	{
 		if(n<data.photos.length)
