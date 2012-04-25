@@ -24,7 +24,7 @@ Just click <a href="/story/edit">share</a>. Remember our submission guidelines f
 When you submit a story to BYC, you license it to us, but you still retain your copyright and can use it for your blog or other things. 
 
 <h3>May I submit just photos or just writing?</h3> 
-Yes. We think the submission guidelines keep it simple and sweet, so try your hand at a little photography or writing a few sentences or a paragraph even if you think writing is not your forte. You can also pair up with a friend and submit photos and writing as a duo. Just give credit to the photographer in the captions and have the writer submit the story. In the Beta release, there will be a section for writers to submit stories in search of photographers and vice versa. We think this might be a fun way to collaborate and meet someone new in your community. 
+Yes. We think the submission guidelines keep it simple and sweet, so try your hand at a little photography or writing a few sentences or a paragraph even if you think writing is not your forte. You can also pair up with a friend and submit photos and writing as a duo. Just give credit to the photographer in the captions and have the writer submit the story. In the beta release, there will be a section for writers to submit stories in search of photographers and vice versa. We think this might be a fun way to collaborate and meet someone new in your community. 
 
 <h3>Do I need to live in the city or area of the city I submit about?</h3> 
 No. We do encourage you to submit the most about what you know. It makes sense that you'd contribute stories about where you live, but if you travel often, want to cover stories in your hometown, or places you used to live, we'd love to receive those submissions. We encourage all submissions to reflect you. Tell us about the dumpling cafe you always visit when you go to Shanghai. Feature an interesting or notable person in your hometown. 
@@ -35,6 +35,9 @@ BYC wants to publish any story that you think is interesting. We like traditiona
 <h3>What kind of cities do you want content for?</h3> 
 We want places you think need to be on the BYC map. Of course, we want all the glossy cosmopolitan cities, but we also want BYC to be a resource for what's going on in small towns (like in Napa Valley or upstate New York) or mid-sized cities you might not think people are interested in. Travelers do find themselves in Cleveland, Little Rock, Minneapolis, Sacramento, Narita, Incheon, Lyon, Cornwall, etc and they will want to use BYC to learn about these under-the-radar locations.
 
+<h3>What size photos should I upload?</h3> 
+For now, medium sized JPG that are medium to large in quality are the best. Anything over 1.5 MB will take too long to load. 
+
 <h3>What are tags?</h3> 
 Tags help us lead readers to your stories or your profile. It's another way of saying categories that apply to your story.
 
@@ -42,7 +45,7 @@ Tags help us lead readers to your stories or your profile. It's another way of s
 When you submit the story, add as many tags as you would like that help us categorize your story. For example, if you are writing about a Japanese restaurant in the Mission that specializes in ramen and is a very cozy spot, perfect to bring a date, you would tag your story: food, Japanese, ramen, noodles, restaurant, dates, romantic. The location is tagged when you add the address and neighborhood. As the site grows, it will autosuggest the most common tags as you begin to type them, but feel free to add your own tags if there is no suggestion.
 
 <h3>Do you pay contributors for content that gets published to BYC?</h3> 
-Yes! You can choose to be paid a percentage of your stories' sales or donate that percentage to a charity BYC features.</a>  
+Yes! All will be revealed when we beta release this summer.</a>  
 
 <!--
 
